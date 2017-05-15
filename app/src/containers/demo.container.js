@@ -1,11 +1,11 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component, PropTypes} from "react";
 
 //连接redux
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 import {getDemo} from '../actions'
 
-import ReduxDemo from '../components/demo'
+import ReduxDemo from '../components/demo';
 
 class DemoContainer extends Component {
     render() {
@@ -15,7 +15,7 @@ class DemoContainer extends Component {
                 data={data}
                 getDemo={getDemo}
             />
-        )
+        );
     }
 }
 
@@ -33,20 +33,20 @@ class DemoContainer extends Component {
 //     }
 // }
 
-DemoContainer.propTypes = {}
-DemoContainer.defaultProps = {}
+DemoContainer.propTypes = {};
+DemoContainer.defaultProps = {};
 
 const mapStateToProps = (state) => {
     return {
         demo: state.demo
-    }
+    };
 
 }
 const mapDispatchToProps = (dispatch) => {
-    const actions = {getDemo}
+    const actions = {getDemo};
     return {
         action: bindActionCreators(actions, dispatch)
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DemoContainer);

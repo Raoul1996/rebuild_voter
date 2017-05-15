@@ -7,6 +7,8 @@ import UserPage from './pages/index/index'
 import UserLogin from './pages/index/login'
 import UserRegister from './pages/index/register'
 import UserList from './pages/index/list'
+import UserChangeMsg from './pages/index/changeMsg'
+import UserChangeMobile from './pages/index/changeMobile'
 import Vote from './pages/user/voting'
 import AdminPage from './pages/admin/index/index'
 import CreateActivity from './pages/admin/create'
@@ -16,7 +18,7 @@ import ScoreRes from './pages/admin/scoreRes'
 const RouterApp = (
   <Router history={hashHistory}>
     {/*<Redirect from="/" to="/users/login"/>*/}
-    <Redirect from="/" to="/users/list"/>
+    <Redirect from="/" to="/users/change-massage"/>
     <Route path="/" component={AppComponent}>
       <IndexRoute component={UserPage}/>
       <Route path="demo" component={DemoContainer} />
@@ -25,6 +27,8 @@ const RouterApp = (
         <Route path="register" components={UserRegister}/>
         <Route path="vote" component={Vote}/>
         <Route path="list" component={UserList}/>
+        <Route path="change-massage" components={UserChangeMsg}/>
+        <Route path="change-mobile" components={UserChangeMobile}/>
       </Route>
       {/*TODO:这里我想配置成二级路由，可是暂时失败了*/}
       <Route path="login" components={UserLogin}/>

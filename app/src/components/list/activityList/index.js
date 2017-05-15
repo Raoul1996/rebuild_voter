@@ -37,12 +37,12 @@ const data = [{
   key: '1',
   name: 'John Brown',
   age: 32,
-  address: 'New York Park'
+  address: 'New York Park',
 }, {
   key: '2',
   name: 'Jim Green',
   age: 40,
-  address: 'London Park'
+  address: 'London Park',
 }]
 
 const ActivityList = () => (
