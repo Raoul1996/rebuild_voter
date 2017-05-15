@@ -4,8 +4,8 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router'
 import {Col,Row,Button} from 'antd'
-import Filter from '../../../components/list/filter'
-import ActList from '../../../components/list/activityList'
+import Filter from '../../../components/admin/list/filter'
+import ActList from '../../../components/admin/list/activityList'
 
 class List extends Component {
   render(){

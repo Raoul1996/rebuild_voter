@@ -1,9 +1,14 @@
-import React from 'react'
-import Login from '../../../components/user/login'
+import React, { Component } from 'react'
+import Login from '../../../components/admin/login'
 import './index.less'
-const title = '登录'
-export default () => (
-  <div className="login-wrapper">
-    <Login title={title} className="login" />
-  </div>
-)
+
+class AdminLogin extends Component {
+  render () {
+    return (
+      <div className="login-wrapper">
+        <Login/>
+      </div>
+    )
+  }
+}
+export default AdminLogin

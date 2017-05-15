@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import { Col, Row, Button } from 'antd'
-import Filter from '../../../components/list/filter'
-import StaList from '../../../components/list/statisticList'
+import Filter from '../../../components/admin/list/filter'
+import StaList from '../../../components/admin/list/statisticList'
 import './index.less'
 const updateTime = new Date().getTime()
 
