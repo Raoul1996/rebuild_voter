@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'antd'
-import List from '../../../components/list/showList'
+import List from '../../../components/user/list/showList/index'
 import LineText from '../../../components/content/lineText'
 import MsgListComponent from '../../../components/content/msgList'
 import './index.less'
