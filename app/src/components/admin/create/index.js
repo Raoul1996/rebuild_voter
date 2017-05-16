@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import {Link} from "react-router"
-import { Row, Col, Input, DatePicker, Radio, Form, Icon, Button, Card, InputNumber } from 'antd'
+import { Link } from 'react-router'
+import { Row, Col, Input, DatePicker, Radio, Form, Icon, Button, Card, InputNumber, message } from 'antd'
 import './index.less'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 
 let uuid = 0
 class Create extends Component {
-
   state = {
     startValue: null,
     endValue: null,
@@ -88,6 +87,40 @@ class Create extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
+        let options = []
+        Object.keys(values).forEach(key => {
+          if (key.match(/^name?/)) {
+            let item = values[key]
+            options.push(item)
+          }
+        })
+        const {title, type, max} = values
+        const body = {
+          options: options,
+          title: title,
+          startTime: Date.parse(this.state.startValue),
+          endTime: Date.parse(this.state.endValue),
+          type: parseInt(type),
+          max: parseInt(max)
+        }
+        console.log(body)
+        const token = 'ceebd9a8a5ff41b8b07b5d1f738d4a57'
+        fetch('http://127.0.0.1:8080/admin/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'token': token
+          },
+          body: JSON.stringify(body)
+        }).then((res) => {
+          return res.json()
+        }).then((json) => {
+          if (json.code === 0) {
+            message.success('创建成功')
+          } else {
+            message.error('创建失败')
+          }
+        })
       }
     })
   }
@@ -159,7 +192,7 @@ class Create extends Component {
     return (
       <div className="edit">
         <Col offset={5} span={14}>
-          <Card>
+          <Card className="card">
             <Col span={20}>
               <Row style={{marginTop: '20px'}}>
                 <Col {...GlobalSpanOffset}>
@@ -226,37 +259,44 @@ class Create extends Component {
                   </Col>
                 </Col>
               </Row>
-              <Row style={{display: this.state.type === 2 ? 'block' : 'none'}}>
-                <Col {...GlobalSpanOffset}>
-                  <Col {...TitleSpanOffset}><span>最多选择</span></Col>
-                  <Col {...InputSpanOffset}>
-                    <FormItem>
-                      {getFieldDecorator('number', {
-                        rules: [{required: true, message: '请选择最多选择数'}],
-                      })(
-                        <InputNumber min={1} max={10} />
-                      )}
-                    </FormItem>
+              {
+                this.state.type === 2 &&
+                <Row>
+                  <Col {...GlobalSpanOffset}>
+                    <Col {...TitleSpanOffset}><span>最多选择</span></Col>
+                    <Col {...InputSpanOffset}>
+                      <FormItem>
+                        {getFieldDecorator('max', {
+                          rules: [{required: true, message: '请选择最多选择数'}],
+                        })(
+                          <InputNumber min={1} max={10} />
+                        )}
+                      </FormItem>
+                    </Col>
                   </Col>
-                </Col>
-              </Row>
-              <Row style={{display: this.state.type === 3 ? 'block' : 'none'}}>
-                <Col {...GlobalSpanOffset}>
-                  <Col {...TitleSpanOffset}><span>分数上额</span></Col>
-                  <Col span={10} offset={1}>
-                    <FormItem>
-                      {getFieldDecorator('point', {
-                        rules: [{required: true, message: '请选择分数上限'}],
-                      })(
-                        <RadioGroup>
-                          <Radio value={1}>十分制</Radio>
-                          <Radio value={2}>百分制</Radio>
-                        </RadioGroup>
-                      )}
-                    </FormItem>
+                </Row>
+              }
+              {
+                this.state.type === 3 &&
+                <Row>
+                  <Col {...GlobalSpanOffset}>
+                    <Col {...TitleSpanOffset}><span>分数上额</span></Col>
+                    <Col span={10} offset={1}>
+                      <FormItem>
+                        {getFieldDecorator('point', {
+                          rules: [{required: true, message: '请选择分数上限'}],
+                        })(
+                          <RadioGroup>
+                            <Radio value={1}>十分制</Radio>
+                            <Radio value={2}>百分制</Radio>
+                          </RadioGroup>
+                        )}
+                      </FormItem>
+                    </Col>
                   </Col>
-                </Col>
-              </Row>
+                </Row>
+              }
+
               <Row>
                 <Col {...GlobalSpanOffset}>
                   <Form onSubmit={this.handleSubmit}>

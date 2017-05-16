@@ -1,0 +1,26 @@
+{
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "quotes": [
+      2,
+      "single"
+    ],
+    "semi": [
+      0,
+      "always"
+    ],
+    "extends": [
+      0,
+      "standard",
+      "eslint-config-standard-jsx"
+    ]
+  }
+}

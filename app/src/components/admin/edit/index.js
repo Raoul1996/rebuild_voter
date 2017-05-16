@@ -1,6 +1,5 @@
-
 import React, { Component } from 'react'
-import { Row, Col, Input, DatePicker, Radio, Form,Icon, Button, Card, InputNumber} from 'antd'
+import { Row, Col, Input, DatePicker, Radio, Form, Icon, Button, Card, InputNumber } from 'antd'
 import './index.less'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
@@ -13,114 +12,114 @@ class Edit extends Component {
     endValue: null,
     endOpen: false,
     type: 1
-  };
-   //日期选择框
+  }
+  //日期选择框
   disabledStartDate = (startValue) => {
-    const endValue = this.state.endValue;
+    const endValue = this.state.endValue
     if (!startValue || !endValue) {
-      return false;
+      return false
     }
-    return startValue.valueOf() > endValue.valueOf();
+    return startValue.valueOf() > endValue.valueOf()
   }
 
   disabledEndDate = (endValue) => {
-    const startValue = this.state.startValue;
+    const startValue = this.state.startValue
     if (!endValue || !startValue) {
-      return false;
+      return false
     }
-    return endValue.valueOf() <= startValue.valueOf();
+    return endValue.valueOf() <= startValue.valueOf()
   }
 
   onChange = (field, value) => {
     this.setState({
       [field]: value,
-    });
+    })
   }
 
   onStartChange = (value) => {
-    this.onChange('startValue', value);
+    this.onChange('startValue', value)
   }
 
   onEndChange = (value) => {
-    this.onChange('endValue', value);
+    this.onChange('endValue', value)
   }
 
   handleStartOpenChange = (open) => {
     if (!open) {
-      this.setState({ endOpen: true });
+      this.setState({endOpen: true})
     }
   }
 
   handleEndOpenChange = (open) => {
-    this.setState({ endOpen: open });
+    this.setState({endOpen: open})
   }
   //选项添加
   remove = (k) => {
-    const { form } = this.props;
+    const {form} = this.props
     // can use data-binding to get
-    const keys = form.getFieldValue('keys');
+    const keys = form.getFieldValue('keys')
     // We need at least one passenger
     if (keys.length === 1) {
-      return;
+      return
     }
 
     // can use data-binding to set
     form.setFieldsValue({
       keys: keys.filter(key => key !== k),
-    });
+    })
   }
 
   add = () => {
-    uuid++;
-    const { form } = this.props;
+    uuid++
+    const {form} = this.props
     // can use data-binding to get
-    const keys = form.getFieldValue('keys');
-    const nextKeys = keys.concat(uuid);
+    const keys = form.getFieldValue('keys')
+    const nextKeys = keys.concat(uuid)
     // can use data-binding to set
     // important! notify form to detect changes
     form.setFieldsValue({
       keys: nextKeys,
-    });
+    })
   }
 
   handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values)
       }
-    });
+    })
   }
 
   //类型选择
   onTypeChange = (e) => {
-    console.log('radio checked', e.target.value);
+    console.log('radio checked', e.target.value)
     this.setState({
       type: e.target.value,
-    });
+    })
   }
 
-  render() {
+  render () {
     //日期选择
-    const { startValue, endValue, endOpen } = this.state;
+    const {startValue, endValue, endOpen} = this.state
     //选项添加
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const {getFieldDecorator, getFieldValue} = this.props.form
     const formItemLayoutWithOutLabel = {
       labelCol: {
-        xs: { span: 24 },
-        sm: { span: 2},
+        xs: {span: 24},
+        sm: {span: 2},
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 11, offset: 1},
+        xs: {span: 24},
+        sm: {span: 11, offset: 1},
       },
-    };
-    getFieldDecorator('keys', { initialValue: [] });
-    const keys = getFieldValue('keys');
+    }
+    getFieldDecorator('keys', {initialValue: []})
+    const keys = getFieldValue('keys')
     const formItems = keys.map((k, index) => {
       return (
         <FormItem
-          {... formItemLayoutWithOutLabel}
+          {...formItemLayoutWithOutLabel}
           label={`选项${k}`}
           required={false}
           key={k}
@@ -130,10 +129,10 @@ class Edit extends Component {
             rules: [{
               required: true,
               whitespace: true,
-              message: "请输入选项内容或者删除该选项",
+              message: '请输入选项内容或者删除该选项',
             }],
           })(
-            <Input placeholder="请输入选项" style={{ width: '60%', marginRight: 8 }} />
+            <Input placeholder="请输入选项" style={{width: '60%', marginRight: 8}} />
           )}
           <Icon
             className="dynamic-delete-button"
@@ -142,19 +141,19 @@ class Edit extends Component {
             onClick={() => this.remove(k)}
           />
         </FormItem>
-      );
-    });
+      )
+    })
     return (
       <div className="edit">
         <Card>
           <Col span={20}>
-            <Row style={{marginTop:'20px'}}>
+            <Row style={{marginTop: '20px'}}>
               <Col span={22} offset={9}>
                 <Col span={3}><span>活动名称</span></Col>
                 <Col span={7}>
                   <FormItem>
                     {getFieldDecorator('title', {
-                      rules: [{ required: true, message: '请输入活动名称' }],
+                      rules: [{required: true, message: '请输入活动名称'}],
                     })(
                       <Input placeholder="活动名称" />
                     )}
@@ -178,7 +177,7 @@ class Edit extends Component {
                 </Col>
               </Col>
             </Row>
-            <Row style={{marginTop:'20px'}}>
+            <Row style={{marginTop: '20px'}}>
               <Col span={22} offset={9}>
                 <Col span={3}><span>结束时间</span></Col>
                 <Col span={10}>
@@ -195,13 +194,13 @@ class Edit extends Component {
                 </Col>
               </Col>
             </Row>
-            <Row style={{marginTop:'20px'}}>
+            <Row style={{marginTop: '20px'}}>
               <Col span={22} offset={9}>
                 <Col span={3}><span>投票形式</span></Col>
                 <Col span={10}>
                   <FormItem>
                     {getFieldDecorator('type', {
-                      rules: [{ required: true, message: '请选择投票类型' }],
+                      rules: [{required: true, message: '请选择投票类型'}],
                     })(
                       <RadioGroup onChange={this.onTypeChange}>
                         <Radio value={1}>单选</Radio>
@@ -213,33 +212,33 @@ class Edit extends Component {
                 </Col>
               </Col>
             </Row>
-            <Row style={{display:this.state.type === 2?'block':'none'}}>
+            <Row style={{display: this.state.type === 2 ? 'block' : 'none'}}>
               <Col span={22} offset={9}>
                 <Col span={3}><span>最多选择</span></Col>
                 <Col span={7}>
                   <FormItem>
-                  {getFieldDecorator('number', {
-                    rules: [{ required: true, message: '请选择最多选择数' }],
-                  })(
-                  <InputNumber min={1} max={10}/>
-                  )}
+                    {getFieldDecorator('number', {
+                      rules: [{required: true, message: '请选择最多选择数'}],
+                    })(
+                      <InputNumber min={1} max={10} />
+                    )}
                   </FormItem>
                 </Col>
               </Col>
             </Row>
-            <Row style={{display:this.state.type === 3?'block':'none'}}>
+            <Row style={{display: this.state.type === 3 ? 'block' : 'none'}}>
               <Col span={22} offset={9}>
                 <Col span={3}><span>分数上额</span></Col>
                 <Col span={10}>
                   <FormItem>
-                  {getFieldDecorator('point', {
-                    rules: [{ required: true, message: '请选择分数上限' }],
-                  })(
-                  <RadioGroup>
-                    <Radio value={1}>十分制</Radio>
-                    <Radio value={2}>百分制</Radio>
-                  </RadioGroup>
-                  )}
+                    {getFieldDecorator('point', {
+                      rules: [{required: true, message: '请选择分数上限'}],
+                    })(
+                      <RadioGroup>
+                        <Radio value={1}>十分制</Radio>
+                        <Radio value={2}>百分制</Radio>
+                      </RadioGroup>
+                    )}
                   </FormItem>
                 </Col>
               </Col>
@@ -250,16 +249,16 @@ class Edit extends Component {
                   {formItems}
                   <FormItem {...formItemLayoutWithOutLabel}>
                     <Col offset={5}>
-                      <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
+                      <Button type="dashed" onClick={this.add} style={{width: '60%'}}>
                         <Icon type="plus" /> 添加选项
                       </Button>
                     </Col>
                   </FormItem>
                   <FormItem {...formItemLayoutWithOutLabel}>
-                      <Col span={20} offset={5}>
-                          <Button type="primary" htmlType="submit" size="large" style={{marginRight:'20px'}}>新建</Button>
-                          <Button size="large">返回</Button>
-                      </Col>
+                    <Col span={20} offset={5}>
+                      <Button type="primary" htmlType="submit" size="large" style={{marginRight: '20px'}}>新建</Button>
+                      <Button size="large">返回</Button>
+                    </Col>
                   </FormItem>
                 </Form>
               </Col>
@@ -271,4 +270,4 @@ class Edit extends Component {
   }
 }
 
-export default Edit = Form.create()(Edit);
+export default Edit = Form.create()(Edit)
