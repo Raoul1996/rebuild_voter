@@ -6,8 +6,11 @@ const FormItem = Form.Item
 import './index.less'
 // import the api
 import API from '../../../api'
+import Regx from '../../../utils/regx'
+import { testArgs } from '../../../utils/testArgs'
 class NormalLoginForm extends Component {
   userLogin (userName, password) {
+    if (testArgs(userName, Regx.mobile) || testArgs(password, Regx.password))return
     const ERR_OK = 0
     console.log('will come to the userLogin func')
     if (window.localStorage.getItem('token') === '') {
@@ -31,7 +34,7 @@ class NormalLoginForm extends Component {
         // console.log(json)
         if (json.code === ERR_OK) {
           console.log('login successful')
-          window.localStorage.setItem('token',json.data.token)
+          window.localStorage.setItem('token', json.data.token)
         }
       })
   }
