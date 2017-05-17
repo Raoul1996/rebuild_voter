@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'antd'
-import List from '../../../components/user/list/showList/index'
+import List from '../../../components/user/list/showList'
 import LineText from '../../../components/content/lineText'
 import MsgListComponent from '../../../components/content/msgList'
 import './index.less'
@@ -8,7 +8,6 @@ class Item extends Component {
   constructor (props) {
     super(props)
   }
-
   render () {
     return (
       <div className="show-list-wrapper">

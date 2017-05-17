@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
 import './index.less'
-class MsgListConpomet extends Component {
-  constructor (props) {
-    super(props)
-  }
-
+class MsgListComponet extends Component {
   render () {
     return (
       <div className="msg-list">
@@ -14,4 +10,4 @@ class MsgListConpomet extends Component {
     )
   }
 }
-export default MsgListConpomet
+export default MsgListComponet

@@ -5,7 +5,7 @@ import './index.less'
 class AdminLogin extends Component {
   render () {
     return (
-      <div className="login-wrapper">
+      <div className="admin-login-wrapper">
         <Login/>
       </div>
     )

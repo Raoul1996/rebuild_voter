@@ -17,8 +17,7 @@ import VoteRes from './pages/admin/voteRes'
 import ScoreRes from './pages/admin/scoreRes'
 const RouterApp = (
   <Router history={hashHistory}>
-    {/*<Redirect from="/" to="/users/login"/>*/}
-    <Redirect from="/" to="/users/change-massage"/>
+    <Redirect from="/" to="/users/login"/>
     <Route path="/" component={AppComponent}>
       <IndexRoute component={UserPage}/>
       <Route path="users" components={UserPage}>
