@@ -1,90 +1,65 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { Form, Input, Select, Row, Col, Button} from 'antd'
+import { Form, Input, Select, Row, Col, Button, message } from 'antd'
 import './index.less'
 import API from '../../../api'
 import Regx from '../../../utils/regx'
-import {testArgs} from '../../../utils/testArgs'
-
+import { testArgs } from '../../../utils/testArgs'
+import * as Reqest from '../../../utils/request'
 const FormItem = Form.Item
 const Option = Select.Option
 
 const ERR_OK = 0
 // the const for verify method
-const REGISTER  = 1
+const REGISTER = 1
 const PASSWD = 2
 const PERSONAL = 3
 
 class RegistrationForm extends React.Component {
-  constructor (props){
+  constructor (props) {
     super(props)
-    this.state= {
+    this.state = {
       confirmDirty: false,
       autoCompleteResult: [],
     }
-    this.userRegister = this.userRegister.bind(this)
-3  }
-  userRegister (userName, password,code) {
-    if (!testArgs(userName, Regx.mobile) || !testArgs(password, Regx.password))return
-    console.log('will come to the userLogin func')
-    if (window.localStorage.getItem('token') === '') {
-      console.error('no token in the localStorage')
-    } else {
-      console.log(window.localStorage.getItem('token'))
-    }
-    fetch(API.register, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'token': window.localStorage.getItem('token')
-      },
-      body: JSON.stringify({
-        mobile: userName,
-        password: password,
-        code:code
-      })
-    }).then((res) => res.json())
-      .then((json) => {
-        console.log('fetch data successful')
-        console.log(json)
-        if (json.code === ERR_OK) {
-          console.log('register successful')
-          // window.localStorage.setItem('token',json.data.token)
-        }
-      })
+    // this.userRegister = this.userRegister.bind(this)
   }
-  userCaptcha (type) {
+
+  async userCaptcha (type) {
     const form = this.props.form
-    const mobile = form.getFieldValue('phone')
-    if (!testArgs(mobile, Regx.mobile)) return
-    fetch(API.verify,{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'token': window.localStorage.getItem('token')
-      },
-      body: JSON.stringify({
-        mobile: mobile,
-        type: type
-      })
-    }).then((res) => res.json())
-      .then((json) => {
-        console.log('fetch data successful')
-        console.log(json)
-        if (json.code === ERR_OK) {
-          console.log('getCaptcha successful')
-          console.log(json.data.code)
-        }
-      })
+    const mobile = form.getFieldValue('mobile')
+    const body = {
+      mobile: mobile,
+      type: REGISTER
+    }
+    try {
+      let data = await Reqest.post(API.verify, body)
+      console.log(data)
+      message.success('get Captcha successful')
+    } catch (e) {
+      message.error(e)
+    }
   }
+
   handleSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
         // console.log(values)
-        {}
-        this.userRegister(values.phone, values.password,values.captcha)
+        const {mobile, password, captcha} = values
+        const body = {
+          mobile: mobile,
+          password: password,
+          code: captcha
+        }
+        try {
+          let data = await Reqest.post(API.register, body)
+          console.log(data)
+          message.success('register successful')
+        } catch (e) {
+          message.error('register err')
+        }
       }
     })
   }
@@ -100,7 +75,6 @@ class RegistrationForm extends React.Component {
       callback()
     }
   }
-
 
   render () {
     const {getFieldDecorator} = this.props.form
@@ -143,17 +117,17 @@ class RegistrationForm extends React.Component {
                 {...formItemLayout}
                 label="手机号码"
               >
-                {getFieldDecorator('phone', {
+                {getFieldDecorator('mobile', {
                   rules: [{
                     required: true,
                     message: '请输入手机号码',
                     type: 'string',
                     // len: 11
-                  },{
+                  }, {
                     pattern: Regx.mobile, message: '请输入正确的手机号码'
                   }],
                 })(
-                  <Input type="text" placeholder="请输入11位手机号码"/>
+                  <Input type="text" placeholder="请输入11位手机号码" />
                 )}
               </FormItem>
               <FormItem
@@ -182,19 +156,20 @@ class RegistrationForm extends React.Component {
                       rules: [{
                         required: true,
                         message: '请输入四位验证码',
-                        len:4
+                        len: 4
                       }],
                     })(
                       <Input size="large" />
                     )}
                   </Col>
                   <Col span={12}>
-                    <Button size="large"  onClick={()=>this.userCaptcha (REGISTER)}>获取验证码</Button>
+                    {/*我也不知道这里为啥需要写成箭头函数的形式，可能是promise的需要？*/}
+                    <Button size="large" onClick={() =>this.userCaptcha()}>获取验证码</Button>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" size="large" >Register</Button>
+                <Button type="primary" htmlType="submit" size="large">Register</Button>
               </FormItem>
             </Form>
           </Col>
