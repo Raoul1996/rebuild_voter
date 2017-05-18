@@ -32,5 +32,4 @@ export default {
   beforeUpdate: adminApiMaker(':voteId/beforeUpdate'),
   voteUpdate: adminApiMaker('updateVote'),
   adminLogin: adminApiMaker('login')
-
 }

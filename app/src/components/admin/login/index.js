@@ -1,22 +1,55 @@
 /**
  * Created by Pororo on 17/5/15.
  */
-import React,{Component} from 'react'
-import { Form, Icon, Input, Button } from 'antd'
+import React, { Component } from 'react'
+import { Form, Icon, Input, Button, message } from 'antd'
 import './index.less'
-const FormItem = Form.Item;
+import Goto from '../../../utils/goto'
+import API from '../../../../../api'
+import * as Request from '../../../../../utils/request'
+const FormItem = Form.Item
 
 class NormalLoginForm extends Component {
   handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    e.preventDefault()
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        const {mobile, password} = values
+        const body = {
+          mobile: mobile,
+          password: password
+        }
+
+        try {
+          let data = await Request.post(API.adminLogin, body)
+          window.localStorage.setItem('admin.token', data.token)
+        } catch (e) {
+          message.error('登录失败')
+        }
+
+        // fetch(API.adminLogin, {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify(body)
+        // }).then((res)=>{
+        //   return res.json()
+        // }).then((json)=>{
+        //   if(json.code === 0){
+        //     console.log(json.data.token)
+        //     window.localStorage.setItem('admin.token',json.data.token)
+        //     Goto('admin')
+        //   }else{
+        //
+        //   }
+        // })
       }
-    });
+    })
   }
-  render() {
-    const { getFieldDecorator } = this.props.form;
+
+  render () {
+    const {getFieldDecorator} = this.props.form
     return (
       <div>
         <div className='login-title'>
@@ -24,17 +57,17 @@ class NormalLoginForm extends Component {
         </div>
         <Form onSubmit={this.handleSubmit} className="login-form">
           <FormItem>
-            {getFieldDecorator('userName', {
-              rules: [{ required: true, message: 'Please input your username!' }],
+            {getFieldDecorator('mobile', {
+              rules: [{required: true, message: 'Please input your username!'}],
             })(
-              <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
+              <Input prefix={<Icon type="user" style={{fontSize: 13}} />} placeholder="Username" />
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
+              rules: [{required: true, message: 'Please input your Password!'}],
             })(
-              <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
+              <Input prefix={<Icon type="lock" style={{fontSize: 13}} />} type="password" placeholder="Password" />
             )}
           </FormItem>
           <FormItem>

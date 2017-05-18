@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Row, Col, Table, Icon } from 'antd'
+import Operation from './operation'
+import API from '../../../../api'
+import * as Request from '../../../../utils/request'
+
 import './index.less'
+
 const columns = [
   {title: 'Full Name', width: 100, dataIndex: 'name', key: 'name', fixed: 'left'},
   {title: 'Age', width: 50, dataIndex: 'age', key: 'age', fixed: 'left'},
@@ -16,19 +21,7 @@ const columns = [
     width: 100,
     fixed: 'right',
     render: (text, record) => (
-      <span>
-      <a href="#">
-        <Icon type="pause" />
-      </a>
-      <span className="ant-divider" />
-      <a href="#">
-        <Icon type="edit" />
-      </a>
-      <span className="ant-divider" />
-      <a href="#" className="ant-dropdown-link">
-        <Icon type="delete" />
-      </a>
-    </span>
+      <Operation />
     ),
   }
 ]
@@ -45,7 +38,20 @@ const data = [{
   address: 'London Park',
 }]
 
-const ActivityList = () => (
-  <Table columns={columns} dataSource={data} scroll={{x: 1300}} />
-)
+class ActivityList extends Component {
+  constructor (props) {
+    super(props)
+  }
+
+  getVoteList = async () => {
+
+  }
+
+  render () {
+    return (
+      <Table columns={columns} dataSource={data} scroll={{x: 1300}} />
+    )
+  }
+}
+
 export default ActivityList

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { Row, Col, Input, DatePicker, Radio, Form, Icon, Button, Card, InputNumber, message } from 'antd'
 import './index.less'
+import API from '../../../api'
+import * as Request from '../../../utils/request'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 
@@ -84,7 +86,7 @@ class Create extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
         let options = []
@@ -104,23 +106,31 @@ class Create extends Component {
           max: parseInt(max)
         }
         console.log(body)
-        const token = 'ceebd9a8a5ff41b8b07b5d1f738d4a57'
-        fetch('http://127.0.0.1:8080/admin/create', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'token': token
-          },
-          body: JSON.stringify(body)
-        }).then((res) => {
-          return res.json()
-        }).then((json) => {
-          if (json.code === 0) {
-            message.success('创建成功')
-          } else {
-            message.error('创建失败')
-          }
-        })
+
+        const token = window.localStorage.getItem('admin.token')
+        try {
+          await Request.tpost(API.create, token, body)
+          message.success('创建成功')
+        } catch (e) {
+          message.error('创建失败')
+        }
+
+        // fetch(API.create, {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     'token': token
+        //   },
+        //   body: JSON.stringify(body)
+        // }).then((res) => {
+        //   return res.json()
+        // }).then((json) => {
+        //   if (json.code === 0) {
+        //     message.success('创建成功')
+        //   } else {
+        //     message.error('创建失败')
+        //   }
+        // })
       }
     })
   }
