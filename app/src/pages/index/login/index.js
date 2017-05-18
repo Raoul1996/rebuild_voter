@@ -9,8 +9,12 @@ import API from '../../../api'
 import Regx from '../../../utils/regx'
 import { testArgs } from '../../../utils/testArgs'
 class NormalLoginForm extends Component {
+  constructor (props){
+    super(props)
+    this.userLogin = this.userLogin.bind(this)
+  }
   userLogin (userName, password) {
-    if (testArgs(userName, Regx.mobile) || testArgs(password, Regx.password))return
+    if (!testArgs(userName, Regx.mobile) || !testArgs(password, Regx.password)) return
     const ERR_OK = 0
     console.log('will come to the userLogin func')
     if (window.localStorage.getItem('token') === '') {
@@ -31,10 +35,11 @@ class NormalLoginForm extends Component {
     }).then((res) => res.json())
       .then((json) => {
         console.log('fetch data successful')
-        // console.log(json)
+        console.log(json)
         if (json.code === ERR_OK) {
           console.log('login successful')
           window.localStorage.setItem('token', json.data.token)
+          window.localStorage.setItem('mobile', json.data.user.mobile)
         }
       })
   }
@@ -58,14 +63,24 @@ class NormalLoginForm extends Component {
             <Form onSubmit={this.handleSubmit} className="login-form">
               <FormItem>
                 {getFieldDecorator('userName', {
-                  rules: [{required: true, message: 'Please input your username!'}],
+                  rules: [{
+                    required: true,
+                    message: 'Please input your username!'
+                  },{
+                    pattern: Regx.mobile, message: '请输入正确的手机号码'
+                  }],
                 })(
                   <Input prefix={<Icon type="user" style={{fontSize: 13}} />} placeholder="Username" />
                 )}
               </FormItem>
               <FormItem>
                 {getFieldDecorator('password', {
-                  rules: [{required: true, message: 'Please input your Password!'}],
+                  rules: [{
+                    required: true,
+                    message: 'Please input your Password!'
+                  },{
+                    pattern: Regx.password, message: '请输入6到20位字符'
+                  }],
                 })(
                   <Input prefix={<Icon type="lock" style={{fontSize: 13}} />} type="password" placeholder="Password" />
                 )}

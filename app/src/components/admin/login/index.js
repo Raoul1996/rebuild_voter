@@ -5,8 +5,8 @@ import React, { Component } from 'react'
 import { Form, Icon, Input, Button, message } from 'antd'
 import './index.less'
 import Goto from '../../../utils/goto'
-import API from '../../../../../api'
-import * as Request from '../../../../../utils/request'
+import API from '../../../api'
+import * as Request from '../../../utils/request'
 const FormItem = Form.Item
 
 class NormalLoginForm extends Component {

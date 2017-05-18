@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd'
+import { Form, Input, Select, Row, Col, Button} from 'antd'
 import './index.less'
 import API from '../../../api'
 import Regx from '../../../utils/regx'
@@ -8,15 +8,24 @@ import {testArgs} from '../../../utils/testArgs'
 
 const FormItem = Form.Item
 const Option = Select.Option
-const AutoCompleteOption = AutoComplete.Option
+
+const ERR_OK = 0
+// the const for verify method
+const REGISTER  = 1
+const PASSWD = 2
+const PERSONAL = 3
+
 class RegistrationForm extends React.Component {
-  state = {
-    confirmDirty: false,
-    autoCompleteResult: [],
-  }
-  userRgeister (userName, password,code) {
-    if (testArgs(userName, Regx.mobile) || testArgs(password, Regx.password))return
-    const ERR_OK = 0
+  constructor (props){
+    super(props)
+    this.state= {
+      confirmDirty: false,
+      autoCompleteResult: [],
+    }
+    this.userRegister = this.userRegister.bind(this)
+3  }
+  userRegister (userName, password,code) {
+    if (!testArgs(userName, Regx.mobile) || !testArgs(password, Regx.password))return
     console.log('will come to the userLogin func')
     if (window.localStorage.getItem('token') === '') {
       console.error('no token in the localStorage')
@@ -37,18 +46,45 @@ class RegistrationForm extends React.Component {
     }).then((res) => res.json())
       .then((json) => {
         console.log('fetch data successful')
-        // console.log(json)
+        console.log(json)
         if (json.code === ERR_OK) {
           console.log('register successful')
           // window.localStorage.setItem('token',json.data.token)
         }
       })
   }
+  userCaptcha (type) {
+    const form = this.props.form
+    const mobile = form.getFieldValue('phone')
+    if (!testArgs(mobile, Regx.mobile)) return
+    fetch(API.verify,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': window.localStorage.getItem('token')
+      },
+      body: JSON.stringify({
+        mobile: mobile,
+        type: type
+      })
+    }).then((res) => res.json())
+      .then((json) => {
+        console.log('fetch data successful')
+        console.log(json)
+        if (json.code === ERR_OK) {
+          console.log('getCaptcha successful')
+          console.log(json.data.code)
+        }
+      })
+  }
   handleSubmit = (e) => {
     e.preventDefault()
+    e.stopPropagation()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.userRgeister(values.userName, values.password,values.code)
+        // console.log(values)
+        {}
+        this.userRegister(values.phone, values.password,values.captcha)
       }
     })
   }
@@ -64,17 +100,10 @@ class RegistrationForm extends React.Component {
       callback()
     }
   }
-  checkConfirm = (rule, value, callback) => {
-    const form = this.props.form
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], {force: true})
-    }
-    callback()
-  }
+
 
   render () {
     const {getFieldDecorator} = this.props.form
-    const {autoCompleteResult} = this.state
 
     const formItemLayout = {
       labelCol: {
@@ -98,13 +127,13 @@ class RegistrationForm extends React.Component {
         },
       },
     }
-    const prefixSelector = getFieldDecorator('prefix', {
-      initialValue: '86',
-    })(
-      <Select className="icp-selector">
-        <Option value="86">+86</Option>
-      </Select>
-    )
+    // const prefixSelector = getFieldDecorator('prefix', {
+    //   initialValue: '86',
+    // })(
+    //   <Select className="icp-selector">
+    //     <Option value="86">+86</Option>
+    //   </Select>
+    // )
     return (
       <div className="register-page-wrapper">
         <Row className="register">
@@ -117,12 +146,14 @@ class RegistrationForm extends React.Component {
                 {getFieldDecorator('phone', {
                   rules: [{
                     required: true,
-                    message: '请输入正确的手机号码',
+                    message: '请输入手机号码',
                     type: 'string',
-                    len: 11
+                    // len: 11
+                  },{
+                    pattern: Regx.mobile, message: '请输入正确的手机号码'
                   }],
                 })(
-                  <Input addonBefore={prefixSelector} placeholder="请输入11位手机号码"/>
+                  <Input type="text" placeholder="请输入11位手机号码"/>
                 )}
               </FormItem>
               <FormItem
@@ -133,11 +164,9 @@ class RegistrationForm extends React.Component {
                 {getFieldDecorator('password', {
                   rules: [{
                     required: true,
-                    min:6,
-                    max:20,
-                    message: '请输入不少于6位字符'
+                    message: '请输入密码'
                   }, {
-                    validator: this.checkConfirm,
+                    pattern: Regx.password, message: '请输入6到20位字符'
                   }],
                 })(
                   <Input type="password" placeholder="请输入不少于6位字符" />
@@ -150,18 +179,22 @@ class RegistrationForm extends React.Component {
                 <Row gutter={8}>
                   <Col span={12}>
                     {getFieldDecorator('captcha', {
-                      rules: [{required: true, message: '请输入四位验证码',len:4}],
+                      rules: [{
+                        required: true,
+                        message: '请输入四位验证码',
+                        len:4
+                      }],
                     })(
                       <Input size="large" />
                     )}
                   </Col>
                   <Col span={12}>
-                    <Button size="large">获取验证码</Button>
+                    <Button size="large"  onClick={()=>this.userCaptcha (REGISTER)}>获取验证码</Button>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" size="large">Register</Button>
+                <Button type="primary" htmlType="submit" size="large" >Register</Button>
               </FormItem>
             </Form>
           </Col>
