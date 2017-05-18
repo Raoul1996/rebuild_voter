@@ -33,7 +33,7 @@ const RouterApp = (
       <Route path="register" components={UserRegister}/>
       <Route path="admin" components={AdminPage} />
       <Route path="create" components={CreateActivity}/>
-      <Route path="edit-activity" components={EditActivity}/>
+      <Route path="edit" components={EditActivity}/>
       <Route path="vote-res" components={VoteRes} />
       <Route path="score-res" components={ScoreRes} />
     </Route>

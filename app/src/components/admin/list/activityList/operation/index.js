@@ -2,7 +2,7 @@
  * Created by Pororo on 17/5/17.
  */
 import React, { Component } from 'react'
-import { Icon } from 'antd'
+import { Icon, Modal} from 'antd'
 import { Link } from 'react-router'
 import urlEncoder from '../../../../../utils/urlEncoder'
 import API from '../../../../../api'
@@ -25,12 +25,19 @@ class Operation extends Component {
     console.log('stop')
   }
 
-  isDelete = async () => {
-    try {
-      await Request.Delete(API.delete.replace(/:voteId/, this.state.voteId), 'DELETE')
-    } catch (e) {
-      console.log(e)
-    }
+  isDelete = () => {
+    Modal.confirm({
+      title: '删除投票后，本投票活动及相关数据都会消失，是否确认删除？',
+      okText: 'OK',
+      cancelText: 'Cancel',
+      async onOk () {
+        try {
+          await Request.Delete(API.delete.replace(/:voteId/, this.state.voteId), 'DELETE')
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    })
 
     console.log('delete')
   }

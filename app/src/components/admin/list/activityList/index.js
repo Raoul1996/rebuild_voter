@@ -43,10 +43,6 @@ class ActivityList extends Component {
     super(props)
   }
 
-  getVoteList = async () => {
-
-  }
-
   render () {
     return (
       <Table columns={columns} dataSource={data} scroll={{x: 1300}} />

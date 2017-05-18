@@ -10,14 +10,12 @@ class Statistics extends Component {
     const ListStyle = {
       // background: 'rgb(240,20,20)',
       textAlign: 'center',
-      marginTop: '20px'
+      marginTop: '65px'
     }
     const MarginStyle = {
       marginTop: '20px'
     }
-    const ButtonStyle = {
-      float: 'right'
-    }
+
     return(
       <div>
         <Row>

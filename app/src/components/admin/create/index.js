@@ -96,13 +96,13 @@ class Create extends Component {
             options.push(item)
           }
         })
-        const {title, type, max} = values
+        const {title, max} = values
         const body = {
           options: options,
           title: title,
           startTime: Date.parse(this.state.startValue),
           endTime: Date.parse(this.state.endValue),
-          type: parseInt(type),
+          type: parseInt(this.state.type),
           max: parseInt(max)
         }
         console.log(body)
@@ -114,23 +114,6 @@ class Create extends Component {
         } catch (e) {
           message.error('创建失败')
         }
-
-        // fetch(API.create, {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     'token': token
-        //   },
-        //   body: JSON.stringify(body)
-        // }).then((res) => {
-        //   return res.json()
-        // }).then((json) => {
-        //   if (json.code === 0) {
-        //     message.success('创建成功')
-        //   } else {
-        //     message.error('创建失败')
-        //   }
-        // })
       }
     })
   }
@@ -172,7 +155,7 @@ class Create extends Component {
     }
     getFieldDecorator('keys', {initialValue: []})
     const keys = getFieldValue('keys')
-    const formItems = keys.map((k, index) => {
+    const formItems = keys.map((k) => {
       return (
         <FormItem
           {...formItemLayoutWithOutLabel}
@@ -256,13 +239,13 @@ class Create extends Component {
                   <Col {...TitleSpanOffset}><span>投票形式</span></Col>
                   <Col span={10} offset={1}>
                     <FormItem>
-                      {getFieldDecorator('type', {
+                      {getFieldDecorator('typeOne', {
                         rules: [{required: true, message: '请选择投票类型'}],
                       })(
                         <RadioGroup onChange={this.onTypeChange}>
                           <Radio value={1}>单选</Radio>
                           <Radio value={2}>多选</Radio>
-                          <Radio value={3}>打分</Radio>
+                          <Radio value={5}>打分</Radio>
                         </RadioGroup>
                       )}
                     </FormItem>
@@ -287,18 +270,18 @@ class Create extends Component {
                 </Row>
               }
               {
-                this.state.type === 3 &&
+                this.state.type ===5 &&
                 <Row>
                   <Col {...GlobalSpanOffset}>
                     <Col {...TitleSpanOffset}><span>分数上额</span></Col>
                     <Col span={10} offset={1}>
                       <FormItem>
-                        {getFieldDecorator('point', {
+                        {getFieldDecorator('typeTwo', {
                           rules: [{required: true, message: '请选择分数上限'}],
                         })(
-                          <RadioGroup>
-                            <Radio value={1}>十分制</Radio>
-                            <Radio value={2}>百分制</Radio>
+                          <RadioGroup onChange={this.onTypeChange}>
+                            <Radio value={3}>十分制</Radio>
+                            <Radio value={4}>百分制</Radio>
                           </RadioGroup>
                         )}
                       </FormItem>
