@@ -8,12 +8,12 @@ import './index.less'
 // import the api
 import API from '../../../api'
 import Regx from '../../../utils/regx'
-import { testArgs } from '../../../utils/testArgs'
+import goto from '../../../utils/goto'
+import eventProxy from '../../../utils/eventProxy'
 const ERR_OK = 0
 class NormalLoginForm extends Component {
   constructor (props) {
     super(props)
-
   }
 
   handleSubmit = (e) => {
@@ -22,7 +22,6 @@ class NormalLoginForm extends Component {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         // this.userLogin(values.mobile, values.password)
-
         const {mobile, password} = values
         const body = {
           mobile: mobile,
@@ -32,12 +31,14 @@ class NormalLoginForm extends Component {
         try {
           let data = await Request.post(API.login, body)
           console.log(data)
-            window.localStorage.setItem('token', data.token)
-            window.localStorage.setItem('mobile', data.user.mobile)
-            message.success('login successful')
+          window.localStorage.setItem('token', data.token)
+          window.localStorage.setItem('mobile', data.user.mobile)
+          message.success('login successful')
+          goto('users/list')
         } catch (e) {
           message.error('login err')
         }
+
       }
     })
   }
@@ -53,10 +54,14 @@ class NormalLoginForm extends Component {
                 {getFieldDecorator('mobile', {
                   rules: [{
                     required: true,
-                    message: 'Please input your mobile!'
-                  }, {
-                    pattern: Regx.mobile, message: '请输入正确的手机号码'
-                  }],
+                    // max: 11,
+                    // min: 11,
+                    message: '请输入正确的手机号码!'
+                  },
+                    {
+                      pattern: Regx.mobile, message: '请输入正确的手机号码'
+                    }
+                  ],
                 })(
                   <Input prefix={<Icon type="user" style={{fontSize: 13}} />} placeholder="mobile" />
                 )}

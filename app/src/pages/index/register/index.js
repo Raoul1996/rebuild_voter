@@ -34,8 +34,8 @@ class RegistrationForm extends React.Component {
     }
     try {
       let data = await Reqest.post(API.verify, body)
-      console.log(data)
-      message.success('get Captcha successful')
+      message.success(`your Captcha is ${data.code}`)
+
     } catch (e) {
       message.error(e)
     }

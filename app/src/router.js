@@ -17,7 +17,7 @@ import VoteRes from './pages/admin/voteRes'
 import ScoreRes from './pages/admin/scoreRes'
 const RouterApp = (
   <Router history={hashHistory}>
-    <Redirect from="/" to="/users/register"/>
+    <Redirect from="/" to="/users/login"/>
     <Route path="/" component={AppComponent}>
       <IndexRoute component={UserPage}/>
       <Route path="users" components={UserPage}>
@@ -28,7 +28,6 @@ const RouterApp = (
         <Route path="change-massage" components={UserChangeMsg}/>
         <Route path="change-mobile" components={UserChangeMobile}/>
       </Route>
-      {/*TODO:这里我想配置成二级路由，可是暂时失败了*/}
       <Route path="login" components={AdminLogin}/>
       <Route path="register" components={UserRegister}/>
       <Route path="admin" components={AdminPage} />
