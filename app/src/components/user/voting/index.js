@@ -4,6 +4,7 @@ const RadioGroup = Radio.Group
 
 import FooterButton from './footerbutton'
 import Share from './footerbutton/share'
+import Logo from '../../../components/content/lineText/index'
 
 function getLocalTime (nS) {
   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年 | 月/g, '-').replace(/日/g, ' ')
@@ -94,6 +95,7 @@ class Voting extends Component {
     )
     return (
       <div>
+        <Logo text="不洗碗工作室" />
         <Row style={MarginStyle}>
           <Col {...GlobalOffsetSpan}>
             <h2>投票应用</h2>

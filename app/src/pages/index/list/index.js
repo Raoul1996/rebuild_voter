@@ -3,6 +3,7 @@ import { Row, Col } from 'antd'
 import List from '../../../components/user/list/showList'
 import LineText from '../../../components/content/lineText'
 import MsgListComponent from '../../../components/content/msgList'
+import Logo from '../../../components/content/lineText/index'
 import './index.less'
 class Item extends Component {
   constructor (props) {
@@ -14,6 +15,7 @@ class Item extends Component {
         <div className="msg-bar">
           <MsgListComponent label="手机号" text="15012321234" />
         </div>
+        <Logo text="不洗碗工作室" />
         <div className="show-list">
           <Row>
             <Col span="10" offset={1}>

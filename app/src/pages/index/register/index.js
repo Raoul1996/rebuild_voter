@@ -3,8 +3,9 @@ import { Link } from 'react-router'
 import { Form, Input, Select, Row, Col, Button, message } from 'antd'
 import './index.less'
 import API from '../../../api'
+import goto from '../../../utils/goto'
 import Regx from '../../../utils/regx'
-import { testArgs } from '../../../utils/testArgs'
+import Logo from '../../../components/content/lineText/index'
 import * as Reqest from '../../../utils/request'
 const FormItem = Form.Item
 const Option = Select.Option
@@ -25,7 +26,7 @@ class RegistrationForm extends React.Component {
     // this.userRegister = this.userRegister.bind(this)
   }
 
-  async userCaptcha (type) {
+  async userCaptcha () {
     const form = this.props.form
     const mobile = form.getFieldValue('mobile')
     const body = {
@@ -35,7 +36,6 @@ class RegistrationForm extends React.Component {
     try {
       let data = await Reqest.post(API.verify, body)
       message.success(`your Captcha is ${data.code}`)
-
     } catch (e) {
       message.error(e)
     }
@@ -55,8 +55,8 @@ class RegistrationForm extends React.Component {
         }
         try {
           let data = await Reqest.post(API.register, body)
-          console.log(data)
           message.success('register successful')
+          goto('users/login')
         } catch (e) {
           message.error('register err')
         }
@@ -110,6 +110,7 @@ class RegistrationForm extends React.Component {
     // )
     return (
       <div className="register-page-wrapper">
+        <Logo text="不洗碗工作室" />
         <Row className="register">
           <Col span={22} offset={1}>
             <Form onSubmit={this.handleSubmit}>

@@ -6,6 +6,7 @@ import * as Request from '../../../utils/request'
 // import the less file for this pages
 import './index.less'
 // import the api
+import Logo from '../../../components/content/lineText/index'
 import API from '../../../api'
 import Regx from '../../../utils/regx'
 import goto from '../../../utils/goto'
@@ -14,6 +15,9 @@ const ERR_OK = 0
 class NormalLoginForm extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      loginStatus: false
+    }
   }
 
   handleSubmit = (e) => {
@@ -30,11 +34,16 @@ class NormalLoginForm extends Component {
 
         try {
           let data = await Request.post(API.login, body)
-          console.log(data)
+          // console.log(data)
           window.localStorage.setItem('token', data.token)
           window.localStorage.setItem('mobile', data.user.mobile)
           message.success('login successful')
+          this.state.loginState = true
+          eventProxy.trigger('flag', new Date().getTime())
+          eventProxy.trigger('loginStatus',true)
+          message.info(this.state.loginStatus)
           goto('users/list')
+
         } catch (e) {
           message.error('login err')
         }
@@ -47,6 +56,7 @@ class NormalLoginForm extends Component {
     const {getFieldDecorator} = this.props.form
     return (
       <div className="login-page-wrapper">
+        <Logo text="不洗碗工作室" />
         <Row className="login-wrapper">
           <Col span={22}>
             <Form onSubmit={this.handleSubmit} className="login-form">
@@ -54,8 +64,8 @@ class NormalLoginForm extends Component {
                 {getFieldDecorator('mobile', {
                   rules: [{
                     required: true,
-                    // max: 11,
-                    // min: 11,
+                    max: 11,
+                    min: 11,
                     message: '请输入正确的手机号码!'
                   },
                     {

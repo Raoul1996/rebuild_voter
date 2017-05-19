@@ -1,4 +1,4 @@
-.footer {
+.footer-wrapper {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -9,18 +9,22 @@
   line-height: 42px;
   border-top: 1px solid #333333;
   background-color: #FFFFFF;
-  color: #fff;
-  font-size: 0;
+  //color: #fff;
   font-weight: 600;
-}
-.footer-item {
-  display: inline-block;
-  width: 33%;
-  font-size: 14px;
-  text-align: center;
-  img{
-    display: inline-block;
-    max-width: 30px;
-    max-height: 30px;
+  .footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .footer-item {
+      flex: 1;
+      font-size: 14px;
+      line-height: 30px;
+      text-align: center;
+      img{
+        display: inline-block;
+        max-width: 30px;
+        max-height: 30px;
+      }
+    }
   }
 }
