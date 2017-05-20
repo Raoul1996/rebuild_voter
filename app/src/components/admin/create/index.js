@@ -107,12 +107,11 @@ class Create extends Component {
         }
         console.log(body)
 
-        const token = window.localStorage.getItem('admin.token')
         try {
-          await Request.tpost(API.create, token, body)
+          await Request.tpost(API.create, body)
           message.success('创建成功')
         } catch (e) {
-          message.error('创建失败')
+          console.log(e)
         }
       }
     })

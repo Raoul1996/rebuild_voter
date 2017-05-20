@@ -23,6 +23,7 @@ class NormalLoginForm extends Component {
         try {
           let data = await Request.post(API.adminLogin, body)
           window.localStorage.setItem('admin.token', data.token)
+          Goto('admin')
         } catch (e) {
           message.error('登录失败')
         }
