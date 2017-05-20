@@ -1,3 +1,6 @@
+/**
+ * Created by Pororo on 17/5/20.
+ */
 import logout from './logout'
 export default () => {
   if (!window.localStorage) {

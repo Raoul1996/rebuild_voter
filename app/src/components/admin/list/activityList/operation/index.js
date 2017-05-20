@@ -13,13 +13,9 @@ class Operation extends Component {
     super(props)
   }
 
-  state = {
-    voteId: 21
-  }
-
   isStop = async () => {
     let body = {
-      voteId:this.state.voteId
+      voteId:this.props.voteId
     }
     await Request.put(API.changeVisibility, headers, body)
     console.log('stop')
@@ -32,7 +28,7 @@ class Operation extends Component {
       cancelText: 'Cancel',
       async onOk () {
         try {
-          await Request.Delete(API.delete.replace(/:voteId/, this.state.voteId), 'DELETE')
+          await Request.Delete(API.delete.replace(/:voteId/, this.props.voteId), 'DELETE')
         } catch (e) {
           console.log(e)
         }
@@ -44,7 +40,7 @@ class Operation extends Component {
 
   render () {
     const query = {
-      'voteId': this.state.voteId
+      'voteId': this.props.voteId
     }
     return (
       <span>

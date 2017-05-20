@@ -1,7 +1,7 @@
 import React, { Component }from 'react'
 import { Tabs } from 'antd'
 import './index.less'
-import List from '../list/index'
+import List from '../list'
 import Statistic from '../statistic/index'
 import Goto from '../../../utils/goto'
 const TabPane = Tabs.TabPane

@@ -270,7 +270,7 @@ class Create extends Component {
                 </Row>
               }
               {
-                this.state.type ===5 &&
+                this.state.type > 2 &&
                 <Row>
                   <Col {...GlobalSpanOffset}>
                     <Col {...TitleSpanOffset}><span>分数上额</span></Col>

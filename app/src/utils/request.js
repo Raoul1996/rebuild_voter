@@ -2,7 +2,7 @@
  * Created by Pororo on 17/5/17.
  */
 import codeHelper from '../utils/codeHelper'
-import getToken from '../utils/getToken'
+import getToken from './getTokenAdmin'
 const TIMEOUT = 15000
 
 function filterStatus (json) {

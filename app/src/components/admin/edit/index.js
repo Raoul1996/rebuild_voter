@@ -16,7 +16,7 @@ class Edit extends Component {
     endOpen: false,
     startTime: null,
     endTime: null,
-    type: 4,
+    type: 3,
     options:[{value: '你好',id:1}, {value:'大家好',id:2},{value:'才是真的好',id:3}],
     max:4
   }
@@ -129,7 +129,7 @@ class Edit extends Component {
 
   render () {
     //日期选择
-    const {startValue, endValue, endOpen} = this.state
+    const { endOpen} = this.state
     //选项添加
     const {getFieldDecorator, getFieldValue} = this.props.form
     const GlobalSpanOffset = {
@@ -244,7 +244,7 @@ class Edit extends Component {
                       {getFieldDecorator('typeOne', {
                         rules: [{required: true, message: '请选择投票类型'}],
                       })(
-                        <RadioGroup onChange={this.onTypeChange}>
+                        <RadioGroup onChange={this.onTypeChange} value='5'>
                           <Radio value={1}>单选</Radio>
                           <Radio value={2}>多选</Radio>
                           <Radio value={5}>打分</Radio>
