@@ -18,7 +18,7 @@ import ScoreRes from './pages/admin/scoreRes'
 const RouterApp = (
   <Router history={hashHistory}>
     <Redirect from="/" to="/users/login"/>
-    <Route path="/" component={AppComponent}>
+    <Route path="/" component={AppComponent} >
       <IndexRoute component={UserPage}/>
       <Route path="users" components={UserPage}>
         <Route path="login" components={UserLogin}/>

@@ -9,9 +9,6 @@ class ActivityList extends Component {
     super(props)
   }
 
-  componentDidMount () {
-  }
-
   render () {
     const columns = [
       {title: 'ID', dataIndex: 'id', key: 'id'},
@@ -53,11 +50,11 @@ class ActivityList extends Component {
         title: '开启状态',
         render: record => (
           <span>
-            {record.participatorNum === 0 && '开启'}
-            {record.participatorNum === 1 && '关闭'}
+            {record.visibility === 1 && '开启'}
+            {record.visibility === 0 && '关闭'}
           </span>
         ),
-        key: 'participatorNum'
+        key: 'visibility'
       },
       {
         title: '操作',
