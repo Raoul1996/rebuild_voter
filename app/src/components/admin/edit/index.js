@@ -17,8 +17,8 @@ class Edit extends Component {
     startTime: null,
     endTime: null,
     type: 3,
-    options:[{value: '你好',id:1}, {value:'大家好',id:2},{value:'才是真的好',id:3}],
-    max:4
+    options: [{value: '你好', id: 1}, {value: '大家好', id: 2}, {value: '才是真的好', id: 3}],
+    max: 4
   }
 
   getVote = async () => {
@@ -39,8 +39,8 @@ class Edit extends Component {
     // }
     form.setFieldsValue({
       title: 'lalala',
-      typeOne:this.state.type !==5?this.state.type:5,
-      typeTwo:(this.state.type !==1||this.state.type !== 2)?4:0
+      typeOne: this.state.type !== 5 ? this.state.type : 5,
+      typeTwo: (this.state.type !== 1 || this.state.type !== 2) ? 4 : 0
     })
   }
 
@@ -129,7 +129,7 @@ class Edit extends Component {
 
   render () {
     //日期选择
-    const { endOpen} = this.state
+    const {endOpen} = this.state
     //选项添加
     const {getFieldDecorator, getFieldValue} = this.props.form
     const GlobalSpanOffset = {
@@ -263,7 +263,7 @@ class Edit extends Component {
                       <FormItem>
                         {getFieldDecorator('max', {
                           rules: [{required: true, message: '请选择最多选择数'}],
-                          initialValue:this.state.max
+                          initialValue: this.state.max
                         })(
                           <InputNumber />
                         )}
@@ -273,7 +273,7 @@ class Edit extends Component {
                 </Row>
               }
               {
-                (this.state.type === 5||this.state.type === 3||this.state.type === 4) &&
+                (this.state.type === 5 || this.state.type === 3 || this.state.type === 4) &&
                 <Row>
                   <Col {...GlobalSpanOffset}>
                     <Col {...TitleSpanOffset}><span>分数上额</span></Col>
@@ -298,7 +298,8 @@ class Edit extends Component {
                     {formItems}
                     <FormItem {...formItemLayoutWithOutLabel}>
                       <Col span={20} offset={5}>
-                        <Button type="primary" htmlType="submit" size="large" style={{marginRight: '20px'}}>保存修改</Button>
+                        <Button type="primary" htmlType="submit" size="large"
+                                style={{marginRight: '20px'}}>保存修改</Button>
                         <Link to="admin">
                           <Button size="large">返回</Button>
                         </Link>

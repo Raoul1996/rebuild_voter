@@ -1,9 +1,10 @@
 import React from 'react'
-import { Col, Row, Button, Table } from 'antd'
+import { Col, Row, Button, Table, Card } from 'antd'
+import timeTransform from '../../../utils/timeTransfrom'
 import './index.less'
 const updateTime = new Date().getTime()
-let scoreNum = [1, 2, 3, 4, 5, 56, 54, 646, 46, 46, 464, 6456,411,44,55665,454,41,45,58,52,45]
-let scoreSum = scoreNum.reduce((prev, curr)=>{return prev+curr})
+let scoreNum = [1, 2, 3, 4, 5, 56, 54, 646, 46, 46, 464, 6456, 411, 44, 55665, 454, 41, 45, 58, 52, 45]
+let scoreSum = scoreNum.reduce((prev, curr) => {return prev + curr})
 let columns = [
   {title: '选项序号', width: 100, dataIndex: 'id', key: 'id'},
   {title: '选项内容', width: 100, dataIndex: 'content', key: 'content'}
@@ -50,18 +51,19 @@ const data = [{
 },
 ]
 export default () => (
-  <div className="score-warpper">
-    <Row>
+  <Row>
+    <Card className="score-wrapper">
       <Col span={22} offset={1}>
         <h1 className="score-title">分数统计——不洗碗工作室最美程序员</h1>
       </Col>
       <Col span={22} offset={1}>
-        {updateTime}更新
+        {timeTransform(updateTime)}更新
         <Button className="score-button">下载表格</Button>
       </Col>
       <Col span={22} offset={1} className="list-table">
         <Table columns={columns} dataSource={data} scroll={{x: 1300}} />
       </Col>
-    </Row>
-  </div>
+    </Card>
+  </Row>
+
 )

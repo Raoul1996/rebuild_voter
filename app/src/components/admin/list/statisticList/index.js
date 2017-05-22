@@ -12,12 +12,49 @@ class ActivityList extends Component {
     const columns = [
       {title: 'ID', dataIndex: 'id', key: 'id'},
       {title: '活动名称', dataIndex: 'title', key: 'title'},
-      {title: '活动类型', dataIndex: 'type', key: 'type'},
-      {title: '活动开始时间', dataIndex: 'startTime', key: 'startTime'},
-      {title: '活动结束时间', dataIndex: 'endTime', key: 'endTime'},
-      {title: '创建时间', dataIndex: 'createTime', key: 'createTime'},
+      {
+        title: '活动开始时间',
+        render: record => (
+          <span>{timeTransform(record.startTime)}</span>
+        ),
+        key: 'startTime'
+      },
+      {
+        title: '活动结束时间',
+        render: record => (
+          <span>{timeTransform(record.endTime)}</span>
+        ),
+        key: 'endTime'
+      },
+      {
+        title: '创建时间',
+        render: record => (
+          <span>{timeTransform(record.endTime)}</span>
+        ),
+        key: 'createTime'
+      },
       {title: '创建人', dataIndex: 'mobile', key: 'mobile'},
-      {title: '活动状态', dataIndex: 'flag', key: 'flag'},
+      {
+        title: '活动状态',
+        render: record => (
+          <span>
+            {record.flag === 0 && '未开始'}
+            {record.flag === 1 && '已开始'}
+            {record.flag === 2 && '已结束'}
+          </span>
+        ),
+        key: 'flag'
+      },
+      {
+        title: '开启状态',
+        render: record => (
+          <span>
+            {record.participatorNum === 0 && '开启'}
+            {record.participatorNum === 1 && '关闭'}
+          </span>
+        ),
+        key: 'participatorNum'
+      },
       {
         title: '操作',
         key: 'operation',
@@ -31,49 +68,14 @@ class ActivityList extends Component {
       }
     ]
 
-    const list = [{
-      id: 68,
-      title: 'Test4121',
-      startTime: timeTransform(1494701083985),
-      endTime: timeTransform(1494701083999),
-      type: 2,
-      max: 3,
-      mobile: '13257300865',
-      participatorNum: 0,
-      flag: 2
-    }, {
-      id: 68,
-      title: 'Test412',
-      startTime: timeTransform(1494701083985),
-      endTime: timeTransform(1494701083999),
-      type: 2,
-      max: 3,
-      mobile: '13257300865',
-      participatorNum: 0,
-      flag: 2
-    }, {
-      id: 68,
-      title: 'Test412131',
-      startTime: timeTransform(1494701083985),
-      endTime: timeTransform(1494701083999),
-      type: 2,
-      max: 3,
-      mobile: '13257300865',
-      participatorNum: 0,
-      flag: 2
-    }, {
-      id: 68,
-      title: 'Test',
-      startTime: timeTransform(1494701083985),
-      endTime: timeTransform(1494701083999),
-      type: 2,
-      max: 3,
-      mobile: '13257300865',
-      participatorNum: 0,
-      flag: 2
-    }]
+    let {list = []} = this.props
+    let listData = list.map((t = {}, i) => ({
+      ...t,
+      key: i + 1,
+    }))
+
     return (
-      <Table columns={columns} dataSource={list} scroll={{x: 1300}} pagination={{ pageSize: 5 }}/>
+      <Table columns={columns} dataSource={listData} scroll={{x: 1300}} pagination={this.props.pagination} />
     )
   }
 }
