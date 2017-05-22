@@ -4,9 +4,9 @@
 import React, { Component } from 'react'
 import { Icon, Modal} from 'antd'
 import { Link } from 'react-router'
-import urlEncoder from '../../../../../utils/urlEncoder'
-import API from '../../../../../api'
-import * as Request from '../../../../../utils/request'
+import urlEncoder from '../../../../../../utils/urlEncoder'
+import API from '../../../../../../api/index'
+import * as Request from '../../../../../../utils/request'
 
 class Operation extends Component {
   constructor (props) {

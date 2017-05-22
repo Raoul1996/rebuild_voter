@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col, DatePicker, Input, Radio, Button, Card, Form, message } from 'antd'
 import { Link } from 'react-router'
 import './index.less'
-import ActList from '../../../../components/admin/list/activityList'
+import ActList from './activityList'
 import * as Request from '../../../../utils/request'
 import timeTransform from '../../../../utils/timeTransfrom'
 import getToken from '../../../../utils/getTokenAdmin'
@@ -19,7 +19,9 @@ class FilterList extends Component {
       endOpenBegin: false,
       total: '',
       pages: '',
-      list: []
+      list: [],
+      filter: 0,
+      body:{}
     }
   }
 
@@ -37,6 +39,9 @@ class FilterList extends Component {
         visibility: (visibility === 1 || visibility === 0) ? visibility : -1,
         flag: (flag === 0 || flag === 1 || flag === 2) ? flag : -1
       }
+      this.setState({
+        body:body
+      })
       fetch(API.findLike, {
         method: 'POST',
         headers: {
@@ -52,7 +57,8 @@ class FilterList extends Component {
           this.setState({
             total: json.data.total,
             list: json.data.list,
-            pages: json.data.pages
+            pages: json.data.pages,
+            filter: 1
           })
           console.log(this.state.pages)
         }
@@ -67,7 +73,7 @@ class FilterList extends Component {
     //   row: 6
     // }
     // const json = await Request.tget(API.pageInfo,params)
-    fetch(API.pageInfo.replace(/pnum/, 1).replace(/rnum/, 4), {
+    fetch(API.pageInfo.replace(/pnum/, 1).replace(/rnum/, 6), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -106,35 +112,57 @@ class FilterList extends Component {
       float: 'right'
     }
     const pagination = {
-      pageSize: 4,
+      pageSize: 6,
       total: this.state.total,
       pages: this.state.pages,
       onChange: async (page) => {
         let params = {
           page: page,
-          rows: 4
+          rows: 6
         }
         window.sessionStorage.setItem('current', page)
-        fetch(API.pageInfo.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'token': getToken()
-          }
-        }).then((res) => {
-          return res.json()
-        }).then((json) => {
-            if (json.code === 0) {
-              message.success('投票分页获取成功')
-              this.setState({
-                total: json.data.total,
-                list: json.data.list,
-                pages: json.data.pages
-              })
-              console.log(this.state.pages)
+        if (this.state.filter === 0) {
+          fetch(API.pageInfo.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'token': getToken()
             }
-          }
-        )
+          }).then((res) => {
+            return res.json()
+          }).then((json) => {
+              if (json.code === 0) {
+                message.success('投票分页获取成功')
+                this.setState({
+                  total: json.data.total,
+                  list: json.data.list,
+                  pages: json.data.pages
+                })
+              }
+            }
+          )
+        } else if (this.state.filter === 1) {
+          fetch(API.findLikePage.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'token': getToken()
+            },
+            body: JSON.stringify(this.state.body)
+          }).then((res) => {
+            return res.json()
+          }).then((json) => {
+              if (json.code === 0) {
+                message.success('投票分页获取成功')
+                this.setState({
+                  total: json.data.total,
+                  list: json.data.list,
+                  pages: json.data.pages
+                })
+              }
+            }
+          )
+        }
       }
     }
     return (

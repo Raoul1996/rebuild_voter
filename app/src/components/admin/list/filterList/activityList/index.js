@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
-import { Table } from 'antd'
-import { Link } from 'react-router'
-import urlEncoder from '../../../../utils/urlEncoder'
-import timeTransform from '../../../../utils/timeTransfrom'
+import { Table, message } from 'antd'
+import Operation from './operation/index'
+import timeTransform from '../../../../../utils/timeTransfrom'
 import './index.less'
 
 class ActivityList extends Component {
+  constructor (props) {
+    super(props)
+  }
 
   render () {
-
     const columns = [
       {title: 'ID', dataIndex: 'id', key: 'id'},
       {title: '活动名称', dataIndex: 'title', key: 'title'},
@@ -49,25 +50,24 @@ class ActivityList extends Component {
         title: '开启状态',
         render: record => (
           <span>
-            {record.participatorNum === 0 && '开启'}
-            {record.participatorNum === 1 && '关闭'}
+            {record.visibility === 1 && '开启'}
+            {record.visibility === 0 && '关闭'}
           </span>
         ),
-        key: 'participatorNum'
+        key: 'visibility'
       },
       {
         title: '操作',
-        key: 'operation',
-        fixed: 'right',
+        key: 'action',
         width: 100,
+        fixed: 'right',
         render: (text, record, index) => (
-          <Link to={urlEncoder('vote-res', {voteId: record.id})}>
-            {(record.type === 3 || record.type === 4) ? '分数统计' : '票数统计'}
-          </Link>
+          <Operation voteId={record.id} />
         ),
       }
     ]
 
+// 接口获取的时间戳需转换为时间格式
     let {list = []} = this.props
     let listData = list.map((t = {}, i) => ({
       ...t,
@@ -75,7 +75,9 @@ class ActivityList extends Component {
     }))
 
     return (
-      <Table columns={columns} dataSource={listData} scroll={{x: 1300}} pagination={this.props.pagination} />
+      <div>
+        <Table columns={columns} dataSource={listData} scroll={{x: 1300}} pagination={this.props.pagination} />
+      </div>
     )
   }
 }

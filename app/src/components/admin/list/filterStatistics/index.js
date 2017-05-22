@@ -6,7 +6,7 @@ import { Row, Col, DatePicker, Input, Radio, Button, Card, Form, message} from '
 import './index.less'
 import API from '../../../../api'
 import getToken from '../../../../utils/getTokenAdmin'
-import StaList from '../../../../components/admin/list/statisticList'
+import StaList from './statisticList'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 const {RangePicker} = DatePicker
@@ -61,7 +61,7 @@ class FilterStatistics extends Component {
   }
 
   getFirstPage = async () => {
-    fetch(API.pageInfo.replace(/pnum/, 1).replace(/rnum/, 4), {
+    fetch(API.pageInfo.replace(/pnum/, 1).replace(/rnum/, 6), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -93,13 +93,13 @@ class FilterStatistics extends Component {
       marginTop: '20px'
     }
     const pagination = {
-      pageSize: 4,
+      pageSize: 6,
       total: this.state.total,
       pages: this.state.pages,
       onChange: async (page) => {
         let params = {
           page: page,
-          rows: 4
+          rows: 6
         }
         window.sessionStorage.setItem('current', page)
         fetch(API.pageInfo.replace(/pnum/, params.page).replace(/rnum/, params.rows), {

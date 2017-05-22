@@ -38,5 +38,6 @@ export default {
   beforeUpdate: adminApiMaker(':voteId/beforeUpdate'),
   voteUpdate: adminApiMaker('updateVote'),
   adminLogin: adminApiMaker('login'),
-  findLike: adminApiMaker('findLike')
+  findLike: adminApiMaker('findLike'),
+  findLikePage:adminApiMaker('findLike?page=pnum&rows=rnum')
 }
