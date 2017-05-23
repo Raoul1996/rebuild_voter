@@ -9,7 +9,7 @@ import API from '../../../api'
 import * as Request from '../../../utils/request'
 const FormItem = Form.Item
 
-class NormalLoginForm extends Component {
+class AdminLogin extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields(async (err, values) => {
@@ -52,7 +52,7 @@ class NormalLoginForm extends Component {
   render () {
     const {getFieldDecorator} = this.props.form
     return (
-      <div>
+      <div className="admin-login">
         <div className='login-title'>
           <span>投票管理</span>
         </div>
@@ -82,5 +82,5 @@ class NormalLoginForm extends Component {
   }
 }
 
-const WrappedNormalLoginForm = Form.create()(NormalLoginForm)
-export default WrappedNormalLoginForm
+const WrappedAdminLogin = Form.create()(AdminLogin)
+export default WrappedAdminLogin

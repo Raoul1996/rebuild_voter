@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Logo from '../../components/content/lineText/index'
-import Header from '../../components/content/header/index'
-import Footer from '../../components/content/footer/index'
+import Logo from '../../components/user/content/lineText/index'
+import Header from '../../components/user/content/header/index'
+import Footer from '../../components/user/content/footer/index'
 import eventProxy from '../../utils/eventProxy'
 
 class Index extends Component {
@@ -22,6 +22,7 @@ class Index extends Component {
     })
     console.log(this.state)
   }
+
 
   render () {
     return (

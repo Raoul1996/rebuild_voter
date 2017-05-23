@@ -1,49 +1,20 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { Row, Col, Input, DatePicker, Radio, Form, Icon, Button, Card, InputNumber, message } from 'antd'
-import moment from 'moment'
 import './index.less'
-import API from '../../../api'
-import * as Request from '../../../utils/request'
+import API from '../../../../../api'
+import * as Request from '../../../../../utils/request'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 
 let uuid = 0
-class Edit extends Component {
+class Create extends Component {
   state = {
     startValue: null,
     endValue: null,
     endOpen: false,
-    startTime: null,
-    endTime: null,
-    type: 3,
-    options: [{value: '你好', id: 1}, {value: '大家好', id: 2}, {value: '才是真的好', id: 3}],
-    max: 4
+    type: 1
   }
-
-  getVote = async () => {
-    try {
-      await Request.tget(API.singleInfo, 'voteId', headers)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  componentDidMount () {
-    // const data = this.getVote()
-    const {form} = this.props
-    // const {voteShow = {title:'啦啦啦',startTime:1490427181000,endTime:1490427183000,type:4,max:4}, options = []} = data
-    // this.setState={
-    //   options: options,
-    //   type:voteShow.type
-    // }
-    form.setFieldsValue({
-      title: 'lalala',
-      typeOne: this.state.type !== 5 ? this.state.type : 5,
-      typeTwo: (this.state.type !== 1 || this.state.type !== 2) ? 4 : 0
-    })
-  }
-
   //日期选择框
   disabledStartDate = (startValue) => {
     const endValue = this.state.endValue
@@ -68,11 +39,11 @@ class Edit extends Component {
   }
 
   onStartChange = (value) => {
-    this.onChange('startTime', value)
+    this.onChange('startValue', value)
   }
 
   onEndChange = (value) => {
-    this.onChange('endTime', value)
+    this.onChange('endValue', value)
   }
 
   handleStartOpenChange = (open) => {
@@ -83,6 +54,34 @@ class Edit extends Component {
 
   handleEndOpenChange = (open) => {
     this.setState({endOpen: open})
+  }
+  //选项添加
+  remove = (k) => {
+    const {form} = this.props
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys')
+    // We need at least one passenger
+    if (keys.length === 1) {
+      return
+    }
+
+    // can use data-binding to set
+    form.setFieldsValue({
+      keys: keys.filter(key => key !== k),
+    })
+  }
+
+  add = () => {
+    uuid++
+    const {form} = this.props
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys')
+    const nextKeys = keys.concat(uuid)
+    // can use data-binding to set
+    // important! notify form to detect changes
+    form.setFieldsValue({
+      keys: nextKeys,
+    })
   }
 
   handleSubmit = (e) => {
@@ -101,19 +100,18 @@ class Edit extends Component {
         const body = {
           options: options,
           title: title,
-          startTime: Date.parse(this.state.startTime),
-          endTime: Date.parse(this.state.endTime),
+          startTime: Date.parse(this.state.startValue),
+          endTime: Date.parse(this.state.endValue),
           type: parseInt(this.state.type),
           max: parseInt(max)
         }
         console.log(body)
 
-        const token = window.localStorage.getItem('admin.token')
         try {
-          await Request.tpost(API.singleInfo, token, body)
-          message.success('修改成功')
+          await Request.tpost(API.create, body)
+          message.success('创建成功')
         } catch (e) {
-          message.error('创建失败')
+          console.log(e)
         }
       }
     })
@@ -129,7 +127,7 @@ class Edit extends Component {
 
   render () {
     //日期选择
-    const {endOpen} = this.state
+    const {startValue, endValue, endOpen} = this.state
     //选项添加
     const {getFieldDecorator, getFieldValue} = this.props.form
     const GlobalSpanOffset = {
@@ -144,8 +142,6 @@ class Edit extends Component {
       span: 7,
       offset: 1
     }
-    getFieldDecorator('keys', {initialValue: this.state.options})
-    const keys = getFieldValue('keys')
     const formItemLayoutWithOutLabel = {
       labelCol: {
         xs: {span: 24},
@@ -156,21 +152,22 @@ class Edit extends Component {
         sm: {span: 11, offset: 1},
       },
     }
+    getFieldDecorator('keys', {initialValue: []})
+    const keys = getFieldValue('keys')
     const formItems = keys.map((k) => {
       return (
         <FormItem
           {...formItemLayoutWithOutLabel}
           label={`选项${k}`}
           required={false}
-          key={k.id}
+          key={k}
         >
-          {getFieldDecorator(`names-${k.id}`, {
+          {getFieldDecorator(`names-${k}`, {
             validateTrigger: ['onChange', 'onBlur'],
-            initialValue: k.value,
             rules: [{
               required: true,
               whitespace: true,
-              message: '选项内容不为空',
+              message: '请输入选项内容或者删除该选项',
             }],
           })(
             <Input placeholder="请输入选项" style={{width: '60%', marginRight: 8}} />
@@ -179,11 +176,11 @@ class Edit extends Component {
             className="dynamic-delete-button"
             type="minus-circle-o"
             disabled={keys.length === 1}
+            onClick={() => this.remove(k)}
           />
         </FormItem>
       )
     })
-
     return (
       <div className="edit">
         <Col offset={5} span={14}>
@@ -211,7 +208,7 @@ class Edit extends Component {
                       disabledDate={this.disabledStartDate}
                       showTime
                       format="YYYY-MM-DD HH:mm:ss"
-                      defaultValue={moment('2015-06', 'YYYY-MM')}
+                      value={startValue}
                       placeholder="开始时间"
                       onChange={this.onStartChange}
                       onOpenChange={this.handleStartOpenChange}
@@ -227,7 +224,7 @@ class Edit extends Component {
                       disabledDate={this.disabledEndDate}
                       showTime
                       format="YYYY-MM-DD HH:mm:ss"
-                      defaultValue={moment('2015-06', 'YYYY-MM')}
+                      value={endValue}
                       placeholder="结束时间"
                       onChange={this.onEndChange}
                       open={endOpen}
@@ -244,7 +241,7 @@ class Edit extends Component {
                       {getFieldDecorator('typeOne', {
                         rules: [{required: true, message: '请选择投票类型'}],
                       })(
-                        <RadioGroup onChange={this.onTypeChange} value='5'>
+                        <RadioGroup onChange={this.onTypeChange}>
                           <Radio value={1}>单选</Radio>
                           <Radio value={2}>多选</Radio>
                           <Radio value={5}>打分</Radio>
@@ -263,9 +260,8 @@ class Edit extends Component {
                       <FormItem>
                         {getFieldDecorator('max', {
                           rules: [{required: true, message: '请选择最多选择数'}],
-                          initialValue: this.state.max
                         })(
-                          <InputNumber />
+                          <InputNumber min={1} max={10} />
                         )}
                       </FormItem>
                     </Col>
@@ -273,7 +269,7 @@ class Edit extends Component {
                 </Row>
               }
               {
-                (this.state.type === 5 || this.state.type === 3 || this.state.type === 4) &&
+                this.state.type > 2 &&
                 <Row>
                   <Col {...GlobalSpanOffset}>
                     <Col {...TitleSpanOffset}><span>分数上额</span></Col>
@@ -292,14 +288,21 @@ class Edit extends Component {
                   </Col>
                 </Row>
               }
+
               <Row>
                 <Col {...GlobalSpanOffset}>
                   <Form onSubmit={this.handleSubmit}>
                     {formItems}
                     <FormItem {...formItemLayoutWithOutLabel}>
+                      <Col offset={5}>
+                        <Button type="dashed" onClick={this.add} style={{width: '60%'}}>
+                          <Icon type="plus" /> 添加选项
+                        </Button>
+                      </Col>
+                    </FormItem>
+                    <FormItem {...formItemLayoutWithOutLabel}>
                       <Col span={20} offset={5}>
-                        <Button type="primary" htmlType="submit" size="large"
-                                style={{marginRight: '20px'}}>保存修改</Button>
+                        <Button type="primary" htmlType="submit" size="large" style={{marginRight: '20px'}}>新建</Button>
                         <Link to="admin">
                           <Button size="large">返回</Button>
                         </Link>
@@ -316,4 +319,4 @@ class Edit extends Component {
   }
 }
 
-export default Edit = Form.create()(Edit)
+export default Create = Form.create()(Create)

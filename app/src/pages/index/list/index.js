@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Row, Col, Icon } from 'antd'
 import {Link} from 'react-router'
 import List from '../../../components/user/list/showList'
-import LineText from '../../../components/content/lineText'
-import MsgListComponent from '../../../components/content/msgList'
-import Logo from '../../../components/content/lineText/index'
+import LineText from '../../../components/user/content/lineText'
+import MsgListComponent from '../../../components/user/content/msgList'
+import Logo from '../../../components/user/content/lineText/index'
 import './index.less'
 class Item extends Component {
   constructor (props) {

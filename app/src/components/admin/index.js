@@ -1,9 +1,9 @@
 import React, { Component }from 'react'
 import { Tabs } from 'antd'
 import './index.less'
-import List from '../list'
-import Statistic from '../statistic/index'
-import Goto from '../../../utils/goto'
+import List from './list/filterList'
+import Statistic from './list/filterStatistics'
+import Goto from '../../utils/goto'
 const TabPane = Tabs.TabPane
 
 export default class Index extends Component {

@@ -4,7 +4,7 @@ const RadioGroup = Radio.Group
 
 import FooterButton from './footerbutton'
 import Share from './footerbutton/share'
-import Logo from '../../../components/content/lineText/index'
+import Logo from '../content/lineText/index'
 
 function getLocalTime (nS) {
   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年 | 月/g, '-').replace(/日/g, ' ')

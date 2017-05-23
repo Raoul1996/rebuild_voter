@@ -6,7 +6,7 @@ import * as Request from '../../../utils/request'
 // import the less file for this pages
 import './index.less'
 // import the api
-import Logo from '../../../components/content/lineText/index'
+import Logo from '../../../components/user/content/lineText/index'
 import API from '../../../api'
 import Regx from '../../../utils/regx'
 import goto from '../../../utils/goto'

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import './index.less'
-import MsgListItem from '../../../components/content/msgList'
-import Logo from '../../../components/content/lineText/index'
+import MsgListItem from '../../../components/user/content/msgList'
+import Logo from '../../../components/user/content/lineText/index'
 class MsgList extends Component{
   render() {
     return(

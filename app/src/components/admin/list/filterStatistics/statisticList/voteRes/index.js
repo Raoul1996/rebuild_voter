@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Col, Row, Button, Table, Card } from 'antd'
-import timeTransform from '../../../utils/timeTransfrom'
+import timeTransform from '../../../../../../utils/timeTransfrom'
 const updateTime = new Date().getTime()
 import './index.less'
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import {Row,Col} from 'antd'
 import './index.less'
 import ChangeMobileComponent from '../../../components/user/changeMobile'
-import Logo from '../../../components/content/lineText/index'
+import Logo from '../../../components/user/content/lineText/index'
 class ChangeMobile extends Component{
   render() {
     return(

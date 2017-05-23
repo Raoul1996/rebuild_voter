@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Table, Icon } from 'antd'
 import './index.less'
-import eventProxy from '../../../utils/eventProxy'
+import eventProxy from '../../../../utils/eventProxy'
 import wechatIcon from './u690.png'
 import QQtIcon from './u692.png'
 import mobileIcon from './u694.png'

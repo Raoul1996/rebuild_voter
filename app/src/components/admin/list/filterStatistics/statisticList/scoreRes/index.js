@@ -1,6 +1,6 @@
 import React from 'react'
 import { Col, Row, Button, Table, Card } from 'antd'
-import timeTransform from '../../../utils/timeTransfrom'
+import timeTransform from '../../../../../../utils/timeTransfrom'
 import './index.less'
 const updateTime = new Date().getTime()
 let scoreNum = [1, 2, 3, 4, 5, 56, 54, 646, 46, 46, 464, 6456, 411, 44, 55665, 454, 41, 45, 58, 52, 45]
