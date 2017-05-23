@@ -5,6 +5,7 @@ import AppComponent from './components/app'
 import UserPage from './pages/index/index'
 import UserLogin from './pages/index/login'
 import UserRegister from './pages/index/register'
+import UserPassword from './pages/index/password'
 import UserForget from './pages/index/forget'
 import UserList from './pages/index/list'
 import UserChangeMsg from './pages/index/changeMsg'
@@ -25,6 +26,7 @@ const RouterApp = (
         <IndexRoute component={UserLogin}/>
         <Route path="login" components={UserLogin}/>
         <Route path="register" components={UserRegister}/>
+        <Route path="password" components={UserPassword}/>
         <Route path="forget" components={UserForget}/>
         <Route path="vote" component={Vote}/>
         <Route path="list" component={UserList}/>

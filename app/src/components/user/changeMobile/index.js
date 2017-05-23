@@ -19,7 +19,7 @@ class change extends React.Component {
 
   setValue () {
     const form = this.props.form
-    // const mobile = form.getFieldValue({oldMobile: '15033517219'})
+    const oldmobile = form.setFieldsValue({oldMobile: window.localStorage.getItem('mobile') || ''})
   }
 
   async userCaptcha () {
@@ -53,32 +53,17 @@ class change extends React.Component {
           let data = await Reqest.post(API.changeMobile, body)
           message.success('修改信息成功')
           eventProxy.trigger('loginStatus', false)
-          setTimeout(goto('/users/login'),2000)
+          window.localStorage.clear()
+          setTimeout(goto('/users/login'), 2000)
         } catch (e) {
           message.error('信息修改失败')
         }
       }
     })
   }
-  checkPassword = (rule, value, callback) => {
-    const form = this.props.form
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!')
-    } else {
-      callback()
-    }
-  }
-  checkConfirm = (rule, value, callback) => {
-    const form = this.props.form
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], {force: true})
-    }
-    callback()
-  }
 
   render () {
     const {getFieldDecorator} = this.props.form
-    const {autoCompleteResult} = this.state
 
     const formItemLayout = {
       labelCol: {
@@ -112,7 +97,7 @@ class change extends React.Component {
           {getFieldDecorator('oldMobile', {
             rules: [{required: true, message: 'Please input your mobile number!'}],
           })(
-            <Input/>
+            <Input />
           )}
         </FormItem>
         <FormItem
