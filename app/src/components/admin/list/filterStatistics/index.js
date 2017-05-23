@@ -19,7 +19,74 @@ class FilterStatistics extends Component {
       endOpenBegin: false,
       total: '',
       pages: '',
-      list: []
+      list: [
+        {
+          'id': 68,
+          'title': 'Test41213121412313230rt12312312r12w',
+          'startTime': 1494701083985,
+          'endTime': 1494701083999,
+          'type': 2,
+          'max': 3,
+          'mobile': '13257300865',
+          'participatorNum': 0,
+          'flag': 2
+        },
+        {
+          'id': 69,
+          'title': 'Test4121313230rt12312312r12w',
+          'startTime': 1494701083985,
+          'endTime': 1494701083999,
+          'type': 2,
+          'max': 3,
+          'mobile': '13257300865',
+          'participatorNum': 0,
+          'flag': 2
+        },
+        {
+          'id': 70,
+          'title': 'T',
+          'startTime': 1496700366000,
+          'endTime': 1496700366099,
+          'type': 2,
+          'max': 3,
+          'mobile': '13257300865',
+          'participatorNum': 0,
+          'flag': 0
+        },
+        {
+          'id': 71,
+          'title': 'Test41213121r12w',
+          'startTime': 1496700366000,
+          'endTime': 1496700366099,
+          'type': 2,
+          'max': 3,
+          'mobile': '18332518016',
+          'participatorNum': 0,
+          'flag': 0
+        },
+        {
+          'id': 72,
+          'title': 'nihao1',
+          'startTime': 1496700366000,
+          'endTime': 1496700366099,
+          'type': 2,
+          'max': 3,
+          'mobile': '18332518016',
+          'participatorNum': 0,
+          'flag': 0
+        },
+        {
+          'id': 73,
+          'title': 'nihao21',
+          'startTime': 1496700366000,
+          'endTime': 1496700366099,
+          'type': 2,
+          'max': 3,
+          'mobile': '18332518016',
+          'participatorNum': 0,
+          'flag': 0
+        }
+      ]
     }
   }
 
@@ -124,7 +191,7 @@ class FilterStatistics extends Component {
       }
     }
     return (
-      <div className="filter-statistics">
+      <div className='filter-statistics'>
         <Row>
           <Col span={22} offset={1} style={MarginStyle}>
             <Card>
@@ -144,7 +211,7 @@ class FilterStatistics extends Component {
                             {getFieldDecorator('create')(
                               <RangePicker
                                 showTime
-                                format="YYYY-MM-DD HH:mm:ss"
+                                format='YYYY-MM-DD HH:mm:ss'
                                 placeholder={['开始时间', '结束时间']}
                               />
                             )}
@@ -156,7 +223,7 @@ class FilterStatistics extends Component {
                             {getFieldDecorator('start')(
                               <RangePicker
                                 showTime
-                                format="YYYY-MM-DD HH:mm:ss"
+                                format='YYYY-MM-DD HH:mm:ss'
                                 placeholder={['开始时间', '结束时间']}
                               />
                             )}
@@ -214,7 +281,7 @@ class FilterStatistics extends Component {
                     <Row style={{marginTop: 20, marginBottom: 50}}>
                       <FormItem>
                         <Col offset={1}>
-                          <Button type="primary" htmlType="submit">查询</Button>
+                          <Button type='primary' htmlType='submit'>查询</Button>
                         </Col>
                       </FormItem>
                     </Row>

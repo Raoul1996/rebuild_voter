@@ -40,11 +40,13 @@ export default {
     // admin
   changeVisibility: adminApiMaker('changeVisibility'),
   create: adminApiMaker('create'),
-  delete: adminApiMaker(':voteId/delete'),
-  singleInfo: adminApiMaker(':voteId/info'),
+  delete: adminApiMaker(':voteid/delete'),
+  singleInfo: adminApiMaker(':voteid/info'),
+  voteStatistics: adminApiMaker(':voteid/record'),
   pageInfo: adminApiMaker('info?page=pnum&rows=rnum'),
-  beforeUpdate: adminApiMaker(':voteId/beforeUpdate'),
+  beforeUpdate: adminApiMaker(':voteid/beforeUpdate'),
   voteUpdate: adminApiMaker('updateVote'),
+  downLoad: adminApiMaker(':voteid/download'),
   adminLogin: adminApiMaker('login'),
   findLike: adminApiMaker('findLike'),
   findLikePage:adminApiMaker('findLike?page=pnum&rows=rnum')

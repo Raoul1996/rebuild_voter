@@ -61,9 +61,12 @@ class ActivityList extends Component {
         fixed: 'right',
         width: 100,
         render: (text, record, index) => (
-          <Link to={urlEncoder('vote-res', {voteId: record.id})}>
-            {(record.type === 3 || record.type === 4) ? '分数统计' : '票数统计'}
-          </Link>
+          <sapn>
+            {(record.type === 3 || record.type === 4) ?
+              <Link to={urlEncoder('vote-res', {voteid: record.id})}>票数统计</Link>:
+              <Link to={urlEncoder('score-res', {voteid: record.id})}>分数统计</Link>
+            }
+          </sapn>
         ),
       }
     ]
