@@ -24,16 +24,23 @@ class PasswordForm extends React.Component {
     }
     // this.userRegister = this.userRegister.bind(this)
   }
+  componentDidMount () {
+    this.setValue()
+  }
 
+  setValue () {
+    const form = this.props.form
+    const obile = form.setFieldsValue({mobile: window.localStorage.getItem('mobile') || ''})
+  }
   async userCaptcha () {
     const form = this.props.form
     const mobile = form.getFieldValue('mobile')
     const body = {
       mobile: mobile,
-      type: REGISTER
+      type: PASSWD
     }
     try {
-      let data = await Reqest.post(API.verify, body)
+      let data = await Reqest.uput(API.verify, body)
       message.success(`your Captcha is ${data.code}`)
     } catch (e) {
       message.error(e)
@@ -53,11 +60,12 @@ class PasswordForm extends React.Component {
           code: captcha
         }
         try {
-          let data = await Reqest.post(API.register, body)
-          message.success('register successful')
+          let data = await Reqest.put(API.password, {}, body)
+          message.success('修改密码成功')
+          // window.localStorage.clear()
           goto('users/login')
         } catch (e) {
-          message.error('register err')
+          message.error('修改密码失败')
         }
       }
     })
@@ -157,12 +165,12 @@ class PasswordForm extends React.Component {
                   </Col>
                   <Col span={12}>
                     {/*我也不知道这里为啥需要写成箭头函数的形式，可能是promise的需要？*/}
-                    <Button size="large" onClick={() =>this.userCaptcha()}>获取验证码</Button>
+                    <Button size="large" onClick={() => this.userCaptcha()}>获取验证码</Button>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" size="large">Register</Button>
+                <Button type="primary" htmlType="submit" size="large">修改密码</Button>
               </FormItem>
             </Form>
           </Col>

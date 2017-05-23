@@ -6,6 +6,7 @@ const FormItem = Form.Item
 import * as Reqest from '../../../utils/request'
 import API from '../../../api'
 import goto from '../../../utils/goto'
+import Regx from '../../../utils/regx'
 import eventProxy from '../../../utils/eventProxy'
 class change extends React.Component {
   state = {
@@ -19,7 +20,7 @@ class change extends React.Component {
 
   setValue () {
     const form = this.props.form
-    const oldmobile = form.setFieldsValue({oldMobile: window.localStorage.getItem('mobile') || ''})
+    const oldMobile = form.setFieldsValue({oldMobile: window.localStorage.getItem('mobile') || ''})
   }
 
   async userCaptcha () {
@@ -28,7 +29,7 @@ class change extends React.Component {
     const CHANGE_MOBILE = 4
     const body = {
       mobile: mobile,
-      type: changeMobile
+      type: CHANGE_MOBILE
     }
     try {
       let data = await Reqest.post(API.verify, body)
@@ -43,20 +44,23 @@ class change extends React.Component {
     e.stopPropagation()
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        const {oldMobile, mobile, captcha} = values
+        const {oldMobile, mobile, password, captcha} = values
         const body = {
-          mobile: mobile,
           oldMobile: oldMobile,
+          newMobile: mobile,
+          password: password,
           code: captcha
         }
         try {
-          let data = await Reqest.post(API.changeMobile, body)
-          message.success('修改信息成功')
+          let data = await Reqest.uput(API.changeMobile, body)
+          message.success('修改手机号成功')
           eventProxy.trigger('loginStatus', false)
           window.localStorage.clear()
-          setTimeout(goto('/users/login'), 2000)
+          setTimeout(() => {
+            goto('/users/login')
+          }, 2000)
         } catch (e) {
-          message.error('信息修改失败')
+          message.error('信息手机号失败')
         }
       }
     })
@@ -108,6 +112,22 @@ class change extends React.Component {
             rules: [{required: true, message: 'Please input your mobile number!'}],
           })(
             <Input />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="密码"
+          hasFeedback
+        >
+          {getFieldDecorator('password', {
+            rules: [{
+              required: true,
+              message: '请输入密码'
+            }, {
+              pattern: Regx.password, message: '请输入6到20位字符'
+            }],
+          })(
+            <Input type="password" placeholder="请输入不少于6位字符" />
           )}
         </FormItem>
         <FormItem

@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import { Form, Radio } from 'antd'
-import { Modal, Button } from 'antd'
+import { Modal, Button, message } from 'antd'
 import { Link } from 'react-router'
 import './index.less'
 import MsgListItem from '../../../components/content/msgList'
 import Logo from '../../../components/content/lineText/index'
+import * as Reqest from '../../../utils/request'
+import API from '../../../api'
+import goto from '../../../utils/goto'
+import Regx from '../../../utils/regx'
+import eventProxy from '../../../utils/eventProxy'
 const FormItem = Form.Item
 
 const RadioGroup = Radio.Group
@@ -13,13 +18,33 @@ class MsgList extends Component {
     super(props)
     this.state = {
       visible: false,
-      gender: '男'
+      gender: 'male',
+      flag: 0
     }
+    this.handleChange = this.handleChange.bind(this)
   }
-  handleChange = (e) => {
+
+// TODO: 这里有问题
+  async  handleChange (e) {
     this.state.gender = e.target.value
     console.log(this.state.gender)
+    if (this.state.flag < 10) {
+      const body = {
+        newSex: this.state.gender
+      }
+      try {
+        let data = await
+          Reqest.uput(API.changeSex, body)
+      } catch (e) {
+        message.error('信息手机号失败')
+      }
+    }
   }
+
+changeSex () {
+
+  }
+
   showModal = () => {
     this.setState({
       visible: true,
@@ -63,8 +88,8 @@ class MsgList extends Component {
               label=""
             >
               <RadioGroup onChange={this.handleChange}>
-                <Radio value="男">男</Radio>
-                <Radio value="女">女</Radio>
+                <Radio value="male">男</Radio>
+                <Radio value="female">女</Radio>
               </RadioGroup>
             </FormItem>
           </Form>

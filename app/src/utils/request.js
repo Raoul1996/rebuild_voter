@@ -3,6 +3,7 @@
  */
 import codeHelper from '../utils/codeHelper'
 import getToken from './getTokenAdmin'
+import getUserToken from './getTokenUser'
 const TIMEOUT = 15000
 
 function filterStatus (json) {
@@ -38,7 +39,7 @@ export async function request (url, type = 'GET', headers = {}, body = {}) {
     method: type,
     headers
   }
-  if (type === 'POST'||'PUT') {
+  if (type === 'POST' || 'PUT') {
     fetchOption.body = JSON.stringify(body)
   }
   const res = await fetch(url, fetchOption)
@@ -123,13 +124,23 @@ export function Delete (url, headers = {}) {
  * @returns {*}
  */
 
-export function put (url,headers = {}, body) {
+export function put (url, body, headers = {}) {
   if (!headers['Content-type']) {
     headers['Content-type'] = 'application/json'
   }
   headers = {
     ...headers,
     token: getToken()
+  }
+  return request(url, 'PUT', headers, body)
+}
+export function uput (url, body, headers = {}) {
+  if (!headers['Content-type']) {
+    headers['Content-type'] = 'application/json'
+  }
+  headers = {
+    ...headers,
+    token: getUserToken()
   }
   return request(url, 'PUT', headers, body)
 }
