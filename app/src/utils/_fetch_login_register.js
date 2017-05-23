@@ -1,12 +1,4 @@
 export function   userLogin (mobile, password) {
-  if (!testArgs(mobile, Regx.mobile) || !testArgs(password, Regx.password)) return
-  const ERR_OK = 0
-  console.log('will come to the userLogin func')
-  if (window.localStorage.getItem('token') === '') {
-    console.error('no token in the localStorage')
-  } else {
-    console.log(window.localStorage.getItem('token'))
-  }
   fetch(API.login, {
     method: 'POST',
     headers: {
@@ -19,10 +11,7 @@ export function   userLogin (mobile, password) {
     })
   }).then((res) => res.json())
     .then((json) => {
-      console.log('fetch data successful')
-      console.log(json)
       if (json.code === ERR_OK) {
-        console.log('login successful')
         window.localStorage.setItem('token', json.data.token)
         window.localStorage.setItem('mobile', json.data.user.mobile)
       }

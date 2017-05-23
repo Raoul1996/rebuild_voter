@@ -1,8 +1,8 @@
 // User
 // const __APIUSER__ = 'http://192.168.1.217:8080/user'
-const __APIUSER__ = 'http://192.168.1.219:8080/user'
+// const __APIUSER__ = 'http://192.168.1.219:8080/user'
 // const __APIUSER__ = 'http://api.raoul1996.cn/api'
-// const __APIUSER__ = 'http://localhost:3000/api'
+const __APIUSER__ = 'http://localhost:3000/api'
 
 
 
@@ -27,6 +27,10 @@ export default {
   login: userApiMaker('login'),
   verify: userApiMaker('verify'),
   logout: userApiMaker('logout'),
+  forget: userApiMaker('forget'),
+  password:userApiMaker('password'),
+  changeMobile: userApiMaker('changeMobile'),
+
     // vote
   info: voteApiMaker('info'),
     // admin

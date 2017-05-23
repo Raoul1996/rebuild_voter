@@ -11,18 +11,16 @@ const FormItem = Form.Item
 
 const ERR_OK = 0
 // the const for verify method
-const REGISTER = 1
-const PASSWD = 2
-const PERSONAL = 3
 
-class RegistrationForm extends React.Component {
+const FORGET = 3
+
+class ForgetForm extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       confirmDirty: false,
       autoCompleteResult: [],
     }
-    // this.userRegister = this.userRegister.bind(this)
   }
 
   async userCaptcha () {
@@ -30,7 +28,7 @@ class RegistrationForm extends React.Component {
     const mobile = form.getFieldValue('mobile')
     const body = {
       mobile: mobile,
-      type: REGISTER
+      type: FORGET
     }
     try {
       let data = await Reqest.post(API.verify, body)
@@ -49,15 +47,15 @@ class RegistrationForm extends React.Component {
         const {mobile, password, captcha} = values
         const body = {
           mobile: mobile,
-          password: password,
+          newPassword: password,
           code: captcha
         }
         try {
-          let data = await Reqest.post(API.register, body)
-          message.success('register successful')
+          let data = await Reqest.post(API.forget, body)
+          message.success('修改信息成功')
           goto('users/login')
         } catch (e) {
-          message.error('register err')
+          message.error('修改信息失败')
         }
       }
     })
@@ -101,9 +99,9 @@ class RegistrationForm extends React.Component {
       },
     }
     return (
-      <div className="register-page-wrapper">
+      <div className="forget-page-wrapper">
         <Logo text="不洗碗工作室" />
-        <Row className="register">
+        <Row className="forget">
           <Col span={22} offset={1}>
             <Form onSubmit={this.handleSubmit}>
               <FormItem
@@ -125,7 +123,7 @@ class RegistrationForm extends React.Component {
               </FormItem>
               <FormItem
                 {...formItemLayout}
-                label="密码"
+                label="新密码"
                 hasFeedback
               >
                 {getFieldDecorator('password', {
@@ -157,12 +155,12 @@ class RegistrationForm extends React.Component {
                   </Col>
                   <Col span={12}>
                     {/*我也不知道这里为啥需要写成箭头函数的形式，可能是promise的需要？*/}
-                    <Button size="large" onClick={() =>this.userCaptcha()}>获取验证码</Button>
+                    <Button size="large" onClick={() => this.userCaptcha()}>获取验证码</Button>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" size="large">Register</Button>
+                <Button type="ghost" htmlType="submit" size="large">重置密码</Button>
               </FormItem>
             </Form>
           </Col>
@@ -173,5 +171,5 @@ class RegistrationForm extends React.Component {
   }
 }
 
-const UserRegister = Form.create()(RegistrationForm)
-export default UserRegister
+const UserForget = Form.create()(ForgetForm)
+export default UserForget

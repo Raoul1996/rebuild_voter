@@ -1,1 +1,0 @@
-define({  "name": "活动投票",  "version": "0.1.0",  "description": "活动投票api文档",  "title": "活动投票",  "url": "http://127.0.0.1:8080",  "sampleUrl": false,  "defaultVersion": "0.0.0",  "apidoc": "0.3.0",  "generator": {    "name": "apidoc",    "time": "2017-05-19T20:54:50.076Z",    "url": "http://apidocjs.com",    "version": "0.17.5"  }});

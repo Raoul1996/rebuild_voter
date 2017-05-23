@@ -34,16 +34,15 @@ class NormalLoginForm extends Component {
 
         try {
           let data = await Request.post(API.login, body)
-          // console.log(data)
           window.localStorage.setItem('token', data.token)
           window.localStorage.setItem('mobile', data.user.mobile)
           message.success('login successful')
           this.state.loginState = true
+          // flag :用来通知兄弟组件进行更新
           eventProxy.trigger('flag', new Date().getTime())
-          eventProxy.trigger('loginStatus',true)
-          message.info(this.state.loginStatus)
+          // loginStatus: 用来传递登录状态
+          eventProxy.trigger('loginStatus', true)
           goto('users/list')
-
         } catch (e) {
           message.error('login err')
         }
@@ -95,7 +94,7 @@ class NormalLoginForm extends Component {
                 })(
                   <Checkbox>Remember me</Checkbox>
                 )}
-                <a className="login-form-forgot" href="">Forgot password</a>
+                <Link className="login-form-forgot" to="/users/forget">Forgot password</Link>
                 <Button type="primary" htmlType="submit" className="login-form-button">
                   已有账号，立即登录
                 </Button>
