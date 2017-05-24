@@ -5,7 +5,7 @@ import './index.less'
 import API from '../../../api'
 import goto from '../../../utils/goto'
 import Regx from '../../../utils/regx'
-import Logo from '../../../components/content/lineText/index'
+import Logo from '../../../components/user/content/lineText/index'
 import * as Reqest from '../../../utils/request'
 const FormItem = Form.Item
 

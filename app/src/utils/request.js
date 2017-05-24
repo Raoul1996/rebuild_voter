@@ -124,7 +124,7 @@ export function Delete (url, headers = {}) {
  * @returns {*}
  */
 
-export function put (url,headers = {}, body = {}) {
+export function put (url, body = {} ,headers = {}) {
   if (!headers['Content-type']) {
     headers['Content-type'] = 'application/json'
   }
