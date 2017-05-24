@@ -11,6 +11,8 @@ const FormItem = Form.Item
 let uuid = 0
 class Edit extends Component {
   state = {
+    voteId: this.props.location.query.voteId,
+    title: '',
     startValue: null,
     endValue: null,
     endOpen: false,
@@ -23,25 +25,35 @@ class Edit extends Component {
 
   getVote = async () => {
     try {
-      await Request.tget(API.singleInfo, 'voteId', headers)
+      await Request.tget(API.singleInfo.replace(/:voteId/, this.state.voteId), '', {})
+        .then( (json) => {
+          this.setState({
+            title: json.voteShow.title,
+            type: json.voteShow.type,
+            options: json.options,
+            startTime: json.voteShow.startTime,
+            endTime: json.voteShow.endTime,
+            startValue: moment(moment.unix(json.voteShow.startTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
+            endValue: moment(moment.unix(json.voteShow.endTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
+          })
+          const {form} = this.props
+          form.setFieldsValue({
+            title: this.state.title,
+            // type: this.state.type,
+            // keys: this.state.options,
+            // startValue: moment(moment.unix(json.voteShow.startTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
+            // endValue: moment(moment.unix(json.voteShow.endTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
+            // typeOne: this.state.type !== 5 ? this.state.type : 5,
+            // typeTwo: (this.state.type !== 1 || this.state.type !== 2) ? 4 : 0
+          })
+        })
     } catch (e) {
       console.log(e)
     }
   }
 
   componentDidMount () {
-    // const data = this.getVote()
-    const {form} = this.props
-    // const {voteShow = {title:'啦啦啦',startTime:1490427181000,endTime:1490427183000,type:4,max:4}, options = []} = data
-    // this.setState={
-    //   options: options,
-    //   type:voteShow.type
-    // }
-    form.setFieldsValue({
-      title: 'lalala',
-      typeOne: this.state.type !== 5 ? this.state.type : 5,
-      typeTwo: (this.state.type !== 1 || this.state.type !== 2) ? 4 : 0
-    })
+    this.getVote()
   }
 
   //日期选择框
@@ -68,11 +80,13 @@ class Edit extends Component {
   }
 
   onStartChange = (value) => {
-    this.onChange('startTime', value)
+    console.log(value)
+    console.log(this.onChange)
+    this.onChange('startValue', value)
   }
 
   onEndChange = (value) => {
-    this.onChange('endTime', value)
+    this.onChange('endValue', value)
   }
 
   handleStartOpenChange = (open) => {
@@ -120,12 +134,12 @@ class Edit extends Component {
   }
 
   //类型选择
-  onTypeChange = (e) => {
-    console.log('radio checked', e.target.value)
-    this.setState({
-      type: e.target.value,
-    })
-  }
+  // onTypeChange = (e) => {
+  //   console.log('radio checked', e.target.value)
+  //   this.setState({
+  //     type: e.target.value,
+  //   })
+  // }
 
   render () {
     //日期选择
@@ -144,7 +158,9 @@ class Edit extends Component {
       span: 7,
       offset: 1
     }
-    getFieldDecorator('keys', {initialValue: this.state.options})
+    getFieldDecorator('keys', {
+      initialValue: this.state.options
+    })
     const keys = getFieldValue('keys')
     const formItemLayoutWithOutLabel = {
       labelCol: {
@@ -211,7 +227,8 @@ class Edit extends Component {
                       disabledDate={this.disabledStartDate}
                       showTime
                       format="YYYY-MM-DD HH:mm:ss"
-                      defaultValue={moment('2015-06', 'YYYY-MM')}
+                      // defaultValue={moment('2015-06', 'YYYY-MM')}
+                      value={this.state.startValue}
                       placeholder="开始时间"
                       onChange={this.onStartChange}
                       onOpenChange={this.handleStartOpenChange}
@@ -227,7 +244,9 @@ class Edit extends Component {
                       disabledDate={this.disabledEndDate}
                       showTime
                       format="YYYY-MM-DD HH:mm:ss"
-                      defaultValue={moment('2015-06', 'YYYY-MM')}
+                      // defaultValue={moment('2015-06', 'YYYY-MM')}
+                      // defaultValue={moment(this.state.endValue, 'YYYY-MM')}
+                      value={this.state.endValue}
                       placeholder="结束时间"
                       onChange={this.onEndChange}
                       open={endOpen}
@@ -244,7 +263,10 @@ class Edit extends Component {
                       {getFieldDecorator('typeOne', {
                         rules: [{required: true, message: '请选择投票类型'}],
                       })(
-                        <RadioGroup onChange={this.onTypeChange} value='5'>
+                        <RadioGroup
+                          // onChange={this.onTypeChange}
+                          // value='5'
+                        >
                           <Radio value={1}>单选</Radio>
                           <Radio value={2}>多选</Radio>
                           <Radio value={5}>打分</Radio>
@@ -263,7 +285,7 @@ class Edit extends Component {
                       <FormItem>
                         {getFieldDecorator('max', {
                           rules: [{required: true, message: '请选择最多选择数'}],
-                          initialValue: this.state.max
+                          // initialValue: this.state.max
                         })(
                           <InputNumber />
                         )}

@@ -38,15 +38,13 @@ export default {
     // vote
   info: voteApiMaker('info'),
     // admin
-  changeVisibility: adminApiMaker('changeVisibility'),
+  changeVisibility: adminApiMaker(':voteId/changeVisibility'),
   create: adminApiMaker('create'),
-  delete: adminApiMaker(':voteid/delete'),
-  singleInfo: adminApiMaker(':voteid/info'),
-  voteStatistics: adminApiMaker(':voteid/record'),
+  delete: adminApiMaker(':voteId/delete'),
+  singleInfo: adminApiMaker(':voteId/info'),
   pageInfo: adminApiMaker('info?page=pnum&rows=rnum'),
-  beforeUpdate: adminApiMaker(':voteid/beforeUpdate'),
+  beforeUpdate: adminApiMaker(':voteId/beforeUpdate'),
   voteUpdate: adminApiMaker('updateVote'),
-  downLoad: adminApiMaker(':voteid/download'),
   adminLogin: adminApiMaker('login'),
   findLike: adminApiMaker('findLike'),
   findLikePage:adminApiMaker('findLike?page=pnum&rows=rnum')

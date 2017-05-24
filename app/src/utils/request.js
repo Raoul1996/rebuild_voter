@@ -39,7 +39,7 @@ export async function request (url, type = 'GET', headers = {}, body = {}) {
     method: type,
     headers
   }
-  if (type === 'POST' || 'PUT') {
+  if (type === 'POST'|| type === 'PUT') {
     fetchOption.body = JSON.stringify(body)
   }
   const res = await fetch(url, fetchOption)
@@ -63,7 +63,7 @@ export function get (url, params, headers) {
   return request(url, 'GET', headers)
 }
 
-export function tget (url, params, headers) {
+export function tget (url, params, headers = {}) {
   if (params) {
     url = parseParams(url, params)
   }
@@ -124,7 +124,7 @@ export function Delete (url, headers = {}) {
  * @returns {*}
  */
 
-export function put (url, body, headers = {}) {
+export function put (url,headers = {}, body = {}) {
   if (!headers['Content-type']) {
     headers['Content-type'] = 'application/json'
   }

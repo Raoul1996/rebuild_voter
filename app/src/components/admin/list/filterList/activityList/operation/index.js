@@ -14,21 +14,21 @@ class Operation extends Component {
   }
 
   isStop = async () => {
-    let body = {
-      voteId:this.props.voteId
-    }
-    await Request.put(API.changeVisibility, headers, body)
-    console.log('stop')
+    await Request.put(API.changeVisibility.replace(/:voteId/, this.props.voteId), {}, {})
+    await console.log('成功！')
+    await window.history.go(0)
   }
 
   isDelete = () => {
+    const id = this.props.voteId
     Modal.confirm({
       title: '删除投票后，本投票活动及相关数据都会消失，是否确认删除？',
       okText: 'OK',
       cancelText: 'Cancel',
       async onOk () {
         try {
-          await Request.Delete(API.delete.replace(/:voteId/, this.props.voteId), 'DELETE')
+          await Request.Delete(API.delete.replace(/:voteId/, id), {})
+          await window.history.go(0)
         } catch (e) {
           console.log(e)
         }
@@ -42,14 +42,17 @@ class Operation extends Component {
     const query = {
       'voteId': this.props.voteId
     }
+
     return (
       <span>
         <a href="javascript:void(0)" onClick={this.isStop}>
-          <Icon type="pause" />
+          {
+            this.props.visibility ? <Icon type="pause" /> : <Icon type="reload" />
+          }
         </a>
         <span className="ant-divider" />
         <Link to={urlEncoder('edit', query)}>
-            <Icon type="edit" />
+          <Icon type="edit" />
         </Link>
         <span className="ant-divider" />
           <a href="javascript:void(0)" className="ant-dropdown-link" onClick={this.isDelete}>

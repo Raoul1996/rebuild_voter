@@ -62,7 +62,7 @@ class ActivityList extends Component {
         width: 100,
         fixed: 'right',
         render: (text, record, index) => (
-          <Operation voteId={record.id} />
+          <Operation voteId={record.id} visibility={record.visibility} />
         ),
       }
     ]
