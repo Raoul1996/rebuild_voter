@@ -44,10 +44,9 @@ class ForgetForm extends React.Component {
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
         // console.log(values)
-        const {mobile, oldPassword, newPassword, captcha} = values
+        const {mobile, newPassword, captcha} = values
         const body = {
           mobile: mobile,
-          oldPassword: oldPassword,
           newPassword: newPassword,
           code: captcha
         }
@@ -122,22 +121,6 @@ class ForgetForm extends React.Component {
                   }],
                 })(
                   <Input type="text" placeholder="请输入11位手机号码" />
-                )}
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label="旧密码"
-                hasFeedback
-              >
-                {getFieldDecorator('oldPassword', {
-                  rules: [{
-                    required: true,
-                    message: '请输入密码'
-                  }, {
-                    pattern: Regx.password, message: '请输入6到20位字符'
-                  }],
-                })(
-                  <Input type="password" placeholder="请输入不少于6位字符" />
                 )}
               </FormItem>
               <FormItem

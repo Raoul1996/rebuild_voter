@@ -33,10 +33,10 @@ class MsgList extends Component {
         newSex: this.state.gender
       }
       try {
-        let data = await
-          Reqest.uput(API.changeSex, body)
+        let data = await Reqest.uput(API.changeSex, body)
+        message.success('successful')
       } catch (e) {
-        message.error('信息手机号失败')
+        message.error('修改性别失败')
       }
     }
   }

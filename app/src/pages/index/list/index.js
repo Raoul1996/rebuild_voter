@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Icon } from 'antd'
-import {Link} from 'react-router'
+import { Link } from 'react-router'
 import List from '../../../components/user/list/showList'
 import LineText from '../../../components/user/content/lineText'
 import MsgListComponent from '../../../components/user/content/msgList'
@@ -21,38 +21,27 @@ class Item extends Component {
         </Link>
         <Logo text="不洗碗工作室" />
         <div className="show-list">
-          <Row>
-            <Col span="10" offset={1}>
-              <List />
-            </Col>
-            <Col span="10" offset={2}>
-              <List />
-            </Col>
-          </Row>
-          <Row>
-            <Col span="10" offset={1}>
-              <List />
-            </Col>
-            <Col span="10" offset={2}>
-              <List />
-            </Col>
-          </Row>
-          <Row>
-            <Col span="10" offset={1}>
-              <List />
-            </Col>
-            <Col span="10" offset={2}>
-              <List />
-            </Col>
-          </Row>
-          <Row>
-            <Col span="10" offset={1}>
-              <List />
-            </Col>
-            <Col span="10" offset={2}>
-              <List />
-            </Col>
-          </Row>
+          <div className="show-list-item">
+            <List />
+          </div>
+          <div className="show-list-item">
+            <List />
+          </div>
+          <div className="show-list-item">
+            <List />
+          </div>
+          <div className="show-list-item">
+            <List />
+          </div>
+          <div className="show-list-item">
+            <List />
+          </div>
+          <div className="show-list-item">
+            <List />
+          </div>
+          <div className="show-list-item">
+            <List />
+          </div>
           <LineText text="历史投票" />
           <Row>
             <Col span="10" offset={1}>
