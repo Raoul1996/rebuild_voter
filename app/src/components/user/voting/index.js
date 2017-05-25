@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { Tag, Col, Row, Radio, Checkbox, InputNumber } from 'antd'
+import { Tag, Col, Row, Radio, Checkbox, InputNumber, Button, Modal } from 'antd'
 const RadioGroup = Radio.Group
 
 import FooterButton from './footerbutton'
-import Share from './footerbutton/share'
+// import Share from './footerbutton/share'
 import Logo from '../content/lineText/index'
-
+import Share from '../share'
 function getLocalTime (nS) {
   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年 | 月/g, '-').replace(/日/g, ' ')
 }
@@ -124,7 +124,6 @@ class Voting extends Component {
           </RadioGroup>
         </div>
         <FooterButton />
-        <Share />
       </div>
     )
   }
