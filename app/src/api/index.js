@@ -8,7 +8,7 @@ const __APIUSER__ = 'http://192.168.1.219:1111/user'
 
 
 // Vote
-const __APIVOTE__ = 'http://192.168.1.217:1111/vote'
+const __APIVOTE__ = 'http://192.168.1.219:1111/vote'
 // const __APIVOTE__ = 'http://192.168.1.217:8080/vote'
 // Admin
 const __APIADMIN__ = 'http://192.168.1.219:1111/admin'
@@ -36,7 +36,7 @@ export default {
   changeSex: userApiMaker('changeSex'),
 
     // vote
-  info: voteApiMaker('info'),
+  info: voteApiMaker('all?page=pnum&rows=rnum'),
     // admin
   changeVisibility: adminApiMaker(':voteId/changeVisibility'),
   create: adminApiMaker('create'),

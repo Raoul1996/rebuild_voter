@@ -16,7 +16,7 @@ class NormalLoginForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      loginStatus: false
+      loginStatus: 0
     }
   }
 
@@ -34,14 +34,14 @@ class NormalLoginForm extends Component {
 
         try {
           let data = await Request.post(API.login, body)
-          window.localStorage.setItem('token', data.token)
+          window.localStorage.setItem('user.token', data.token)
           window.localStorage.setItem('mobile', data.user.mobile)
           message.success('login successful')
           this.state.loginState = true
           // flag :用来通知兄弟组件进行更新
           eventProxy.trigger('flag', new Date().getTime())
           // loginStatus: 用来传递登录状态
-          eventProxy.trigger('loginStatus', true)
+          eventProxy.trigger('loginStatus', 1)
           goto('users/list')
         } catch (e) {
           message.error('login err')

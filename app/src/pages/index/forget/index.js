@@ -6,7 +6,7 @@ import API from '../../../api'
 import goto from '../../../utils/goto'
 import Regx from '../../../utils/regx'
 import Logo from '../../../components/user/content/lineText/index'
-import * as Reqest from '../../../utils/request'
+import * as Request from '../../../utils/request'
 const FormItem = Form.Item
 
 const ERR_OK = 0
@@ -31,7 +31,7 @@ class ForgetForm extends React.Component {
       type: FORGET
     }
     try {
-      let data = await Reqest.post(API.verify, body)
+      let data = await Request.post(API.verify, body)
       message.success(`your Captcha is ${data.code}`)
     } catch (e) {
       message.error(e)
@@ -51,7 +51,7 @@ class ForgetForm extends React.Component {
           code: captcha
         }
         try {
-          let data = await Reqest.uput(API.forget, body)
+          let data = await Request.uput(API.forget, body)
           message.success('修改信息成功')
           setTimeout(() => {
             goto('users/login')

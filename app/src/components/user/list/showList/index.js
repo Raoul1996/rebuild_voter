@@ -21,23 +21,27 @@ class ShowList extends Component {
   }
 
   render () {
-    // let title = this.props.title
+    let list = this.props.list
     return (
-      <div className="list-item-wrapper">
-        <Card>
-          <div className="item-title">
-            <h3>{limitStringNum(title)}</h3>
-          </div>
-          <div className="item-voter">
-            <img src={avatar} className="item-voter-icon" />
-            <span className="item-voter-num">{voterNum}</span>
-          </div>
-          <div className="item-status">
-            <div className="item-status-text item-status-item">{runing ? '进行中' : '未开始'}</div>
-            <div className="item-status-time item-status-item">剩余{'5小时25分钟'}</div>
-          </div>
-        </Card>
-      </div>
+      <Col span={10} offset={1}>
+        <div className="list-item-wrapper">
+          <Card>
+            <div className="item-title">
+              <h3>{limitStringNum(list.title)}</h3>
+            </div>
+            <div className="item-voter">
+              <img src={avatar} className="item-voter-icon" />
+              <span className="item-voter-num">{list.participatorNum}</span>
+            </div>
+            <div className="item-status">
+              <div className="item-status-text item-status-item">
+                {list.flag === 0 ? '未开始' : (list.flag === 1 ? '进行中' : '已结束')}
+              </div>
+              <div className="item-status-time item-status-item">剩余{list.endTime-list.startTime}</div>
+            </div>
+          </Card>
+        </div>
+      </Col>
     )
   }
 }

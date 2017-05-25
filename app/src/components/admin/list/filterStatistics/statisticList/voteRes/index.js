@@ -36,7 +36,7 @@ export default class VoteRes extends Component {
         message.success('获取详情成功')
         this.setState({
           options: json.data.options,
-          title: json.data.vote.title
+          title: json.data.title
         })
       }
     })
@@ -67,7 +67,14 @@ export default class VoteRes extends Component {
       {title: '选项序号', width: '14%', dataIndex: 'id', key: 'id'},
       {title: '选项内容', width: '70%', dataIndex: 'title', key: 'title'},
       {title: '数量', width: '8%', dataIndex: 'num', key: 'num'},
-      {title: '占比', width: '8%', dataIndex: 'value', key: 'value'}
+      {title: '占比', width: '8%',
+        render:record=>(
+          <span>
+            {record.value}%
+          </span>
+        ),
+        key: 'value'
+      }
     ]
 
     return (

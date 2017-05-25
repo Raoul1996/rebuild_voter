@@ -6,7 +6,7 @@ import API from '../../../api'
 import goto from '../../../utils/goto'
 import Regx from '../../../utils/regx'
 import Logo from '../../../components/user/content/lineText/index'
-import * as Reqest from '../../../utils/request'
+import * as Request from '../../../utils/request'
 const FormItem = Form.Item
 
 const ERR_OK = 0
@@ -40,7 +40,7 @@ class PasswordForm extends React.Component {
       type: PASSWD
     }
     try {
-      let data = await Reqest.uput(API.verify, body)
+      let data = await Request.uput(API.verify, body)
       message.success(`your Captcha is ${data.code}`)
     } catch (e) {
       message.error(e)
@@ -60,7 +60,7 @@ class PasswordForm extends React.Component {
           code: captcha
         }
         try {
-          let data = await Reqest.put(API.password, {}, body)
+          let data = await Request.put(API.password, {}, body)
           message.success('修改密码成功')
           // window.localStorage.clear()
           goto('users/login')

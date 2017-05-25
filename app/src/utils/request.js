@@ -9,6 +9,8 @@ const TIMEOUT = 15000
 function filterStatus (json) {
   if (json.code === 0) {
     return json.data
+  } else if (json.code === 20001 || json.code === 20002) {
+    return json
   } else {
     throw new Error('ResponseUnexpected', codeHelper(json.code))
   }

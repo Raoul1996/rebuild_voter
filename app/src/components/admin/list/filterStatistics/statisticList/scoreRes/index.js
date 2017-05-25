@@ -3,7 +3,7 @@ import { Col, Row, Button, Table, Card } from 'antd'
 import timeTransform from '../../../../../../utils/timeTransfrom'
 import './index.less'
 const updateTime = new Date().getTime()
-let scoreNum = [1, 2, 3, 4, 5, 56, 54, 646, 46, 46, 464, 6456, 411, 44, 55665, 454, 41, 45, 58, 52, 45]
+let scoreNum = [1, 2, 3, 4]
 let scoreSum = scoreNum.reduce((prev, curr) => {return prev + curr})
 let columns = [
   {title: '选项序号', width: 100, dataIndex: 'id', key: 'id'},
@@ -11,14 +11,13 @@ let columns = [
 ]
 scoreNum.forEach((item, index) => {
   columns.push(
-    {title: `#${index + 1}`, dataIndex: 'score', key: `score${index + 1}`, width: 40},
+    {title: `#${index + 1}`, dataIndex: `score${index+1}`, key: `score${index + 1}`, width: 40},
   )
 })
 columns.push(
   {
     title: '合计',
     key: 'sum',
-    // fixed: 'right',
     width: 50,
     render: () => <span>{scoreSum}</span>,
   }
@@ -26,30 +25,38 @@ columns.push(
 const data = [{
   key: '1',
   id: 'John Brown',
-  content: 'asdfsafasfdadsdfasdfasfasfasfsafasdfasfsafsaffsafdsa',
+  content: 'abc',
   score: '1',
+  value:[9,8,7,6]
 }, {
   key: '2',
   id: 'Jim Green',
-  content: 'asdfsafasfdadsdfasdfasfasfasfsafasdfasfsafsaffsafdsa',
+  content: 'asd',
   score: '2',
+  value:[9,8,7,6]
 }, {
   key: '3',
   id: 'Jim Green',
-  content: 'asdfsafasfdadsdfasdfasfasfasfsafasdfasfsafsaffsafdsa',
+  content: 'asdf',
   score: '3',
+  value:[9,8,7,6]
 }, {
   key: '4',
   id: 'Jim Green',
-  content: 'asdfsafasfdadsdfasdfasfasfasfsafasdfasfsafsaffsafdsa',
-  score: '5',
+  content: 'asdfsa',
+  score1: '0',
+  score2: '99',
+  score3: '9',
+  value:[9,8,7,6]
 }, {
   key: '5',
   id: 'Jim Green',
-  content: 'asdfsafasfdadsdfasdfasfasfasfsafasdfasfsafsaffsafdsa',
+  content: 'asdfsafasf',
   score: '9',
+  value:[9,8,7,6]
 },
 ]
+
 export default () => (
   <Row>
     <Card className="score-wrapper">

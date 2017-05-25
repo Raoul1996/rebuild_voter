@@ -6,7 +6,7 @@ import API from '../../../api'
 import goto from '../../../utils/goto'
 import Regx from '../../../utils/regx'
 import Logo from '../../../components/user/content/lineText/index'
-import * as Reqest from '../../../utils/request'
+import * as Request from '../../../utils/request'
 const FormItem = Form.Item
 
 const ERR_OK = 0
@@ -33,7 +33,7 @@ class RegistrationForm extends React.Component {
       type: REGISTER
     }
     try {
-      let data = await Reqest.post(API.verify, body)
+      let data = await Request.post(API.verify, body)
       message.success(`your Captcha is ${data.code}`)
     } catch (e) {
       message.error(e)
@@ -53,7 +53,7 @@ class RegistrationForm extends React.Component {
           code: captcha
         }
         try {
-          let data = await Reqest.post(API.register, body)
+          let data = await Request.post(API.register, body)
           message.success('register successful')
           goto('users/login')
         } catch (e) {

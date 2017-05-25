@@ -1,4 +1,4 @@
-import logout from './logout'
+import logout from './userLogout'
 export default () => {
   if (!window.localStorage) {
     console.log('您的浏览器不支持window.localStorage,请更新您的浏览器')
