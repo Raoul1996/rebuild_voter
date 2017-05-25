@@ -20,7 +20,7 @@ class Edit extends Component {
     endTime: null,
     type: 3,
     options: [{value: '你好', id: 1}, {value: '大家好', id: 2}, {value: '才是真的好', id: 3}],
-    max: 4
+    max: 10101
   }
 
   getVote = async () => {
@@ -33,18 +33,20 @@ class Edit extends Component {
             options: json.options,
             startTime: json.voteShow.startTime,
             endTime: json.voteShow.endTime,
+            max: json.voteShow.max,
             startValue: moment(moment.unix(json.voteShow.startTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
             endValue: moment(moment.unix(json.voteShow.endTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
           })
           const {form} = this.props
           form.setFieldsValue({
             title: this.state.title,
+            max: this.state.max,
             // type: this.state.type,
             // keys: this.state.options,
             // startValue: moment(moment.unix(json.voteShow.startTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
             // endValue: moment(moment.unix(json.voteShow.endTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
-            // typeOne: this.state.type !== 5 ? this.state.type : 5,
-            // typeTwo: (this.state.type !== 1 || this.state.type !== 2) ? 4 : 0
+            typeOne: (this.state.type !== 1 && this.state.type !== 2) ? 5 : this.state.type,
+            typeTwo: this.state.type
           })
         })
     } catch (e) {
@@ -106,28 +108,32 @@ class Edit extends Component {
         console.log('Received values of form: ', values)
         let options = []
         Object.keys(values).forEach(key => {
-          if (key.match(/^name?/)) {
-            let item = values[key]
+          if (key.match(/^names?/)) {
+            let item = {
+              title: values[key],
+              id: key.match(/\d+/)[0],
+              voteId: this.state.voteId
+            }
             options.push(item)
           }
         })
         const {title, max} = values
         const body = {
-          options: options,
+          id: this.state.voteId,
           title: title,
-          startTime: Date.parse(this.state.startTime),
-          endTime: Date.parse(this.state.endTime),
           type: parseInt(this.state.type),
-          max: parseInt(max)
+          startTime: this.state.startTime,
+          endTime: this.state.endTime,
+          options: options,
         }
         console.log(body)
 
         const token = window.localStorage.getItem('admin.token')
         try {
-          await Request.tpost(API.singleInfo, token, body)
-          message.success('修改成功')
+          await Request.tpost(API.updateVote, body, {})
+          await message.success('修改成功')
         } catch (e) {
-          message.error('创建失败')
+          message.error('修改失败')
         }
       }
     })
@@ -173,16 +179,18 @@ class Edit extends Component {
       },
     }
     const formItems = keys.map((k) => {
+      // console.log(k)
       return (
         <FormItem
           {...formItemLayoutWithOutLabel}
-          label={`选项${k}`}
+          label={`选项${k.id}`}
           required={false}
           key={k.id}
         >
           {getFieldDecorator(`names-${k.id}`, {
             validateTrigger: ['onChange', 'onBlur'],
-            initialValue: k.value,
+            // initialValue: (k.value !== 0) ? k.value : k.title,
+            initialValue: k.title,
             rules: [{
               required: true,
               whitespace: true,
@@ -191,11 +199,11 @@ class Edit extends Component {
           })(
             <Input placeholder="请输入选项" style={{width: '60%', marginRight: 8}} />
           )}
-          <Icon
-            className="dynamic-delete-button"
-            type="minus-circle-o"
-            disabled={keys.length === 1}
-          />
+          {/*<Icon*/}
+            {/*className="dynamic-delete-button"*/}
+            {/*type="minus-circle-o"*/}
+            {/*disabled={keys.length === 1}*/}
+          {/*/>*/}
         </FormItem>
       )
     })
@@ -262,10 +270,11 @@ class Edit extends Component {
                     <FormItem>
                       {getFieldDecorator('typeOne', {
                         rules: [{required: true, message: '请选择投票类型'}],
+                        // initialValue: (this.state.type !== 3 || this.state.type !== 4) ? 5 : this.state.type
                       })(
                         <RadioGroup
                           // onChange={this.onTypeChange}
-                          // value='5'
+                          // value={(this.state.type !== 3 || this.state.type !== 4) ? 5 : this.state.type}
                         >
                           <Radio value={1}>单选</Radio>
                           <Radio value={2}>多选</Radio>
@@ -304,7 +313,9 @@ class Edit extends Component {
                         {getFieldDecorator('typeTwo', {
                           rules: [{required: true, message: '请选择分数上限'}],
                         })(
-                          <RadioGroup onChange={this.onTypeChange}>
+                          <RadioGroup
+                            // onChange={this.onTypeChange}
+                          >
                             <Radio value={3}>十分制</Radio>
                             <Radio value={4}>百分制</Radio>
                           </RadioGroup>
