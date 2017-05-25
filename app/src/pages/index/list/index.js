@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Icon, Pagination, message} from 'antd'
+import { Row, Col, message, Alert } from 'antd'
 import { Link } from 'react-router'
 import API from '../../../api'
 import getUserToken from '../../../utils/getTokenUser'
@@ -11,35 +11,50 @@ import './index.less'
 class Item extends Component {
   constructor (props) {
     super(props)
-    this.state={
+    this.state = {
       total: 1,
       List: [],
+      page: 2,
+      pages: 1,
+      close: [],
+      unClose: []
     }
   }
 
-  getVoteList = async (page) => {
-    let params = {
-      page: page,
-      rows: 6
-    }
-    fetch(API.info.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'token': getUserToken()
+  getVoteList = async () => {
+    if (this.state.page <= this.state.pages) {
+      let params = {
+        page: this.state.page,
+        rows: 6
       }
-    }).then((res) => {
-      return res.json()
-    }).then((json) => {
-        if (json.code === 0) {
-          message.success('投票2获取成功')
-          this.setState({
-            total: json.data.total,
-            List: json.data.list
-          })
+      fetch(API.info.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'token': getUserToken()
         }
-      }
-    )
+      }).then((res) => {
+        return res.json()
+      }).then((json) => {
+          if (json.code === 0) {
+            let list = [
+              ...this.state.List,
+              ...json.data.list
+            ]
+            this.setState({
+              total: json.data.total,
+              List: list,
+              page: json.data.pageNum + 1,
+              pages: json.data.pages
+            })
+          }
+        }
+      )
+    }
+    if (this.state.page > this.state.pages) {
+      message.warning('已加载完所有投票')
+    }
+
   }
 
   getFirstList = async () => {
@@ -57,10 +72,15 @@ class Item extends Component {
       return res.json()
     }).then((json) => {
         if (json.code === 0) {
-          message.success('投票1获取成功')
+          let list = [
+            ...this.state.List,
+            ...json.data.list
+          ]
           this.setState({
             total: json.data.total,
-            List: json.data.list
+            List: list,
+            page: 2,
+            pages: json.data.pages
           })
         }
       }
@@ -71,56 +91,62 @@ class Item extends Component {
     this.getFirstList()
   }
 
-  render()
-{
-  return (
-    <div className="show-list-wrapper">
-      <Col span={23} offset={1}>
-        <Link to="/users/change">
-          <div className="msg-bar">
-            <MsgListComponent label="手机号" text="15012321234" />
+  render () {
+
+    return (
+      <div className="show-list-wrapper">
+        <Col span={23} offset={1}>
+          <Link to="/users/change">
+            <div className="msg-bar">
+              <MsgListComponent label="手机号" text="15012321234" />
+            </div>
+          </Link>
+          <Logo text="不洗碗工作室" />
+          <div className="show-list">
+            <Row>
+              {
+                this.state.List.map((item) => {
+                  if (item.flag === 0 || item.flag === 1) {
+                    return (
+                      <List
+                        key={item.id}
+                        voteId={item.id}
+                        list={item}
+                      />
+                    )
+                  }
+                })
+              }
+            </Row>
+            <Row>
+              <div onClick={this.getVoteList}>
+                <Col span={21} offset={1}>
+                  <Alert message="点击加载更多" type="info" />
+                  {/*<Pagination simple defaultPageSize={6} total={this.state.total} onChange={this.getVoteList}/>*/}
+                </Col>
+              </div>
+
+            </Row>
+            <LineText text="历史投票" />
+            <Row>
+              {
+                this.state.List.map((item) => {
+                  if (item.flag === 2) {
+                    return (
+                      <List
+                        key={item.id}
+                        voteId={item.id}
+                        list={item}
+                      />
+                    )
+                  }
+                })
+              }
+            </Row>
           </div>
-        </Link>
-        <Logo text="不洗碗工作室" />
-        <div className="show-list">
-          <Row>
-            {
-              this.state.List.map((item)=>{
-                if(item.flag===0||item.flag===1){
-                  return(
-                    <List
-                      key={item.id}
-                      voteId={item.id}
-                      list={item}
-                    />
-                  )
-                }
-              })
-            }
-          </Row>
-          <Col span={10} offset={7} onChange={this.getVoteList}>
-            <Pagination simple defaultPageSize={6} total={this.state.total} onChange={this.getVoteList}/>
-          </Col>
-          <LineText text="历史投票" />
-          <Row>
-            {
-              this.state.List.map((item)=>{
-                if(item.flag === 2){
-                  return(
-                    <List
-                      key={item.id}
-                      voteId={item.id}
-                      list={item}
-                    />
-                  )
-                }
-              })
-            }
-          </Row>
-        </div>
-      </Col>
-    </div>
-  )
-}
+        </Col>
+      </div>
+    )
+  }
 }
 export default Item
