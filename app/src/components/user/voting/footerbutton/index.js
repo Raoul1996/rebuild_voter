@@ -2,7 +2,7 @@
  * Created by Pororo on 17/5/14.
  */
 import React, { Component } from 'react'
-import { Col, Row, Button, Alert, message, Modal } from 'antd'
+import { Col, Row, Button, Alert, Popconfirm, message, Modal } from 'antd'
 import './index.less'
 import Share from '../../share'
 function confirm () {
@@ -15,8 +15,12 @@ class FooterButton extends Component {
     this.state = {
       is_vote: 0,
       visibleShare: false,
-      visibleSubmit: false
+      visibleSubmit: false,
+      modal2Visible: false,
     }
+  }
+  setModal2Visible(modal2Visible) {
+    this.setState({ modal2Visible });
   }
 
   showSubmitModal = () => {
@@ -38,24 +42,7 @@ class FooterButton extends Component {
     })
   }
 
-  showShareModal = () => {
-    this.setState({
-      visibleShare: true,
-    })
-  }
 
-  handleShareOk = (e) => {
-    console.log(e)
-    this.setState({
-      visibleShare: false,
-    })
-  }
-  handleShareCancel = (e) => {
-    console.log(e)
-    this.setState({
-      visibleShare: false,
-    })
-  }
 
   componentDidMount () {
     let vote = window.localStorage.getItem('is_vote') || '0'
@@ -85,15 +72,15 @@ class FooterButton extends Component {
               />
             </Col>
             <Col span={12}>
-              <Button size="large" style={{width: '95%'}} onClick={this.showShareModal}>
+              <Button size="large" style={{width: '95%'}} onClick={() => this.setModal2Visible(true)}>
                 分享
               </Button>
               <Modal
                 title="分享"
                 wrapClassName="vertical-center-modal"
-                visibleShare={this.state.visibleShare}
-                onOk={this.handleShareOk}
-                onCancel={this.handleShareCancel}
+                visible={this.state.modal2Visible}
+                onOk={() => this.setModal2Visible(false)}
+                onCancel={() => this.setModal2Visible(false)}
               >
                 <Share />
               </Modal>

@@ -19,6 +19,8 @@ class Voting extends Component {
   state = {
     value: 1,
     type: 2,
+    modal1Visible: false,
+    modal2Visible: false,
     StartTime: getLocalTime(1494583700),
     EndTime: getLocalTime(1494583718)
   }
@@ -28,12 +30,15 @@ class Voting extends Component {
       value: e.target.value,
     })
   }
+  setModal2Visible(modal2Visible) {
+    this.setState({ modal2Visible });
+  }
   onDoubleChange = (checkedValues) => {
     console.log('checked = ', checkedValues)
   }
 
   getVoting=async ()=>{
-    let data = await Request.get(API.singleInfo.replace(/:voteId/, this.props.lodash.query.voteId))
+    let data = await Request.get(API.singleInfo.replace(/:voteId/, this.props.location.query.voteId))
     console.log(data)
   }
 
@@ -134,6 +139,7 @@ class Voting extends Component {
           </RadioGroup>
         </div>
         <FooterButton />
+        {/*<Share />*/}
       </div>
     )
   }
