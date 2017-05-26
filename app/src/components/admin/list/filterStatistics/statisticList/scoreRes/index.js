@@ -5,27 +5,31 @@ import * as Request from '../../../../../../utils/request'
 import timeTransform from '../../../../../../utils/timeTransfrom'
 import './index.less'
 
-let data = [{
-  key: '1',
-  id: 'John Brown',
-  content: 'abc',
-  score: '1',
-  sum: '100',
-  value:[9,8,7,6]
-}, {
-  key: '2',
-  id: 'Jim Green',
-  content: 'asd',
-  score: '2',
-  sum: '101',
-  value:[9,8,7,6]
-}]
+let data = [
+  {
+    key: '1',
+    id: 'John Brown',
+    content: 'abc',
+    score: '1',
+    sum: '100',
+    value:[9,8,7,6]
+  },
+  {
+    key: '2',
+    id: 'Jim Green',
+    content: 'asd',
+    score: '2',
+    sum: '101',
+    value:[9,8,7,6]
+  }
+]
 
 class ScoreRes extends Component {
   state = {
     voteId: this.props.location.query.voteid,
     optionValue: [1, 2, 3, 4],
     participatorNum: 4,
+    data: data
   }
 
   getRecord = async () => {
@@ -36,7 +40,8 @@ class ScoreRes extends Component {
             optionValue: json.optionValue,
             participatorNum: json.participatorNum
           })
-          console.log('getRecord'+json.optionValue)
+          // console.log('getRecord')
+          // console.log(json.optionValue)
           data = this.state.optionValue.map(function(item, index){
             const {id, sum, title, voteRecords} = item
             return ({
@@ -47,6 +52,10 @@ class ScoreRes extends Component {
               sum: sum
             })
           })
+          this.setState({
+            data: data
+          })
+          console.log(data)
         })
     } catch (e) {
       console.log(e)
@@ -142,7 +151,7 @@ class ScoreRes extends Component {
             <Button className="score-button">下载表格</Button>
           </Col>
           <Col span={22} offset={1} className="list-table">
-            <Table columns={columns} dataSource={data} scroll={{x: 1300}} />
+            <Table columns={columns} dataSource={this.state.data} scroll={{x: 1300}} />
           </Col>
         </Card>
       </Row>

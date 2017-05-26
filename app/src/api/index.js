@@ -34,7 +34,6 @@ export default {
   password:userApiMaker('password'),
   changeMobile: userApiMaker('changeMobile'),
   changeSex: userApiMaker('changeSex'),
-
     // vote
   info: voteApiMaker('all?page=pnum&rows=rnum'),
   haveVote: voteApiMaker('haveVoted'),
