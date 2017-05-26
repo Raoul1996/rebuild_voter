@@ -41,8 +41,7 @@ const RouterApp = (
     <Redirect from="/" to="/users/list"/>
     <Route path="/" component={AppComponent}>
       <IndexRoute component={UserPage}/>
-      <Route path="users" components={UserPage} onEnter={requireUserLogin}>
-        <IndexRoute component={UserLogin}/>
+      <Route path="users" components={UserPage}>
         <Route path="login" components={UserLogin}/>
         <Route path="register" components={UserRegister}/>
         <Route path="password" components={UserPassword}/>

@@ -18,7 +18,8 @@ class MsgList extends Component {
     super(props)
     this.state = {
       visible: false,
-      gender: 'male',
+      gender: window.localStorage.getItem('sex') || 'male',
+      mobile:window.localStorage.getItem('mobile') || '',
       flag: 0
     }
     this.handleChange = this.handleChange.bind(this)
@@ -41,7 +42,7 @@ class MsgList extends Component {
     }
   }
 
-changeSex () {
+  changeSex () {
 
   }
 
@@ -95,7 +96,7 @@ changeSex () {
           </Form>
         </Modal>
         <Logo text="不洗碗工作室" />
-        <MsgListItem label="手机号" text="15015015015" />
+        <MsgListItem label="手机号" text={this.state.mobile} />
         <div onClick={this.showModal}>
           <MsgListItem label="性别" text={this.state.gender} />
         </div>

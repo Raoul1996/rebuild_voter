@@ -36,8 +36,9 @@ class NormalLoginForm extends Component {
           let data = await Request.post(API.login, body)
           window.localStorage.setItem('user.token', data.token)
           window.localStorage.setItem('mobile', data.user.mobile)
+          window.localStorage.setItem('sex',data.user.sex)
           message.success('login successful')
-          this.state.loginState = true
+          this.state.loginState = 1
           // flag :用来通知兄弟组件进行更新
           eventProxy.trigger('flag', new Date().getTime())
           // loginStatus: 用来传递登录状态

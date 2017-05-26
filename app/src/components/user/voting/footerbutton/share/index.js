@@ -17,27 +17,27 @@ class Share extends Component {
           </Col>
           <Col span={4}>
             <a href="">
-              <img src="" alt="" />
+              <img src="https://zos.alipayobjects.com/rmsportal/WmEzpOsElbbvgmrexFSH.png" alt="icon" />
             </a>
-            <span>分享到</span>
+            <span>发送给朋友</span>
           </Col>
           <Col span={4}>
             <a href="">
-              <img src="" alt="" />
+              <img src="https://zos.alipayobjects.com/rmsportal/HssPJKvrjEByyVWJIFwl.png" alt="icon" />
             </a>
-            <span>分享到</span>
+            <span>新浪微博</span>
           </Col>
           <Col span={4}>
             <a href="">
-              <img src="" alt="" />
+              <img src="https://zos.alipayobjects.com/rmsportal/YHHFcpGxlvQIqCAvZdbw.png" alt="icon" />
             </a>
-            <span>分享到</span>
+            <span>QQ</span>
           </Col>
           <Col span={4}>
             <a href="">
-              <img src="" alt="" />
+              <img src="https://zos.alipayobjects.com/rmsportal/LeZNKxCTkLHDWsjFfqqn.png" alt="icon" />
             </a>
-            <span>分享到</span>
+            <span>微信好友</span>
           </Col>
         </Row>
       </div>
