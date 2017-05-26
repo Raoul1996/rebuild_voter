@@ -43,6 +43,7 @@ export default {
   delete: adminApiMaker(':voteId/delete'),
   singleInfo: adminApiMaker(':voteId/info'),
   pageInfo: adminApiMaker('info?page=pnum&rows=rnum'),
+  record: adminApiMaker(':voteId/record'),
   beforeUpdate: adminApiMaker(':voteId/beforeUpdate'),
   updateVote: adminApiMaker('updateVote'),
   adminLogin: adminApiMaker('login'),
