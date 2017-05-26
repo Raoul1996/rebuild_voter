@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router'
+import { Link } from 'react-router'
 import { Card, Col, Row, Icon } from 'antd'
 import eventProxy from '../../../../utils/eventProxy'
 import './index.less'
@@ -20,20 +20,14 @@ function limitStringNum (title) {
 class ShowList extends Component {
   constructor (props) {
     super(props)
-    this.state={
-      loginStatus:10
+    this.state = {
+      loginStatus: 0
     }
   }
 
-  changeState=()=>{
-    eventProxy.on('loginStatus', (loginStatus) => {
-      this.state.loginStatus = loginStatus
-    })
-    if(this.state.loginStatus===1){
-      // flag :用来通知兄弟组件进行更新
-      eventProxy.trigger('flag', new Date().getTime())
-      // loginStatus: 用来传递登录状态
-      eventProxy.trigger('loginStatus', 2)
+  changeState = () => {
+    if(window.localStorage.getItem('is_login') === '1'){
+      window.localStorage.setItem('is_vote',1)
     }
   }
 
@@ -46,25 +40,25 @@ class ShowList extends Component {
             <Link className='link' to={urlEncoder('users/vote', {
               'voteId': this.props.voteId
             })}>
-            <div className="item-title">
-              <h3>{limitStringNum(list.title)}</h3>
-            </div>
-            <div className="item-voter">
-              <img src={avatar} className="item-voter-icon" />
-              <span className="item-voter-num">{list.participatorNum}</span>
-            </div>
-            <div className="item-status">
-              <Row>
-                <div className="item-status-text item-status-item">
-                  {list.flag === 0 ? '未开始' : (list.flag === 1 ? '进行中' : '已结束')}
-                </div>
-              </Row>
-              <Row>
-                <div className="item-status-time item-status-item">
-                  剩余{restTime(list.endTime)}
-                </div>
-              </Row>
-            </div>
+              <div className="item-title">
+                <h3>{limitStringNum(list.title)}</h3>
+              </div>
+              <div className="item-voter">
+                <img src={avatar} className="item-voter-icon" />
+                <span className="item-voter-num">{list.participatorNum}</span>
+              </div>
+              <div className="item-status">
+                <Row>
+                  <div className="item-status-text item-status-item">
+                    {list.flag === 0 ? '未开始' : (list.flag === 1 ? '进行中' : '已结束')}
+                  </div>
+                </Row>
+                <Row>
+                  <div className="item-status-time item-status-item">
+                    {restTime(list.endTime)}
+                  </div>
+                </Row>
+              </div>
             </Link>
           </Card>
         </div>

@@ -36,14 +36,11 @@ class NormalLoginForm extends Component {
           let data = await Request.post(API.login, body)
           window.localStorage.setItem('user.token', data.token)
           window.localStorage.setItem('mobile', data.user.mobile)
-          window.localStorage.setItem('sex',data.user.sex)
+          window.localStorage.setItem('sex', data.user.sex)
+          window.localStorage.setItem('is_login', 1)
+          window.localStorage.setItem('is_vote', 0)
           message.success('login successful')
-          this.state.loginState = 1
-          // flag :用来通知兄弟组件进行更新
-          eventProxy.trigger('flag', new Date().getTime())
-          // loginStatus: 用来传递登录状态
-          eventProxy.trigger('loginStatus', 1)
-          goto('users/list')
+          setTimeout(goto('users/list'), 1000)
         } catch (e) {
           message.error('login err')
         }

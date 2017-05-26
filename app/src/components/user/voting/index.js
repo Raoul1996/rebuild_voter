@@ -3,7 +3,8 @@ import { Tag, Col, Row, Radio, Checkbox, InputNumber, Button, Modal } from 'antd
 const RadioGroup = Radio.Group
 
 import FooterButton from './footerbutton'
-// import Share from './footerbutton/share'
+import * as Request from '../../../utils/request'
+import API from '../../../api'
 import Logo from '../content/lineText/index'
 import Share from '../share'
 function getLocalTime (nS) {
@@ -17,7 +18,7 @@ function onChange (checkedValues) {
 class Voting extends Component {
   state = {
     value: 1,
-    type: 3,
+    type: 2,
     StartTime: getLocalTime(1494583700),
     EndTime: getLocalTime(1494583718)
   }
@@ -29,6 +30,15 @@ class Voting extends Component {
   }
   onDoubleChange = (checkedValues) => {
     console.log('checked = ', checkedValues)
+  }
+
+  getVoting=async ()=>{
+    let data = await Request.get(API.singleInfo.replace(/:voteId/, this.props.lodash.query.voteId))
+    console.log(data)
+  }
+
+  componentDidMount () {
+    this.getVoting()
   }
 
   render () {

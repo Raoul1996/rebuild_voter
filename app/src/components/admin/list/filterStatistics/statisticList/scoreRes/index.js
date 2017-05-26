@@ -27,7 +27,7 @@ class ScoreRes extends Component {
     optionValue: [1, 2, 3, 4],
     participatorNum: 4,
   }
-  
+
   getRecord = async () => {
     try {
       await Request.tget(API.record.replace(/:voteId/, this.state.voteId), '', {})

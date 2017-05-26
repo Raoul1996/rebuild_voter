@@ -92,14 +92,18 @@ class Item extends Component {
   }
 
   render () {
-
+    let is_login = window.localStorage.getItem('is_login') || '0'
+    let mobile = window.localStorage.getItem('mobile')
     return (
       <div className="show-list-wrapper">
         <Col span={23} offset={1}>
           <Link to="/users/change">
-            <div className="msg-bar">
-              <MsgListComponent label="手机号" text="15012321234" />
-            </div>
+            {
+              is_login === '1' &&
+              <div className="msg-bar">
+                <MsgListComponent label="手机号" text={mobile} />
+              </div>
+            }
           </Link>
           <Logo text="不洗碗工作室" />
           <div className="show-list">
@@ -122,7 +126,6 @@ class Item extends Component {
               <div onClick={this.getVoteList}>
                 <Col span={21} offset={1}>
                   <Alert message="点击加载更多" type="info" />
-                  {/*<Pagination simple defaultPageSize={6} total={this.state.total} onChange={this.getVoteList}/>*/}
                 </Col>
               </div>
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Table, Icon } from 'antd'
 import './index.less'
 import { Link } from 'react-router'
-import eventProxy from '../../../../utils/eventProxy'
 import wechatIcon from './u690.png'
 import QQtIcon from './u692.png'
 import mobileIcon from './u694.png'
@@ -14,18 +13,13 @@ class Footer extends Component {
     }
   }
 
-  componentDidMount () {
-    eventProxy.on('loginStatus', (loginStatus) => {
-      this.state.loginStatus = loginStatus
-    })
-    console.log(this.state)
-  }
-
   render () {
+    let is_login = window.localStorage.getItem('is_login') || '0'
+    let is_vote = window.localStorage.getItem('is_vote') || '0'
     return (
-      <div className="footer-wrapper">
+      <div className="footer-wrapper" style={{display: is_vote === '0' ? 'block' : 'none'}}>
         {
-          this.state.loginStatus === 0 &&
+          is_login === '0' &&
           <div className="footer">
             <div className="footer-item">
               <img src={wechatIcon} alt="" />
@@ -41,7 +35,7 @@ class Footer extends Component {
           </div>
         }
         {
-          this.state.loginStatus === 1 &&
+          is_login === '1' &&
           <div className="footer">
             <div className="footer-item">
               <Link to="users/list">

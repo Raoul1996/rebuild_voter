@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import './index.less'
 import MsgListItem from '../../../components/user/content/msgList'
 import Logo from '../../../components/user/content/lineText/index'
-import * as Reqest from '../../../utils/request'
+import * as Request from '../../../utils/request'
 import API from '../../../api'
 import goto from '../../../utils/goto'
 import Regx from '../../../utils/regx'
@@ -22,28 +22,11 @@ class MsgList extends Component {
       mobile:window.localStorage.getItem('mobile') || '',
       flag: 0
     }
-    this.handleChange = this.handleChange.bind(this)
+    this.changeSex = this.changeSex.bind(this)
   }
 
-// TODO: 这里有问题
-  async  handleChange (e) {
+  changeSex (e) {
     this.state.gender = e.target.value
-    console.log(this.state.gender)
-    if (this.state.flag < 10) {
-      const body = {
-        newSex: this.state.gender
-      }
-      try {
-        let data = await
-          Request.uput(API.changeSex, body)
-      } catch (e) {
-        message.error('修改性别失败')
-      }
-    }
-  }
-
-  changeSex () {
-
   }
 
   showModal = () => {
@@ -51,14 +34,21 @@ class MsgList extends Component {
       visible: true,
     })
   }
-  handleOk = () => {
-    this.setState({
-      confirmLoading: true,
-    })
+  handleOk = async () => {
+    if (this.state.flag < 10) {
+      const body = {
+        newSex: this.state.gender
+      }
+      try {
+        await Request.uput(API.changeSex, body)
+        message.success('修改性别成功')
+      } catch (e) {
+        message.error('修改性别失败')
+      }
+    }
     setTimeout(() => {
       this.setState({
         visible: false,
-        confirmLoading: false,
       })
     }, 400)
   }
@@ -88,7 +78,7 @@ class MsgList extends Component {
               {...formItemLayout}
               label=""
             >
-              <RadioGroup onChange={this.handleChange}>
+              <RadioGroup>
                 <Radio value="male">男</Radio>
                 <Radio value="female">女</Radio>
               </RadioGroup>
