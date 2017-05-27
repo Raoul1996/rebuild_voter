@@ -19,8 +19,9 @@ class FooterButton extends Component {
       modal2Visible: false,
     }
   }
-  setModal2Visible(modal2Visible) {
-    this.setState({ modal2Visible });
+
+  setModal2Visible (modal2Visible) {
+    this.setState({modal2Visible})
   }
 
   showSubmitModal = () => {
@@ -42,8 +43,6 @@ class FooterButton extends Component {
     })
   }
 
-
-
   componentDidMount () {
     let vote = window.localStorage.getItem('is_vote') || '0'
     this.setState({
@@ -52,47 +51,102 @@ class FooterButton extends Component {
   }
 
   render () {
+    let is_going = window.localStorage.getItem('is_going') || '2'
+    let is_joined = window.localStorage.getItem('is_joined') || '1'
     return (
       <div className="footer-buttons">
         <div>
-          <Row>
-            <Col span={24}>
-              <Alert message="您已选择" type="warning" />
-            </Col>
-          </Row>
           <Row >
-            <Col span={12}>
-              <Button size="large" style={{width: '95%'}} onClick={this.showSubmitModal}>确认投票</Button>
-              <Modal
-                title="确认提交"
-                wrapClassName="vertical-center-modal"
-                visible={this.state.visibleSubmit}
-                onOk={this.handleSubmitOk}
-                onCancel={this.handleSubmitCancel}
-              />
-            </Col>
-            <Col span={12}>
-              <Button size="large" style={{width: '95%'}} onClick={() => this.setModal2Visible(true)}>
-                分享
-              </Button>
-              <Modal
-                title="分享"
-                wrapClassName="vertical-center-modal"
-                visible={this.state.modal2Visible}
-                onOk={() => this.setModal2Visible(false)}
-                onCancel={() => this.setModal2Visible(false)}
-              >
-                <Share />
-              </Modal>
-            </Col>
+            {
+              is_going === '0' &&
+                  <Col span={22} offset={1}>
+                    <Button size="large" style={{width: '100%'}} onClick={() => this.setModal2Visible(true)}>
+                      分享
+                    </Button>
+                    <Modal
+                      title="分享"
+                      wrapClassName="vertical-center-modal"
+                      visible={this.state.modal2Visible}
+                      onOk={() => this.setModal2Visible(false)}
+                      onCancel={() => this.setModal2Visible(false)}
+                    >
+                      <Share />
+                    </Modal>
+                  </Col>
+            }
+            {
+              (is_going === '1' && is_joined === '0') &&
+              <div>
+                <Row>
+                  <Col span={24}>
+                    <Alert message="您已选择" type="warning" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={12}>
+                    <Button size="large" style={{width: '95%'}} onClick={this.showSubmitModal}>确认投票</Button>
+                    <Modal
+                      title="确认提交"
+                      wrapClassName="vertical-center-modal"
+                      visible={this.state.visibleSubmit}
+                      onOk={this.handleSubmitOk}
+                      onCancel={this.handleSubmitCancel}
+                    />
+                  </Col>
+                  <Col span={12}>
+                    <Button size="large" style={{width: '95%'}} onClick={() => this.setModal2Visible(true)}>
+                      分享
+                    </Button>
+                    <Modal
+                      title="分享"
+                      wrapClassName="vertical-center-modal"
+                      visible={this.state.modal2Visible}
+                      onOk={() => this.setModal2Visible(false)}
+                      onCancel={() => this.setModal2Visible(false)}
+                    >
+                      <Share />
+                    </Modal>
+                  </Col>
+                </Row>
+              </div>
+            }
+            {
+              (is_going === '1' && is_joined === '1') &&
+              <div>
+                <Row>
+                  <Col span={12}>
+                    <Button size="large" style={{width: '100%'}}>
+                      返回查看更多投票
+                    </Button>
+                  </Col>
+                  <Col span={12}>
+                    <Button size="large" style={{width: '95%'}} onClick={() => this.setModal2Visible(true)}>
+                      分享
+                    </Button>
+                    <Modal
+                      title="分享"
+                      wrapClassName="vertical-center-modal"
+                      visible={this.state.modal2Visible}
+                      onOk={() => this.setModal2Visible(false)}
+                      onCancel={() => this.setModal2Visible(false)}
+                    >
+                      <Share />
+                    </Modal>
+                  </Col>
+                </Row>
+              </div>
+            }
+            {
+              is_going === '2' &&
+              <Col span={22} offset={1}>
+                <Button size="large" style={{width: '100%'}}>
+                  返回查看更多投票
+                </Button>
+              </Col>
+            }
           </Row>
         </div>
         <Row>
-          <Col span={22} offset={1}>
-            <Button size="large" style={{width: '100%'}}>
-              返回查看更多投票
-            </Button>
-          </Col>
         </Row>
       </div>
     )

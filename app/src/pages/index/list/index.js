@@ -54,7 +54,6 @@ class Item extends Component {
     if (this.state.page > this.state.pages) {
       message.warning('已加载完所有投票')
     }
-
   }
 
   getFirstList = async () => {
@@ -131,21 +130,23 @@ class Item extends Component {
 
             </Row>
             <LineText text="历史投票" />
-            <Row>
-              {
-                this.state.List.map((item) => {
-                  if (item.flag === 2) {
-                    return (
-                      <List
-                        key={item.id}
-                        voteId={item.id}
-                        list={item}
-                      />
-                    )
-                  }
-                })
-              }
-            </Row>
+            <div className="history-wrapper">
+              <Row>
+                {
+                  this.state.List.map((item) => {
+                    if (item.flag === 2) {
+                      return (
+                        <List
+                          key={item.id}
+                          voteId={item.id}
+                          list={item}
+                        />
+                      )
+                    }
+                  })
+                }
+              </Row>
+            </div>
           </div>
         </Col>
       </div>
