@@ -63,7 +63,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [' ', '.js', '.jsx'],
+    extensions: [' ', '.js', '.jsx','.json'],
     alias: {
       'api': path.join(__dirname, '/app/src/api'),
       'components': path.join(__dirname, '/app/src/components'),
