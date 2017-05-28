@@ -37,7 +37,8 @@ class FooterButton extends Component {
   }
 
   handleSubmitOk = (e) => {
-    console.log(e)
+    e.preventDefault()
+    this.props.submitVoting()
     this.setState({
       visibleSubmit: false,
     })
@@ -138,7 +139,11 @@ class FooterButton extends Component {
                       onOk={() => this.setModal2Visible(false)}
                       onCancel={() => this.setModal2Visible(false)}
                     >
-                      <Share />
+                      <Share sites={['qzone', 'weibo', 'qq', 'wechat']}
+                             url="https://github.com/DawnyWu/react-share-buttons"
+                             title="react-share-buttons"
+                             description="一键分享到微博、QQ空间、QQ好友、微信、腾讯微博、豆瓣、Facebook、Twitter、Linkedin、Google+ 的 react 组件"
+                      />
                     </Modal>
                   </Col>
                 </Row>

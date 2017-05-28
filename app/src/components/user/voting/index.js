@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Tag, Col, Row, Radio, Checkbox, InputNumber, Form } from 'antd'
+import { Tag, Col, Row, Radio, Checkbox, InputNumber, Form, message } from 'antd'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 
@@ -16,8 +16,9 @@ class Voting extends Component {
   state = {
     voteId: this.props.location.query.voteid,
     flag: this.props.location.query.flag,
+    optionId: 1,
     title: '投票',
-    value: 1,
+    valueSingle: 1,
     type: 2,
     modal1Visible: false,
     modal2Visible: false,
@@ -25,21 +26,22 @@ class Voting extends Component {
     endTime: getLocalTime(2494583718),
     options: [],
     score: [],
-    isGoing:this.props.location.query.flag,
-    isJoined:'0'
+    isGoing: this.props.location.query.flag,
+    isJoined: '0',
+    valueDouble: [],
   }
 
   onSingleChange = (e) => {
     console.log('radio checked', e.target.value)
     this.setState({
-      value: e.target.value,
+      valueSingle: e.target.value,
     })
   }
 
   onDoubleChange = (checkedValues) => {
     console.log('checked = ', checkedValues)
     this.setState({
-      value: checkedValues,
+      valueDouble: checkedValues,
     })
   }
 
@@ -54,28 +56,83 @@ class Voting extends Component {
             options: json.options,
             startTime: getLocalTime(json.voteShow.startTime / 1000),
             endTime: getLocalTime(json.voteShow.endTime / 1000),
+            optionId: json.options[0].id
           })
-          if(this.state.flag===0){
+          if (this.state.flag === 0) {
             this.setState({
-              isGoing:'0'
+              isGoing: '0'
             })
           }
-          if(this.state.flag===1){
+          if (this.state.flag === 1) {
             this.setState({
-              isGoing:'1',
-              isJoined:'0'
+              isGoing: '1',
+              isJoined: '0'
             })
           }
-          if(this.state.flag===2){
+          if (this.state.flag === 2) {
             this.setState({
-              isGoing:'2',
-              isJoined:'0'
+              isGoing: '2',
+              isJoined: '0'
             })
           }
         })
     } catch (e) {
       console.log(e)
     }
+  }
+
+  submitVoting = () => {
+    this.props.form.validateFields(async (err, values) => {
+      if (!err) {
+        let records = []
+        if (this.state.type === 1) {
+          records.push({
+            'optionId': this.state.valueSingle,
+            'voteId': parseInt(this.props.location.query.voteid),
+            'type': this.state.type
+          })
+        }
+        if (this.state.type === 2) {
+          this.state.valueDouble.forEach(key => {
+            let item =
+              {
+                'optionId': key,
+                'voteId': parseInt(this.props.location.query.voteid),
+                'type': this.state.type
+              }
+            records.push(item)
+          })
+        }
+        if (this.state.type === 3 || this.state.type === 4) {
+          Object.keys(values).forEach(key => {
+            let item =
+              {
+                'optionId': this.state.optionId++,
+                'voteId': parseInt(this.props.location.query.voteid),
+                'type': this.state.type,
+                'value': values[key]
+              }
+            records.push(item)
+          })
+          let body = {
+            'records': records
+          }
+          this.setState({
+            body: body
+          })
+        }
+        console.log(this.state.body)
+        try {
+          await Request.tpostUser(API.submitVote.replace(/:voteId/, this.props.location.query.voteid), {records: records})
+          this.setState({
+            isJoined: '1'
+          })
+        } catch (e) {
+          message.error(e)
+        }
+      }
+    })
+
   }
 
   componentDidMount () {
@@ -125,7 +182,7 @@ class Voting extends Component {
                 </Col>
                 <Col span={4}>
                   <FormItem>
-                    { getFieldDecorator('value-${index}')(
+                    { getFieldDecorator(`value-${index}`)(
                       <InputNumber
                         min={0}
                         max={type === 3 ? 10 : 100}
@@ -167,7 +224,7 @@ class Voting extends Component {
               <h4 style={{margin: 0}}>{this.state.startTime} &nbsp; 到 &nbsp; {this.state.endTime}</h4>
             </Col>
           </Row>
-          <div style={{marginLeft: '15vw',marginBottom: '100px'}}>
+          <div style={{marginLeft: '15vw', marginBottom: '100px'}}>
             { type === 1 ? <RadioGroup onChange={this.onSingleChange}>
               {
                 formItems
@@ -178,15 +235,15 @@ class Voting extends Component {
               {
                 formItems
               }
-            </Checkbox.Group> : null
+            </Checkbox.Group>
+              : null
             }
             {
-              type === 3 || type === 4 ?
-                  formItems
+              type === 3 || type === 4 ? formItems
                 : null
             }
           </div>
-          <FooterButton isGoing={this.state.isGoing} isJoined={this.state.isJoined}/>
+          <FooterButton isGoing={this.state.isGoing} isJoined={this.state.isJoined} submitVoting={this.submitVoting} />
         </div>
       </Form>
     )

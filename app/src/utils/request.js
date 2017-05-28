@@ -102,6 +102,17 @@ export function tpost (url, body, headers = {}) {
   return request(url, 'POST', headers, body)
 }
 
+export function tpostUser (url, body, headers = {}) {
+  if (!headers['Content-type']) {
+    headers['Content-type'] = 'application/json'
+  }
+  headers = {
+    ...headers,
+    token: getUserToken()
+  }
+  return request(url, 'POST', headers, body)
+}
+
 export function verify (url, body, headers = {}) {
   if (!headers['Content-type']) {
     headers['Content-type'] = 'application/json'

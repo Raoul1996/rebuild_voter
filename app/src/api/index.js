@@ -32,6 +32,7 @@ export default {
   info: voteApiMaker('all?page=pnum&rows=rnum'),
   haveVote: voteApiMaker('haveVoted'),
   voteInfo:voteApiMaker('info?voteId=voteid'),
+  submitVote: voteApiMaker(':voteId/submit'),
 
   // admin
   changeVisibility: adminApiMaker(':voteId/changeVisibility'),
