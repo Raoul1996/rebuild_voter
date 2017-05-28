@@ -12,6 +12,7 @@ function filterStatus (json) {
   } else if (json.code === 20001 || json.code === 20002) {
     return json
   } else {
+    console.log(json.code)
     throw new Error('ResponseUnexpected', codeHelper(json.code))
   }
 }
@@ -41,7 +42,7 @@ export async function request (url, type = 'GET', headers = {}, body = {}) {
     method: type,
     headers
   }
-  if (type === 'POST'|| type === 'PUT') {
+  if (type === 'POST' || type === 'PUT') {
     fetchOption.body = JSON.stringify(body)
   }
   const res = await fetch(url, fetchOption)
@@ -58,7 +59,7 @@ export async function request (url, type = 'GET', headers = {}, body = {}) {
  * @param headers 请求头部
  * @returns {*}
  */
-export function get (url, params, headers) {
+export function get (url, params = '', headers = {}) {
   if (params) {
     url = parseParams(url, params)
   }

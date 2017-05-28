@@ -38,7 +38,8 @@ class ShowList extends Component {
         <div className="list-item-wrapper">
           <Card onClick={this.changeState}>
             <Link className='link' to={urlEncoder('users/vote', {
-              'voteId': this.props.voteId
+              'voteid': this.props.voteId,
+              'flag': list.flag+1
             })}>
               <div className="item-title">
                 <h3>{limitStringNum(list.title)}</h3>

@@ -40,8 +40,6 @@ class ScoreRes extends Component {
             optionValue: json.optionValue,
             participatorNum: json.participatorNum
           })
-          // console.log('getRecord')
-          // console.log(json.optionValue)
           data = this.state.optionValue.map(function(item, index){
             const {id, sum, title, voteRecords} = item
             return ({
@@ -74,19 +72,6 @@ class ScoreRes extends Component {
       { title: '选项序号', width: 100, dataIndex: 'id', key: 'id' },
       { title: '选项内容', width: 100, dataIndex: 'content', key: 'content' }
     ]
-    // let scoreNum = this.state.optionValue
-    // scoreNum.forEach((item, index) => {
-    //   columns.push(
-    //     {
-    //       title: `#${index + 1}`,
-    //       render: (record) => {
-    //         return <span>{record.value[index]}</span>
-    //       },
-    //       key: `score${index + 1}`,
-    //       width: 40
-    //     },
-    //   )
-    // })
     for (let index = 0; index < this.state.participatorNum; index++ ) {
       columns.push(
         {
@@ -102,44 +87,6 @@ class ScoreRes extends Component {
     columns.push(
       { title: '合计', key: 'sum', dataIndex: 'sum' ,width: 50 }
     )
-    // this.state.data = [{
-    //   key: '1',
-    //   id: 'John Brown',
-    //   content: 'abc',
-    //   score: '1',
-    //   sum: '100',
-    //   value:[9,8,7,6]
-    // }, {
-    //   key: '2',
-    //   id: 'Jim Green',
-    //   content: 'asd',
-    //   score: '2',
-    //   sum: '101',
-    //   value:[9,8,7,6]
-    // }, {
-    //   key: '3',
-    //   id: 'Jim Green',
-    //   content: 'asdf',
-    //   score: '3',
-    //   sum: '104',
-    //   value:[9,8,7,6]
-    // }, {
-    //   key: '4',
-    //   id: 'Jim Green',
-    //   content: 'asdfsa',
-    //   score: '0',
-    //   sum: '132',
-    //   value:[9,8,7,6]
-    // }, {
-    //   key: '5',
-    //   id: 'Jim Green',
-    //   content: 'asdfsafasf',
-    //   score: '9',
-    //   sum: '200',
-    //   value:[9,8,7,6]
-    // },
-    // ]
-
     return (
       <Row>
         <Card className="score-wrapper">

@@ -11,48 +11,54 @@ function getLocalTime (nS) {
   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年 | 月/g, '-').replace(/日/g, ' ')
 }
 
-function onChange (checkedValues) {
-  console.log('checked = ', checkedValues)
-}
+
 
 class Voting extends Component {
   state = {
+    voteId: this.props.location.query.voteid,
+    flag: this.props.location.query.flag-1,
+    title: '投票',
     value: 1,
     type: 2,
     modal1Visible: false,
     modal2Visible: false,
-    StartTime: getLocalTime(1494583700),
-    EndTime: getLocalTime(1494583718),
-    options: {},
-    title: 'Test41213121412313230rt12312312r12wq',
-    startTime: 1495488808,
-    endTime: 1496700366099,
-    flag: 0,
-    max: 4
+    startTime: getLocalTime(2494583700),
+    endTime: getLocalTime(2494583718),
+    options: [],
+  }
+  onChange = (checkedValues) => {
+    console.log('checked = ', checkedValues)
   }
   onSingleChange = (e) => {
-    console.log('radio checked', e.target.value)
+    console.log(e.target.value)
     this.setState({
       value: e.target.value,
     })
   }
-
-  setModal2Visible (modal2Visible) {
-    this.setState({modal2Visible})
+  setModal2Visible(modal2Visible) {
+    this.setState({ modal2Visible });
   }
-
   onDoubleChange = (checkedValues) => {
     console.log('checked = ', checkedValues)
   }
 
   getVoting = async () => {
-    let data = await Request.get(API.voteInfo.replace(/voteid/, this.props.location.query.voteId))
-    console.log(data)
-    this.setState({
-      options: data.options,
-      voteShow: data.voteShow
-    })
-    console.log(this.state)
+    try {
+      await Request.get(API.voteInfo.replace(/voteid/, this.state.voteId), '', {})
+        .then( (json) => {
+          console.log(json)
+          this.setState({
+            title: json.voteShow.title,
+            type: json.voteShow.type,
+            options: json.options,
+            startTime: getLocalTime(json.voteShow.startTime / 1000 ),
+            endTime: getLocalTime(json.voteShow.endTime / 1000 ),
+          })
+          console.log(this.state)
+        })
+      } catch (e) {
+      console.log(e)
+    }
   }
 
   componentDidMount () {
@@ -73,67 +79,60 @@ class Voting extends Component {
       marginTop: '1rem',
       fontSize: '0.6rem'
     }
-
-    const Single = (
-      <Row style={MarginStyle}>
-        <Col>
-          <Row>
-            <Col>
-              <h3>选项1</h3>
-            </Col>
-            <Col>
-              <Radio style={radioStyle} value={1}>Option A</Radio>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    )
-
-    const Double = (
-      <Row style={MarginStyle}>
-        <Col>
+    const status = [
+      <Tag>未开始</Tag>,
+      <Tag color="#87d068">进行中</Tag>,
+      <Tag color="#f50">已结束</Tag>,
+    ]
+    const type = this.state.type
+    const formItems = this.state.options.map((item, index) => {
+      return (
+        <Row style={MarginStyle}>
           <Col>
-            <h3>选项1</h3>
-          </Col>
-          <Col style={MarginStyle}>
-            <Checkbox value="A">A</Checkbox>
-          </Col>
-        </Col>
-      </Row>
-    )
+            <Row style={MarginStyle}>
+              <Col>
+                <h3>选项{index+1}</h3>
+              </Col>
+              { type === 1 ?
+                <Col>
+                  <Radio style={radioStyle} value={index+1} onChange={this.onSingleChange}>{item.title}</Radio>
+                </Col> : null
+              }
+              { type === 2 ?
+                <Col style={MarginStyle}>
+                  <Checkbox value={index+1}>{item.title}</Checkbox>
+                </Col> : null
+              }
+              { type === 3 || type === 4 ?
+                <Row>
+                  <Col span={18} style={MarginStyle}>
+                    <h4>{item.title}</h4>
+                  </Col>
+                  <Col span={4} offset={2}>
+                    <InputNumber />
+                  </Col>
+                </Row> : null
+              }
 
-    const Score = (
-      <Row style={MarginStyle}>
-        <Col>
-          <Row style={MarginStyle}>
-            <Col>
-              <h3>选项1</h3>
-            </Col>
-            <Row>
-              <Col span={18} style={MarginStyle}>
-                <h4>XXXXXXXXXXXXXXXX</h4>
-              </Col>
-              <Col span={4} offset={2}>
-                <InputNumber />
-              </Col>
             </Row>
-          </Row>
-        </Col>
-      </Row>
-    )
+          </Col>
+        </Row>
+      )
+    })
+
     return (
       <div>
         <Logo text="不洗碗工作室" />
         <Row style={MarginStyle}>
           <Col {...GlobalOffsetSpan}>
-            <h2>投票应用</h2>
+            <h2>{this.state.title}</h2>
           </Col>
         </Row>
         <Row style={MarginStyle}>
           <Col {...GlobalOffsetSpan}>
-            <Tag color="#f50">已结束</Tag>
-            <Tag>未开始</Tag>
-            <Tag color="#87d068">进行中</Tag>
+            {
+              status[this.state.flag]
+            }
           </Col>
         </Row>
         <Row style={MarginStyle}>
@@ -143,13 +142,28 @@ class Voting extends Component {
         </Row>
         <Row style={MarginStyle}>
           <Col {...GlobalOffsetSpan}>
-            <h4 style={{margin: 0}}>{this.state.StartTime} &nbsp; 到 &nbsp; {this.state.EndTime}</h4>
+            <h4 style={{margin: 0}}>{this.state.startTime} &nbsp; 到 &nbsp; {this.state.endTime}</h4>
           </Col>
         </Row>
         <div style={{marginLeft: '15vw'}}>
-          <RadioGroup onChange={onChange}>
-            { this.state.type === 1 ? Single : (this.state.type === 2 ? Double : Score)}
-          </RadioGroup>
+          { type === 1 ?
+            <RadioGroup onChange={this.onChange}>
+              {
+                formItems
+              }
+            </RadioGroup> : null
+          }
+          { type === 2 ?
+            <Checkbox.Group onChange={this.onChange}>
+              {
+                formItems
+              }
+            </Checkbox.Group> : null
+          }
+          {/*{*/}
+            {/*type === 3 || type === 4 ?*/}
+
+          {/*}*/}
         </div>
         <FooterButton />
         {/*<Share />*/}
@@ -157,5 +171,6 @@ class Voting extends Component {
     )
   }
 }
+
 
 export default Voting
