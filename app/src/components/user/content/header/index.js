@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Icon } from 'antd'
+import { Icon } from 'antd'
 import './index.less'
 
 class Headers extends Component {
@@ -16,7 +16,6 @@ class Headers extends Component {
           </div>
           <div className="header-content header-item">投票系统</div>
           <div className="header-more header-item">
-            <Icon type="ellipsis" />
           </div>
         </div>
       </div>

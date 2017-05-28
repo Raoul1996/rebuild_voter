@@ -1,22 +1,21 @@
 import React, { Component } from 'react'
-import { Tag, Col, Row, Radio, Checkbox, InputNumber, Button, Modal } from 'antd'
+import { Tag, Col, Row, Radio, Checkbox, InputNumber, Form } from 'antd'
 const RadioGroup = Radio.Group
+const FormItem = Form.Item
 
 import FooterButton from './footerbutton'
 import * as Request from '../../../utils/request'
 import API from '../../../api'
 import Logo from '../content/lineText/index'
-import Share from '../share'
+
 function getLocalTime (nS) {
   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年 | 月/g, '-').replace(/日/g, ' ')
 }
 
-
-
 class Voting extends Component {
   state = {
     voteId: this.props.location.query.voteid,
-    flag: this.props.location.query.flag-1,
+    flag: this.props.location.query.flag,
     title: '投票',
     value: 1,
     type: 2,
@@ -25,38 +24,56 @@ class Voting extends Component {
     startTime: getLocalTime(2494583700),
     endTime: getLocalTime(2494583718),
     options: [],
+    score: [],
+    isGoing:this.props.location.query.flag,
+    isJoined:'0'
   }
-  onChange = (checkedValues) => {
-    console.log('checked = ', checkedValues)
-  }
+
   onSingleChange = (e) => {
-    console.log(e.target.value)
+    console.log('radio checked', e.target.value)
     this.setState({
       value: e.target.value,
     })
   }
-  setModal2Visible(modal2Visible) {
-    this.setState({ modal2Visible });
-  }
+
   onDoubleChange = (checkedValues) => {
     console.log('checked = ', checkedValues)
+    this.setState({
+      value: checkedValues,
+    })
   }
 
   getVoting = async () => {
     try {
       await Request.get(API.voteInfo.replace(/voteid/, this.state.voteId), '', {})
-        .then( (json) => {
+        .then((json) => {
           console.log(json)
           this.setState({
             title: json.voteShow.title,
             type: json.voteShow.type,
             options: json.options,
-            startTime: getLocalTime(json.voteShow.startTime / 1000 ),
-            endTime: getLocalTime(json.voteShow.endTime / 1000 ),
+            startTime: getLocalTime(json.voteShow.startTime / 1000),
+            endTime: getLocalTime(json.voteShow.endTime / 1000),
           })
-          console.log(this.state)
+          if(this.state.flag===0){
+            this.setState({
+              isGoing:'0'
+            })
+          }
+          if(this.state.flag===1){
+            this.setState({
+              isGoing:'1',
+              isJoined:'0'
+            })
+          }
+          if(this.state.flag===2){
+            this.setState({
+              isGoing:'2',
+              isJoined:'0'
+            })
+          }
         })
-      } catch (e) {
+    } catch (e) {
       console.log(e)
     }
   }
@@ -66,6 +83,7 @@ class Voting extends Component {
   }
 
   render () {
+    const {getFieldDecorator} = this.props.form
     const radioStyle = {
       display: 'block',
       height: '30px',
@@ -87,33 +105,36 @@ class Voting extends Component {
     const type = this.state.type
     const formItems = this.state.options.map((item, index) => {
       return (
-        <Row style={MarginStyle}>
+        <Row style={MarginStyle} key={item.id}>
           <Col>
             <Row style={MarginStyle}>
               <Col>
-                <h3>选项{index+1}</h3>
+                <h3>选项{index + 1}</h3>
               </Col>
-              { type === 1 ?
-                <Col>
-                  <Radio style={radioStyle} value={index+1} onChange={this.onSingleChange}>{item.title}</Radio>
-                </Col> : null
+              { type === 1 ? <Col>
+                <Radio style={radioStyle} value={item.id}>{item.title}</Radio>
+              </Col> : null
               }
-              { type === 2 ?
-                <Col style={MarginStyle}>
-                  <Checkbox value={index+1}>{item.title}</Checkbox>
-                </Col> : null
+              { type === 2 ? <Col style={MarginStyle}>
+                <Checkbox value={item.id}>{item.title}</Checkbox>
+              </Col> : null
               }
-              { type === 3 || type === 4 ?
-                <Row>
-                  <Col span={18} style={MarginStyle}>
-                    <h4>{item.title}</h4>
-                  </Col>
-                  <Col span={4} offset={2}>
-                    <InputNumber />
-                  </Col>
-                </Row> : null
+              { type === 3 || type === 4 ? <Row>
+                <Col span={15} style={MarginStyle}>
+                  <h4>{item.title}</h4>
+                </Col>
+                <Col span={4}>
+                  <FormItem>
+                    { getFieldDecorator('value-${index}')(
+                      <InputNumber
+                        min={0}
+                        max={type === 3 ? 10 : 100}
+                      />
+                    )}
+                  </FormItem>
+                </Col>
+              </Row> : null
               }
-
             </Row>
           </Col>
         </Row>
@@ -121,56 +142,55 @@ class Voting extends Component {
     })
 
     return (
-      <div>
-        <Logo text="不洗碗工作室" />
-        <Row style={MarginStyle}>
-          <Col {...GlobalOffsetSpan}>
-            <h2>{this.state.title}</h2>
-          </Col>
-        </Row>
-        <Row style={MarginStyle}>
-          <Col {...GlobalOffsetSpan}>
-            {
-              status[this.state.flag]
-            }
-          </Col>
-        </Row>
-        <Row style={MarginStyle}>
-          <Col {...GlobalOffsetSpan}>
-            <h4>投票时间:</h4>
-          </Col>
-        </Row>
-        <Row style={MarginStyle}>
-          <Col {...GlobalOffsetSpan}>
-            <h4 style={{margin: 0}}>{this.state.startTime} &nbsp; 到 &nbsp; {this.state.endTime}</h4>
-          </Col>
-        </Row>
-        <div style={{marginLeft: '15vw'}}>
-          { type === 1 ?
-            <RadioGroup onChange={this.onChange}>
+      <Form>
+        <div>
+          <Logo text="不洗碗工作室" />
+          <Row style={MarginStyle}>
+            <Col {...GlobalOffsetSpan}>
+              <h2>{this.state.title}</h2>
+            </Col>
+          </Row>
+          <Row style={MarginStyle}>
+            <Col {...GlobalOffsetSpan}>
+              {
+                status[this.state.flag]
+              }
+            </Col>
+          </Row>
+          <Row style={MarginStyle}>
+            <Col {...GlobalOffsetSpan}>
+              <h4>投票时间:</h4>
+            </Col>
+          </Row>
+          <Row style={MarginStyle}>
+            <Col {...GlobalOffsetSpan}>
+              <h4 style={{margin: 0}}>{this.state.startTime} &nbsp; 到 &nbsp; {this.state.endTime}</h4>
+            </Col>
+          </Row>
+          <div style={{marginLeft: '15vw',marginBottom: '100px'}}>
+            { type === 1 ? <RadioGroup onChange={this.onSingleChange}>
               {
                 formItems
               }
             </RadioGroup> : null
-          }
-          { type === 2 ?
-            <Checkbox.Group onChange={this.onChange}>
+            }
+            { type === 2 ? <Checkbox.Group onChange={this.onDoubleChange}>
               {
                 formItems
               }
             </Checkbox.Group> : null
-          }
-          {/*{*/}
-            {/*type === 3 || type === 4 ?*/}
-
-          {/*}*/}
+            }
+            {
+              type === 3 || type === 4 ?
+                  formItems
+                : null
+            }
+          </div>
+          <FooterButton isGoing={this.state.isGoing} isJoined={this.state.isJoined}/>
         </div>
-        <FooterButton />
-        {/*<Share />*/}
-      </div>
+      </Form>
     )
   }
 }
-
-
-export default Voting
+const WrappedVoting = Form.create()(Voting)
+export default WrappedVoting

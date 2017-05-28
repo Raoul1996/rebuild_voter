@@ -2,7 +2,8 @@
  * Created by Pororo on 17/5/14.
  */
 import React, { Component } from 'react'
-import { Col, Row, Button, Alert, Popconfirm, message, Modal } from 'antd'
+import { Col, Row, Button, Alert, message, Modal } from 'antd'
+import Goto from '../../../../utils/goto'
 import './index.less'
 import Share from '../../share'
 function confirm () {
@@ -18,6 +19,11 @@ class FooterButton extends Component {
       visibleSubmit: false,
       modal2Visible: false,
     }
+  }
+
+  watchMore = () => {
+    Goto('users/list')
+    window.localStorage.setItem('is_vote', '0')
   }
 
   setModal2Visible (modal2Visible) {
@@ -43,22 +49,14 @@ class FooterButton extends Component {
     })
   }
 
-  componentDidMount () {
-    let vote = window.localStorage.getItem('is_vote') || '0'
-    this.setState({
-      is_vote: vote
-    })
-  }
-
   render () {
-    let is_going = window.localStorage.getItem('is_going') || '1'
-    let is_joined = window.localStorage.getItem('is_joined') || '0'
+    const {isGoing,isJoined} = this.props
     return (
       <div className="footer-buttons">
         <div>
           <Row >
             {
-              is_going === '0' &&
+              isGoing === '0' &&
               <Col span={22} offset={1}>
                 <Button size="large" style={{width: '100%'}} onClick={() => this.setModal2Visible(true)}>
                   分享
@@ -80,7 +78,7 @@ class FooterButton extends Component {
               </Col>
             }
             {
-              (is_going === '1' && is_joined === '0') &&
+              (isGoing === '1' && isJoined === '0') &&
               <div>
                 <Row>
                   <Col span={24}>
@@ -121,11 +119,11 @@ class FooterButton extends Component {
               </div>
             }
             {
-              (is_going === '1' && is_joined === '1') &&
+              (isGoing === '1' && isJoined === '1') &&
               <div>
                 <Row>
                   <Col span={12}>
-                    <Button size="large" style={{width: '100%'}}>
+                    <Button size="large" style={{width: '100%'}} onClick={this.watchMore}>
                       返回查看更多投票
                     </Button>
                   </Col>
@@ -147,9 +145,9 @@ class FooterButton extends Component {
               </div>
             }
             {
-              is_going === '2' &&
+              isGoing === '2' &&
               <Col span={22} offset={1}>
-                <Button size="large" style={{width: '100%'}}>
+                <Button size="large" style={{width: '100%'}} onClick={this.watchMore}>
                   返回查看更多投票
                 </Button>
               </Col>

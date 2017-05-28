@@ -18,15 +18,16 @@ class MsgList extends Component {
     super(props)
     this.state = {
       visible: false,
-      gender: window.localStorage.getItem('sex') || 'male',
-      mobile:window.localStorage.getItem('mobile') || '',
-      flag: 0
+      gender: 2,
+      mobile: window.localStorage.getItem('mobile') || ''
     }
     this.changeSex = this.changeSex.bind(this)
   }
 
   changeSex (e) {
-    this.state.gender = e.target.value
+    this.setState({
+      gender:e.target.value
+    })
   }
 
   showModal = () => {
@@ -35,9 +36,8 @@ class MsgList extends Component {
     })
   }
   handleOk = async () => {
-    if (this.state.flag < 10) {
       const body = {
-        newSex: this.state.gender
+        newSex: this.state.gender===1?'male':'female'
       }
       try {
         await Request.uput(API.changeSex, body)
@@ -45,7 +45,6 @@ class MsgList extends Component {
       } catch (e) {
         message.error('修改性别失败')
       }
-    }
     setTimeout(() => {
       this.setState({
         visible: false,
@@ -76,11 +75,10 @@ class MsgList extends Component {
           <Form>
             <FormItem
               {...formItemLayout}
-              label=""
             >
-              <RadioGroup>
-                <Radio value="male">男</Radio>
-                <Radio value="female">女</Radio>
+              <RadioGroup onChange={this.changeSex} value={this.state.gender}>
+                <Radio value={1}>男</Radio>
+                <Radio value={2}>女</Radio>
               </RadioGroup>
             </FormItem>
           </Form>
@@ -88,7 +86,7 @@ class MsgList extends Component {
         <Logo text="不洗碗工作室" />
         <MsgListItem label="手机号" text={this.state.mobile} />
         <div onClick={this.showModal}>
-          <MsgListItem label="性别" text={this.state.gender} />
+          <MsgListItem label="性别" text={this.state.gender === 1? '男':'女'} />
         </div>
         <Link to="/users/change-mobile" className="change-mobile">更改绑定手机</Link>
       </div>
