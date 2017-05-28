@@ -22,7 +22,13 @@ class Voting extends Component {
     modal1Visible: false,
     modal2Visible: false,
     StartTime: getLocalTime(1494583700),
-    EndTime: getLocalTime(1494583718)
+    EndTime: getLocalTime(1494583718),
+    options: {},
+    title: 'Test41213121412313230rt12312312r12wq',
+    startTime: 1495488808,
+    endTime: 1496700366099,
+    flag: 0,
+    max: 4
   }
   onSingleChange = (e) => {
     console.log('radio checked', e.target.value)
@@ -30,16 +36,23 @@ class Voting extends Component {
       value: e.target.value,
     })
   }
-  setModal2Visible(modal2Visible) {
-    this.setState({ modal2Visible });
+
+  setModal2Visible (modal2Visible) {
+    this.setState({modal2Visible})
   }
+
   onDoubleChange = (checkedValues) => {
     console.log('checked = ', checkedValues)
   }
 
-  getVoting=async ()=>{
-    let data = await Request.get(API.singleInfo.replace(/:voteId/, this.props.location.query.voteId))
+  getVoting = async () => {
+    let data = await Request.get(API.voteInfo.replace(/voteid/, this.props.location.query.voteId))
     console.log(data)
+    this.setState({
+      options: data.options,
+      voteShow: data.voteShow
+    })
+    console.log(this.state)
   }
 
   componentDidMount () {

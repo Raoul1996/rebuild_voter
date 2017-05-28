@@ -97,13 +97,13 @@ class Item extends Component {
   }
 
   render () {
-
+    let mobile = window.localStorage.getItem('mobile')
     return (
       <div className="show-list-wrapper">
         <Col span={23} offset={1}>
           <Link to="/users/change">
             <div className="msg-bar">
-              <MsgListComponent label="手机号" text="15012321234" />
+              <MsgListComponent label="手机号" text={mobile} />
             </div>
           </Link>
           <Logo text="不洗碗工作室" />

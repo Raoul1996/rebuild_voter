@@ -1,18 +1,12 @@
 // User
-// const __APIUSER__ = 'http://192.168.1.217:8080/user'
-// const __APIUSER__ = 'http://192.168.1.219:8080/user'
 const __APIUSER__ = 'http://123.207.171.244:8080/voter/user'
-// const __APIUSER__ = 'http://api.raoul1996.cn/api'
-// const __APIUSER__ = 'http://localhost:3000/api'
-
-
 
 // Vote
 const __APIVOTE__ = 'http://123.207.171.244:8080/voter/vote'
-// const __APIVOTE__ = 'http://192.168.1.217:8080/vote'
+
 // Admin
 const __APIADMIN__ = 'http://123.207.171.244:8080/voter/admin'
-// const __APIADMIN__ = 'http://192.168.1.219:8080/admin'
+
 
 const userApiMaker = (path) => {
   return `${__APIUSER__}/${path}`

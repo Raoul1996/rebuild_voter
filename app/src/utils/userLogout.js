@@ -1,8 +1,7 @@
 'use strict'
-
+import Goto from '../utils/goto'
 const targetPath = '/users/login'
-import {browserHistory} from 'react-router'
 export default () => {
   window.localStorage.clear()
-  browserHistory.push(targetPath)
+  Goto(targetPath)
 }

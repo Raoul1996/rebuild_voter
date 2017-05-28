@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-simple-boilerplate",
+  "name": "vote-application",
   "version": "1.0.0",
-  "description": "没那么难的 React-Redux脚手架",
+  "description": "投票应用",
   "main": "app/src/main.js",
   "scripts": {
     "build": "webpack  --progress --config webpack.production.config.js",
@@ -14,11 +14,7 @@
     "normalize.css": "^5.0.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-redux": "^5.0.3",
     "react-router": "^2.4.0",
-    "redux": "^3.6.0",
-    "redux-log": "^2.0.0",
-    "redux-thunk": "^2.1.0",
     "whatwg-fetch": "^1.0.0",
     "es6-promise": "^3.2.1"
   },
@@ -58,5 +54,5 @@
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
   },
-  "author": "NEUQer/ouxu"
+  "author": "NEUQer"
 }

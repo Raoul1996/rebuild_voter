@@ -1,16 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import RouterApp from './router'
 
-//引入redux
-import {Provider} from 'react-redux';
-import configStore from './stores';
-const store = configStore();
-import RouterApp from './router';
-
-
-ReactDOM.render(
-    <Provider store={store}>
-        {RouterApp}
-    </Provider>,
-    document.getElementById('app')
-);
+ReactDOM.render(<RouterApp/>, document.getElementById('app'))

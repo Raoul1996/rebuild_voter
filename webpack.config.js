@@ -57,12 +57,9 @@ module.exports = {
   resolve: {
     extensions: [' ', '.js', '.jsx'],
     alias: {
-      'actions': path.join(__dirname, '/app/src/actions'),
       'api': path.join(__dirname, '/app/src/api'),
       'components': path.join(__dirname, '/app/src/components'),
-      'containers': path.join(__dirname, '/app/src/containers'),
       'images': path.join(__dirname, '/app/src/images'),
-      'reducers': path.join(__dirname, '/app/src/reducers'),
       'utils': path.join(__dirname, '/app/src/utils')
     }
   },
