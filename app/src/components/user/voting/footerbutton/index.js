@@ -51,28 +51,29 @@ class FooterButton extends Component {
   }
 
   render () {
-    let is_going = window.localStorage.getItem('is_going') || '2'
-    let is_joined = window.localStorage.getItem('is_joined') || '1'
+    let is_going = window.localStorage.getItem('is_going') || '1'
+    let is_joined = window.localStorage.getItem('is_joined') || '0'
     return (
       <div className="footer-buttons">
         <div>
           <Row >
             {
               is_going === '0' &&
-                  <Col span={22} offset={1}>
-                    <Button size="large" style={{width: '100%'}} onClick={() => this.setModal2Visible(true)}>
-                      分享
-                    </Button>
-                    <Modal
-                      title="分享"
-                      wrapClassName="vertical-center-modal"
-                      visible={this.state.modal2Visible}
-                      onOk={() => this.setModal2Visible(false)}
-                      onCancel={() => this.setModal2Visible(false)}
-                    >
-                      <Share />
-                    </Modal>
-                  </Col>
+              <Col span={22} offset={1}>
+                <Button size="large" style={{width: '100%'}} onClick={() => this.setModal2Visible(true)}>
+                  分享
+                </Button>
+                <Modal
+                  title="分享"
+                  wrapClassName="vertical-center-modal"
+                  visible={this.state.modal2Visible}
+                  onOk={() => this.setModal2Visible(false)}
+                  onCancel={() => this.setModal2Visible(false)}
+                  footer={null}
+                >
+                  <Share />
+                </Modal>
+              </Col>
             }
             {
               (is_going === '1' && is_joined === '0') &&
@@ -103,6 +104,7 @@ class FooterButton extends Component {
                       visible={this.state.modal2Visible}
                       onOk={() => this.setModal2Visible(false)}
                       onCancel={() => this.setModal2Visible(false)}
+                      footer={null}
                     >
                       <Share />
                     </Modal>

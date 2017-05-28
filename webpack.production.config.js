@@ -33,6 +33,13 @@ module.exports = {
         })
       },
       {
+        test: /\.scss/,
+        loaders:  ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['style-loader', 'css-loader', 'sass-loader']
+        })
+      },
+      {
         test: /\.less/,
         loaders: ExtractTextPlugin.extract({
           fallback: 'style-loader',

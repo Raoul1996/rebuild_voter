@@ -47,10 +47,18 @@ module.exports = {
         loaders: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader']
       },
       {
-        test: /\.(png|jpg|gif|woff|woff2|svg|eot|ttf|woff)$/,
+        test: /\.scss/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
         loaders: [
           'url-loader?limit=10000&name=[hash:8].[name].[ext]'
         ]
+      },
+      {
+        test: /\.(ttf|eot|svg|woff(2)?)(\?.*$|$)/,
+        loader: 'file-loader'
       }
     ]
   },

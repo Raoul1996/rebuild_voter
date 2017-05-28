@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import _ from 'lodash'
-import './css/share.less'
+import './css/share.sass'
 import QRCode from 'qrcode.react'
 
 const propTypes = {
