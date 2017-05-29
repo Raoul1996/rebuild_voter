@@ -303,7 +303,7 @@ class Create extends Component {
                     <FormItem {...formItemLayoutWithOutLabel}>
                       <Col span={20} offset={5}>
                         <Button type="primary" htmlType="submit" size="large" style={{marginRight: '20px'}}>新建</Button>
-                        <Link to="admin">
+                        <Link to="admin/filter-list">
                           <Button size="large">返回</Button>
                         </Link>
                       </Col>

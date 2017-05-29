@@ -6,7 +6,6 @@ const FormItem = Form.Item
 import FooterButton from './footerbutton'
 import * as Request from '../../../utils/request'
 import API from '../../../api'
-import Logo from '../content/lineText/index'
 
 function getLocalTime (nS) {
   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年 | 月/g, '-').replace(/日/g, ' ')
@@ -15,7 +14,7 @@ function getLocalTime (nS) {
 class Voting extends Component {
   state = {
     voteId: this.props.location.query.voteid,
-    flag: this.props.location.query.flag,
+    flag: this.props.location.query.flag-1,
     optionId: 1,
     title: '投票',
     valueSingle: 1,
@@ -26,7 +25,7 @@ class Voting extends Component {
     endTime: getLocalTime(2494583718),
     options: [],
     score: [],
-    isGoing: this.props.location.query.flag,
+    isGoing: this.props.location.query.flag-1,
     isJoined: '0',
     valueDouble: [],
     footMsg: '',
@@ -130,14 +129,7 @@ class Voting extends Component {
               }
             records.push(item)
           })
-          let body = {
-            'records': records
-          }
-          this.setState({
-            body: body
-          })
         }
-        console.log(this.state.body)
         try {
           await Request.tpostUser(API.submitVote.replace(/:voteId/, this.props.location.query.voteid), {records: records})
             .then((json) => {
@@ -187,24 +179,35 @@ class Voting extends Component {
               <Col>
                 <h3>选项{index + 1}</h3>
               </Col>
-              { type === 1 && <Col><Radio style={radioStyle} value={item.id}>{item.title}</Radio></Col> }
-              { type === 2 && <Col style={MarginStyle}><Checkbox value={item.id}>{item.title}</Checkbox></Col> }
-              { (type === 3 || type === 4) &&
-              <Row>
-                <Col span={15} style={MarginStyle}>
-                  <h4>{item.title}</h4>
+              {
+                type === 1 &&
+                <Col>
+                  <Radio style={radioStyle} value={item.id}>{item.title}</Radio>
                 </Col>
-                <Col span={4}>
-                  <FormItem>
-                    { getFieldDecorator(`value-${index}`)(
-                      <InputNumber
-                        min={0}
-                        max={type === 3 ? 10 : 100}
-                      />
-                    )}
-                  </FormItem>
+              }
+              {
+                type === 2 &&
+                <Col style={MarginStyle}>
+                  <Checkbox value={item.id}>{item.title}</Checkbox>
                 </Col>
-              </Row>
+              }
+              {
+                (type === 3 || type === 4) &&
+                <Row>
+                  <Col span={15} style={MarginStyle}>
+                    <h4>{item.title}</h4>
+                  </Col>
+                  <Col span={4}>
+                    <FormItem>
+                      { getFieldDecorator(`value-${index}`)(
+                        <InputNumber
+                          min={0}
+                          max={type === 3 ? 10 : 100}
+                        />
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>
               }
             </Row>
           </Col>
@@ -214,8 +217,7 @@ class Voting extends Component {
 
     return (
       <Form>
-        <div>
-          <Logo text="不洗碗工作室" />
+        <div style={{marginTop:'80px'}}>
           <Row style={MarginStyle}>
             <Col {...GlobalOffsetSpan}>
               <h2>{this.state.title}</h2>

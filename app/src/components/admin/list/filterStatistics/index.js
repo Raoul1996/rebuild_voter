@@ -128,6 +128,7 @@ class FilterStatistics extends Component {
   }
 
   getFirstPage = async () => {
+    window.sessionStorage.setItem('path','admin/filter-statistics')
     fetch(API.pageInfo.replace(/pnum/, 1).replace(/rnum/, 6), {
       method: 'GET',
       headers: {

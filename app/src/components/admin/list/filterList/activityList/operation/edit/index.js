@@ -333,7 +333,7 @@ class Edit extends Component {
                       <Col span={20} offset={5}>
                         <Button type="primary" htmlType="submit" size="large"
                                 style={{marginRight: '20px'}}>保存修改</Button>
-                        <Link to="admin">
+                        <Link to="/admin/filter-statistics">
                           <Button size="large">返回</Button>
                         </Link>
                       </Col>

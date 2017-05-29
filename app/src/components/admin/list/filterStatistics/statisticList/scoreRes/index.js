@@ -1,35 +1,20 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router'
 import { Col, Row, Button, Table, Card } from 'antd'
 import API from '../../../../../../api'
 import * as Request from '../../../../../../utils/request'
 import timeTransform from '../../../../../../utils/timeTransfrom'
 import './index.less'
 
-let data = [
-  {
-    key: '1',
-    id: 'John Brown',
-    content: 'abc',
-    score: '1',
-    sum: '100',
-    value:[9,8,7,6]
-  },
-  {
-    key: '2',
-    id: 'Jim Green',
-    content: 'asd',
-    score: '2',
-    sum: '101',
-    value:[9,8,7,6]
-  }
-]
+let data = []
 
 class ScoreRes extends Component {
   state = {
     voteId: this.props.location.query.voteid,
     optionValue: [1, 2, 3, 4],
     participatorNum: 4,
-    data: data
+    data: data,
+    title:''
   }
 
   getRecord = async () => {
@@ -38,7 +23,8 @@ class ScoreRes extends Component {
         .then( (json) => {
           this.setState({
             optionValue: json.optionValue,
-            participatorNum: json.participatorNum
+            participatorNum: json.participatorNum,
+            title: json.title
           })
           data = this.state.optionValue.map(function(item, index){
             const {id, sum, title, voteRecords} = item
@@ -91,14 +77,19 @@ class ScoreRes extends Component {
       <Row>
         <Card className="score-wrapper">
           <Col span={22} offset={1}>
-            <h1 className="score-title">分数统计——不洗碗工作室最美程序员</h1>
+            <h1 className="score-title">{this.state.title}</h1>
           </Col>
           <Col span={22} offset={1}>
             {timeTransform(updateTime)}更新
             <Button className="score-button">下载表格</Button>
           </Col>
           <Col span={22} offset={1} className="list-table">
-            <Table columns={columns} dataSource={this.state.data} scroll={{x: 1300}} />
+            <Table columns={columns} dataSource={this.state.data} scroll={{x: 1300}} pagination={false}/>
+          </Col>
+          <Col span={24} offset={21}>
+            <Link to="/admin/filter-statistics">
+              <Button size="large" type="primary" style={{margin:'20px'}}>返回</Button>
+            </Link>
           </Col>
         </Card>
       </Row>

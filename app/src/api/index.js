@@ -45,5 +45,6 @@ export default {
   updateVote: adminApiMaker('updateVote'),
   adminLogin: adminApiMaker('login'),
   findLike: adminApiMaker('findLike'),
-  findLikePage:adminApiMaker('findLike?page=pnum&rows=rnum')
+  findLikePage:adminApiMaker('findLike?page=pnum&rows=rnum'),
+  download:adminApiMaker(':voteId/download')
 }

@@ -18,6 +18,8 @@ import CreateActivity from './components/admin/list/filterList/create'
 import EditActivity from './components/admin/list/filterList/activityList/operation/edit'
 import VoteRes from './components/admin/list/filterStatistics/statisticList/voteRes'
 import ScoreRes from './components/admin/list/filterStatistics/statisticList/scoreRes'
+import FilterList from './components/admin/list/filterList'
+import FilterStatistics from './components/admin/list/filterStatistics'
 import API from 'api'
 import * as Request from 'utils/request'
 import AdminLogout from 'utils/adminLoginout'
@@ -52,6 +54,10 @@ function RouterApp () {
           <Route path="joined" component={Joined} onEnter={requireUserLogin} />
           <Route path="change" components={UserChangeMsg} onEnter={requireUserLogin} />
           <Route path="change-mobile" components={UserChangeMobile} onEnter={requireUserLogin} />
+        </Route>
+        <Route path="admin" components={AdminPage}>
+          <Route path="filter-list" components={FilterList} onEnter={requireAdminLogin}/>
+          <Route path="filter-statistics" components={FilterStatistics} onEnter={requireAdminLogin}/>
         </Route>
         <Route path="login" components={AdminLogin} />
         <Route path="register" components={UserRegister} />

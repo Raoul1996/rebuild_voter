@@ -1,4 +1,5 @@
 import React, { Component }from 'react'
+import {Link} from 'react-router'
 import { Tabs } from 'antd'
 import './index.less'
 import List from './list/filterList'
@@ -13,9 +14,16 @@ export default class Index extends Component {
 
   isAdminLogin = () => {
     const token = window.localStorage.getItem('admin.token')
+    let path = window.sessionStorage.getItem('path')
+    Goto(path)
     if (!token) {
       Goto('login')
     }
+  }
+
+  handleChange = (key) => {
+    window.sessionStorage.setItem('path','admin/'+key)
+    Goto('admin/'+key)
   }
 
   componentDidMount () {
@@ -24,11 +32,12 @@ export default class Index extends Component {
 
   render () {
     return (
-      <div className="tabs-warpper">
-        <Tabs tabPosition='left'>
-          <TabPane tab="活动列表页" key="1"><List /></TabPane>
-          <TabPane tab="投票统计页" key="2"><Statistic /></TabPane>
+      <div className="tabs-wrapper">
+        <Tabs tabPosition='left' onTabClick={this.handleChange} activeKey={window.sessionStorage.getItem('path')==='admin/filter-list'?'filter-list':'filter-statistics'}>
+          <TabPane tab="活动列表页" key="filter-list"/>
+          <TabPane tab="投票统计页" key="filter-statistics"/>
         </Tabs>
+        {this.props.children}
       </div>
     )
   }

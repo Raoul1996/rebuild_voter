@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router'
 import { Col, Row, Button, Table, Card, message } from 'antd'
 import timeTransform from '../../../../../../utils/timeTransfrom'
 import API from '../../../../../../api'
 import getAdminToken from '../../../../../../utils/getTokenAdmin'
-import Goto from '../../../../../../utils/goto'
 
 const updateTime = new Date().getTime()
 import './index.less'
@@ -24,7 +24,7 @@ export default class VoteRes extends Component {
   }
 
   getVoteRes = () => {
-    fetch(API.voteStatistics.replace(/:voteid/, this.props.location.query.voteid), {
+    fetch(API.record.replace(/:voteId/, this.props.location.query.voteid), {
       method: 'GET',
       headers: {
         token: getAdminToken()
@@ -36,14 +36,14 @@ export default class VoteRes extends Component {
         message.success('获取详情成功')
         this.setState({
           options: json.data.options,
-          title: json.data.title
+          title: json.data.vote.title
         })
       }
     })
   }
 
   download = () => {
-    fetch(API.downLoad.replace(/:voteid/, this.props.location.query.voteid), {
+    fetch(API.download.replace(/:voteId/, this.props.location.query.voteid), {
       method: 'GET',
       headers: {
         token: getAdminToken()
@@ -88,7 +88,12 @@ export default class VoteRes extends Component {
             <Button className="vote-button" onClick={this.download}>下载表格</Button>
           </Col>
           <Col span={22} offset={1} className="list-table">
-            <Table columns={columns} dataSource={this.state.options} scroll={{x: 1300}} />
+            <Table columns={columns} dataSource={this.state.options} scroll={{x: 1300}} pagination={false}/>
+          </Col>
+          <Col span={24} offset={21}>
+            <Link to="/admin/filter-statistics">
+              <Button size="large" type="primary" style={{margin:'20px'}}>返回</Button>
+            </Link>
           </Col>
         </Card>
       </Row>
