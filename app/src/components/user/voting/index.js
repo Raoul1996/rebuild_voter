@@ -35,7 +35,7 @@ class Voting extends Component {
 
   onSingleChange = (e) => {
     console.log('radio checked', e.target.value)
-    const footMsg = `您已选择选项${e.target.value - this.state.optionId + 1}`
+    const footMsg = `您已选择: 选项${e.target.value - this.state.optionId + 1}`
     this.setState({
       valueSingle: e.target.value,
       valueSingleCheckedItem: e.target.value - this.state.optionId + 1,
@@ -45,7 +45,7 @@ class Voting extends Component {
 
   onDoubleChange = (checkedValues) => {
     // console.log('checked = ', checkedValues.length)
-    const footMsg = `您已选择${checkedValues.length}项`
+    const footMsg = `您已选择: ${checkedValues.length}项`
     // 这里是状态不好且不是很懂业务逻辑的宝大人写的，看的时候请务必小心
     // if (checkedValues.length !== 0) {
     //   this.setState({

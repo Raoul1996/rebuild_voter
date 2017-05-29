@@ -55,12 +55,8 @@ class FooterButton extends Component {
     console.log('footer button line 55')
     console.log(footMsg)
     console.log(itemNum)
-    const clickDisable = {
-      backGround: '#333'
-    }
-    const clickEnable = {
-      backGround: '#fff'
-    }
+    console.dir(this.props)
+
     return (
       <div className="footer-buttons">
         <div>
@@ -113,7 +109,7 @@ class FooterButton extends Component {
                       onOk={this.handleSubmitOk}
                       onCancel={this.handleSubmitCancel}
                     >
-                      <p>this is the test msg</p>
+                      <p>{footMsg}</p>
                     </Modal>
                   </Col>
                   <Col span={12}>
