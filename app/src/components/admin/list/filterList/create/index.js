@@ -4,6 +4,7 @@ import { Row, Col, Input, DatePicker, Radio, Form, Icon, Button, Card, InputNumb
 import './index.less'
 import API from '../../../../../api'
 import * as Request from '../../../../../utils/request'
+import Goto from '../../../../../utils/goto'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 
@@ -110,6 +111,7 @@ class Create extends Component {
         try {
           await Request.tpost(API.create, body)
           message.success('创建成功')
+          setTimeout(Goto('/admin'),1000)
         } catch (e) {
           console.log(e)
         }
@@ -303,7 +305,7 @@ class Create extends Component {
                     <FormItem {...formItemLayoutWithOutLabel}>
                       <Col span={20} offset={5}>
                         <Button type="primary" htmlType="submit" size="large" style={{marginRight: '20px'}}>新建</Button>
-                        <Link to="admin/filter-list">
+                        <Link to="/admin/filter-list">
                           <Button size="large">返回</Button>
                         </Link>
                       </Col>

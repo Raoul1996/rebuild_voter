@@ -23,7 +23,7 @@ class AdminLogin extends Component {
         try {
           let data = await Request.post(API.adminLogin, body)
           window.localStorage.setItem('admin.token', data.token)
-          window.sessionStorage.setItem('path','admin/filter-list')
+          window.sessionStorage.setItem('path','/admin/filter-list')
           setTimeout(Goto('admin/filter-list'),1000)
         } catch (e) {
           message.error('登录失败')

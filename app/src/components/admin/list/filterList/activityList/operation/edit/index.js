@@ -41,10 +41,6 @@ class Edit extends Component {
           form.setFieldsValue({
             title: this.state.title,
             max: this.state.max,
-            // type: this.state.type,
-            // keys: this.state.options,
-            // startValue: moment(moment.unix(json.voteShow.startTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
-            // endValue: moment(moment.unix(json.voteShow.endTime / 1000), 'YYYY-MM-DD HH:mm:ss'),
             typeOne: (this.state.type !== 1 && this.state.type !== 2) ? 5 : this.state.type,
             typeTwo: this.state.type
           })
@@ -82,8 +78,6 @@ class Edit extends Component {
   }
 
   onStartChange = (value) => {
-    console.log(value)
-    console.log(this.onChange)
     this.onChange('startValue', value)
   }
 
@@ -105,7 +99,6 @@ class Edit extends Component {
     e.preventDefault()
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
         let options = []
         Object.keys(values).forEach(key => {
           if (key.match(/^names?/)) {
@@ -126,8 +119,6 @@ class Edit extends Component {
           endTime: this.state.endTime,
           options: options,
         }
-        console.log(body)
-
         const token = window.localStorage.getItem('admin.token')
         try {
           await Request.tpost(API.updateVote, body, {})
@@ -333,7 +324,7 @@ class Edit extends Component {
                       <Col span={20} offset={5}>
                         <Button type="primary" htmlType="submit" size="large"
                                 style={{marginRight: '20px'}}>保存修改</Button>
-                        <Link to="/admin/filter-statistics">
+                        <Link to="/admin">
                           <Button size="large">返回</Button>
                         </Link>
                       </Col>
