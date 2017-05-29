@@ -51,8 +51,16 @@ class FooterButton extends Component {
   }
 
   render () {
-    const {isGoing, isJoined, footMsg} = this.props
+    const {isGoing, isJoined, footMsg, itemNum} = this.props
+    console.log('footer button line 55')
     console.log(footMsg)
+    console.log(itemNum)
+    const clickDisable = {
+      backGround: '#333'
+    }
+    const clickEnable = {
+      backGround: '#fff'
+    }
     return (
       <div className="footer-buttons">
         <div>
@@ -89,17 +97,31 @@ class FooterButton extends Component {
                 </Row>
                 <Row>
                   <Col span={12}>
-                    <Button size="large" style={{width: '95%'}} onClick={this.showSubmitModal}>确认投票</Button>
+                    {/*disable 属性的添加由状态不好且编码能力不佳的Raoul所添加*/}
+                    <Button
+                      size="large"
+                      style={{width: '95%'}}
+                      onClick={this.showSubmitModal}
+                      disabled={!itemNum}
+                    >
+                      确认投票
+                    </Button>
                     <Modal
                       title="确认提交"
                       wrapClassName="vertical-center-modal"
                       visible={this.state.visibleSubmit}
                       onOk={this.handleSubmitOk}
                       onCancel={this.handleSubmitCancel}
-                    />
+                    >
+                      <p>this is the test msg</p>
+                    </Modal>
                   </Col>
                   <Col span={12}>
-                    <Button size="large" style={{width: '95%'}} onClick={() => this.setModal2Visible(true)}>
+                    <Button
+                      size="large"
+                      style={{width: '95%'}}
+                      onClick={() => this.setModal2Visible(true)}
+                    >
                       分享
                     </Button>
                     <Modal

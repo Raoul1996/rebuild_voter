@@ -29,7 +29,8 @@ class Voting extends Component {
     isGoing: this.props.location.query.flag,
     isJoined: '0',
     valueDouble: [],
-    footMsg: ''
+    footMsg: '',
+    clickDisable: true
   }
 
   onSingleChange = (e) => {
@@ -37,6 +38,7 @@ class Voting extends Component {
     const footMsg = `您已选择选项${e.target.value - this.state.optionId + 1}`
     this.setState({
       valueSingle: e.target.value,
+      valueSingleCheckedItem: e.target.value - this.state.optionId + 1,
       footMsg: footMsg,
     })
   }
@@ -44,6 +46,15 @@ class Voting extends Component {
   onDoubleChange = (checkedValues) => {
     // console.log('checked = ', checkedValues.length)
     const footMsg = `您已选择${checkedValues.length}项`
+    // 这里是状态不好且不是很懂业务逻辑的宝大人写的，看的时候请务必小心
+    // if (checkedValues.length !== 0) {
+    //   this.setState({
+    //     clickDisable: false
+    //   })
+    //   console.log('voting line 53')
+    //   console.log(this.state.clickDisable)
+    // }
+    // END
     this.setState({
       valueDouble: checkedValues,
       footMsg: footMsg
@@ -179,21 +190,21 @@ class Voting extends Component {
               { type === 1 && <Col><Radio style={radioStyle} value={item.id}>{item.title}</Radio></Col> }
               { type === 2 && <Col style={MarginStyle}><Checkbox value={item.id}>{item.title}</Checkbox></Col> }
               { (type === 3 || type === 4) &&
-                <Row>
-                  <Col span={15} style={MarginStyle}>
-                    <h4>{item.title}</h4>
-                  </Col>
-                  <Col span={4}>
-                    <FormItem>
-                      { getFieldDecorator(`value-${index}`)(
-                        <InputNumber
-                          min={0}
-                          max={type === 3 ? 10 : 100}
-                        />
-                      )}
-                    </FormItem>
-                  </Col>
-                </Row>
+              <Row>
+                <Col span={15} style={MarginStyle}>
+                  <h4>{item.title}</h4>
+                </Col>
+                <Col span={4}>
+                  <FormItem>
+                    { getFieldDecorator(`value-${index}`)(
+                      <InputNumber
+                        min={0}
+                        max={type === 3 ? 10 : 100}
+                      />
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
               }
             </Row>
           </Col>
@@ -237,6 +248,7 @@ class Voting extends Component {
             isJoined={this.state.isJoined}
             submitVoting={this.submitVoting}
             footMsg={this.state.footMsg}
+            itemNum={(this.state.valueDouble.length || this.state.valueSingleCheckedItem) || 0}
           />
         </div>
       </Form>
