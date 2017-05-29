@@ -29,19 +29,24 @@ class Voting extends Component {
     isGoing: this.props.location.query.flag,
     isJoined: '0',
     valueDouble: [],
+    footMsg: ''
   }
 
   onSingleChange = (e) => {
     console.log('radio checked', e.target.value)
+    const footMsg = `您已选择选项${e.target.value - this.state.optionId + 1}`
     this.setState({
       valueSingle: e.target.value,
+      footMsg: footMsg,
     })
   }
 
   onDoubleChange = (checkedValues) => {
-    console.log('checked = ', checkedValues)
+    // console.log('checked = ', checkedValues.length)
+    const footMsg = `您已选择${checkedValues.length}项`
     this.setState({
       valueDouble: checkedValues,
+      footMsg: footMsg
     })
   }
 
@@ -124,6 +129,9 @@ class Voting extends Component {
         console.log(this.state.body)
         try {
           await Request.tpostUser(API.submitVote.replace(/:voteId/, this.props.location.query.voteid), {records: records})
+            .then((json) => {
+              console.log(json)
+            })
           this.setState({
             isJoined: '1'
           })
@@ -168,29 +176,24 @@ class Voting extends Component {
               <Col>
                 <h3>选项{index + 1}</h3>
               </Col>
-              { type === 1 ? <Col>
-                <Radio style={radioStyle} value={item.id}>{item.title}</Radio>
-              </Col> : null
-              }
-              { type === 2 ? <Col style={MarginStyle}>
-                <Checkbox value={item.id}>{item.title}</Checkbox>
-              </Col> : null
-              }
-              { type === 3 || type === 4 ? <Row>
-                <Col span={15} style={MarginStyle}>
-                  <h4>{item.title}</h4>
-                </Col>
-                <Col span={4}>
-                  <FormItem>
-                    { getFieldDecorator(`value-${index}`)(
-                      <InputNumber
-                        min={0}
-                        max={type === 3 ? 10 : 100}
-                      />
-                    )}
-                  </FormItem>
-                </Col>
-              </Row> : null
+              { type === 1 && <Col><Radio style={radioStyle} value={item.id}>{item.title}</Radio></Col> }
+              { type === 2 && <Col style={MarginStyle}><Checkbox value={item.id}>{item.title}</Checkbox></Col> }
+              { (type === 3 || type === 4) &&
+                <Row>
+                  <Col span={15} style={MarginStyle}>
+                    <h4>{item.title}</h4>
+                  </Col>
+                  <Col span={4}>
+                    <FormItem>
+                      { getFieldDecorator(`value-${index}`)(
+                        <InputNumber
+                          min={0}
+                          max={type === 3 ? 10 : 100}
+                        />
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>
               }
             </Row>
           </Col>
@@ -225,25 +228,16 @@ class Voting extends Component {
             </Col>
           </Row>
           <div style={{marginLeft: '15vw', marginBottom: '100px'}}>
-            { type === 1 ? <RadioGroup onChange={this.onSingleChange}>
-              {
-                formItems
-              }
-            </RadioGroup> : null
-            }
-            { type === 2 ? <Checkbox.Group onChange={this.onDoubleChange}>
-              {
-                formItems
-              }
-            </Checkbox.Group>
-              : null
-            }
-            {
-              type === 3 || type === 4 ? formItems
-                : null
-            }
+            { type === 1 && <RadioGroup onChange={this.onSingleChange}>{formItems}</RadioGroup> }
+            { type === 2 && <Checkbox.Group onChange={this.onDoubleChange}>{formItems}</Checkbox.Group> }
+            { (type === 3 || type === 4) && formItems }
           </div>
-          <FooterButton isGoing={this.state.isGoing} isJoined={this.state.isJoined} submitVoting={this.submitVoting} />
+          <FooterButton
+            isGoing={this.state.isGoing}
+            isJoined={this.state.isJoined}
+            submitVoting={this.submitVoting}
+            footMsg={this.state.footMsg}
+          />
         </div>
       </Form>
     )

@@ -8,7 +8,10 @@ class ActivityList extends Component {
   constructor (props) {
     super(props)
   }
-
+//   eventProxy.tirrger('event',d)
+//   eventProxy.on('event',(msg) => {
+//
+// })
   render () {
     const columns = [
       {title: 'ID', dataIndex: 'id', key: 'id'},
@@ -62,7 +65,7 @@ class ActivityList extends Component {
         width: 100,
         fixed: 'right',
         render: (text, record, index) => (
-          <Operation voteId={record.id} visibility={record.visibility ? 'true':'false'} />
+          <Operation voteId={record.id} visibility={!!record.visibility} />
         ),
       }
     ]

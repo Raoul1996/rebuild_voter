@@ -51,7 +51,8 @@ class FooterButton extends Component {
   }
 
   render () {
-    const {isGoing,isJoined} = this.props
+    const {isGoing, isJoined, footMsg} = this.props
+    console.log(footMsg)
     return (
       <div className="footer-buttons">
         <div>
@@ -83,7 +84,7 @@ class FooterButton extends Component {
               <div>
                 <Row>
                   <Col span={24}>
-                    <Alert message="您已选择" type="warning" />
+                    <Alert message={footMsg} type="warning" />
                   </Col>
                 </Row>
                 <Row>

@@ -2,7 +2,7 @@
  * Created by Pororo on 17/5/17.
  */
 import React, { Component } from 'react'
-import { Icon, Modal, message } from 'antd'
+import { Icon, Modal} from 'antd'
 import { Link } from 'react-router'
 import urlEncoder from '../../../../../../utils/urlEncoder'
 import API from '../../../../../../api/index'
@@ -11,19 +11,12 @@ import * as Request from '../../../../../../utils/request'
 class Operation extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      is_stop: true
-    }
   }
 
   isStop = async () => {
-    try {
-      await Request.put(API.changeVisibility.replace(/:voteId/, this.props.voteId), {}, {})
-      message.success('修改成功')
-      window.history.go(0)
-    } catch (e) {
-      message.error(e)
-    }
+    await Request.put(API.changeVisibility.replace(/:voteId/, this.props.voteId), {}, {})
+    await console.log('成功！')
+    await window.history.go(0)
   }
 
   isDelete = () => {
@@ -41,6 +34,8 @@ class Operation extends Component {
         }
       }
     })
+
+    console.log('delete')
   }
 
   render () {
@@ -52,7 +47,7 @@ class Operation extends Component {
       <span>
         <a href="javascript:void(0)" onClick={this.isStop}>
           {
-            this.props.visibility === 'true' ? <Icon type="pause" /> : <Icon type="caret-right" />
+            this.props.visibility ? <Icon type="pause" /> : <Icon type="caret-right" />
           }
         </a>
         <span className="ant-divider" />

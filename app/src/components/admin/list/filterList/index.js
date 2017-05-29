@@ -21,7 +21,9 @@ class FilterList extends Component {
       pages: '',
       list: [],
       filter: 0,
-      body:{}
+      body: window.sessionStorage.getItem('activityFilter') ?
+        JSON.parse(window.sessionStorage.getItem('activityFilter')) : {},
+      currentPage: +window.sessionStorage.getItem('activeCurrentPage'),
     }
   }
 
@@ -40,8 +42,12 @@ class FilterList extends Component {
         flag: (flag === 0 || flag === 1 || flag === 2) ? flag : -1
       }
       this.setState({
-        body:body
+        body:body,
+        currentPage: 1
       })
+      window.sessionStorage.setItem('activityFilter', JSON.stringify(body))
+      console.log(window.sessionStorage)
+
       fetch(API.findLike, {
         method: 'POST',
         headers: {
@@ -67,18 +73,22 @@ class FilterList extends Component {
 
   }
 
-  getFirstPage = async () => {
+  getPage = async () => {
     // let params = {
     //   page: 1,
     //   row: 6
     // }
     // const json = await Request.tget(API.pageInfo,params)
-    fetch(API.pageInfo.replace(/pnum/, 1).replace(/rnum/, 6), {
-      method: 'GET',
+    let page = this.state.currentPage
+    let body = window.sessionStorage.getItem('activityFilter') ?
+      JSON.parse(window.sessionStorage.getItem('activityFilter')) : {}
+    fetch(API.findLikePage.replace(/pnum/, page).replace(/rnum/, 6), {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'token': getToken()
-      }
+      },
+      body: JSON.stringify(body)
     }).then((res) => {
       return res.json()
     }).then((json) => {
@@ -95,7 +105,7 @@ class FilterList extends Component {
   }
 
   componentDidMount () {
-    this.getFirstPage()
+    this.getPage()
   }
 
   render () {
@@ -115,19 +125,27 @@ class FilterList extends Component {
       pageSize: 6,
       total: this.state.total,
       pages: this.state.pages,
+      current: this.state.currentPage,
       onChange: async (page) => {
         let params = {
           page: page,
           rows: 6
         }
-        window.sessionStorage.setItem('current', page)
+        window.sessionStorage.setItem('activeCurrentPage', page)
+        this.setState({
+          currentPage: page
+        })
+        console.log(this.state.currentPage)
         if (this.state.filter === 0) {
-          fetch(API.pageInfo.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
-            method: 'GET',
+          let body = window.sessionStorage.getItem('activityFilter') ?
+            JSON.parse(window.sessionStorage.getItem('activityFilter')) : {}
+          fetch(API.findLikePage.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'token': getToken()
-            }
+            },
+            body: JSON.stringify(body)
           }).then((res) => {
             return res.json()
           }).then((json) => {
