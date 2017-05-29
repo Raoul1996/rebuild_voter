@@ -6,10 +6,6 @@ import { Col, Row, Button, Alert, message, Modal } from 'antd'
 import Goto from '../../../../utils/goto'
 import './index.less'
 import Share from '../../share'
-function confirm () {
-  message.info('Click on Yes.')
-}
-
 class FooterButton extends Component {
   constructor (props) {
     super(props)
@@ -43,8 +39,7 @@ class FooterButton extends Component {
       visibleSubmit: false,
     })
   }
-  handleSubmitCancel = (e) => {
-    console.log(e)
+  handleSubmitCancel = () => {
     this.setState({
       visibleSubmit: false,
     })
@@ -52,11 +47,6 @@ class FooterButton extends Component {
 
   render () {
     const {isGoing, isJoined, footMsg, itemNum} = this.props
-    console.log('footer button line 55')
-    console.log(footMsg)
-    console.log(itemNum)
-    console.dir(this.props)
-
     return (
       <div className="footer-buttons">
         <div>
@@ -76,9 +66,9 @@ class FooterButton extends Component {
                   footer={null}
                 >
                   <Share sites={['qzone', 'weibo', 'qq', 'wechat']}
-                         url="https://github.com/DawnyWu/react-share-buttons"
+                         url={window.location.href}
                          title="react-share-buttons"
-                         description="一键分享到微博、QQ空间、QQ好友、微信、腾讯微博、豆瓣、Facebook、Twitter、Linkedin、Google+ 的 react 组件"
+                         description="快来参加投票"
                   />
                 </Modal>
               </Col>
@@ -129,9 +119,9 @@ class FooterButton extends Component {
                       footer={null}
                     >
                       <Share sites={['qzone', 'weibo', 'qq', 'wechat']}
-                             url="https://github.com/DawnyWu/react-share-buttons"
+                             url={window.location.href}
                              title="react-share-buttons"
-                             description="一键分享到微博、QQ空间、QQ好友、微信、腾讯微博、豆瓣、Facebook、Twitter、Linkedin、Google+ 的 react 组件"
+                             description="快来参加投票"
                       />
                     </Modal>
                   </Col>
@@ -159,9 +149,9 @@ class FooterButton extends Component {
                       onCancel={() => this.setModal2Visible(false)}
                     >
                       <Share sites={['qzone', 'weibo', 'qq', 'wechat']}
-                             url="https://github.com/DawnyWu/react-share-buttons"
+                             url={window.location.href}
                              title="react-share-buttons"
-                             description="一键分享到微博、QQ空间、QQ好友、微信、腾讯微博、豆瓣、Facebook、Twitter、Linkedin、Google+ 的 react 组件"
+                             description="快来参加投票"
                       />
                     </Modal>
                   </Col>

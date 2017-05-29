@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { Card, Col, Row, Icon } from 'antd'
-import eventProxy from '../../../../utils/eventProxy'
+import { Card, Col, Row } from 'antd'
 import './index.less'
 import restTime from '../../../../utils/restTime'
 import urlEncoder from '../../../../utils/urlEncoder'

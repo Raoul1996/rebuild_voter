@@ -8,9 +8,6 @@ import mobileIcon from './u694.png'
 class Footer extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      loginStatus: 0
-    }
   }
 
   render () {

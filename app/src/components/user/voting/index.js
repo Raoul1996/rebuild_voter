@@ -14,7 +14,7 @@ function getLocalTime (nS) {
 class Voting extends Component {
   state = {
     voteId: this.props.location.query.voteid,
-    flag: this.props.location.query.flag-1,
+    flag: this.props.location.query.flag - 1,
     optionId: 1,
     title: '投票',
     valueSingle: 1,
@@ -25,7 +25,7 @@ class Voting extends Component {
     endTime: getLocalTime(2494583718),
     options: [],
     score: [],
-    isGoing: this.props.location.query.flag-1,
+    isGoing: this.props.location.query.flag - 1,
     isJoined: '0',
     valueDouble: [],
     footMsg: '',
@@ -33,7 +33,6 @@ class Voting extends Component {
   }
 
   onSingleChange = (e) => {
-    console.log('radio checked', e.target.value)
     const footMsg = `您已选择: 选项${e.target.value - this.state.optionId + 1}`
     this.setState({
       valueSingle: e.target.value,
@@ -43,28 +42,24 @@ class Voting extends Component {
   }
 
   onDoubleChange = (checkedValues) => {
-    // console.log('checked = ', checkedValues.length)
     const footMsg = `您已选择: ${checkedValues.length}项`
-    // 这里是状态不好且不是很懂业务逻辑的宝大人写的，看的时候请务必小心
-    // if (checkedValues.length !== 0) {
-    //   this.setState({
-    //     clickDisable: false
-    //   })
-    //   console.log('voting line 53')
-    //   console.log(this.state.clickDisable)
-    // }
-    // END
     this.setState({
       valueDouble: checkedValues,
       footMsg: footMsg
     })
   }
 
+  onScoreChange = () => {
+      const footMsg = `${this.props.type === 3? '十':'百'}分制打分；共${this.state.options.length}项需要打分`
+      this.setState({
+        footMsg: footMsg
+      })
+  }
+
   getVoting = async () => {
     try {
       await Request.get(API.voteInfo.replace(/voteid/, this.state.voteId), '', {})
         .then((json) => {
-          console.log(json)
           this.setState({
             title: json.voteShow.title,
             type: json.voteShow.type,
@@ -89,6 +84,9 @@ class Voting extends Component {
               isGoing: '2',
               isJoined: '0'
             })
+          }
+          if(this.state.type === 3||this.state.type === 4){
+            this.onScoreChange()
           }
         })
     } catch (e) {
@@ -217,7 +215,7 @@ class Voting extends Component {
 
     return (
       <Form>
-        <div style={{marginTop:'80px'}}>
+        <div style={{marginTop: '80px'}}>
           <Row style={MarginStyle}>
             <Col {...GlobalOffsetSpan}>
               <h2>{this.state.title}</h2>
@@ -250,7 +248,7 @@ class Voting extends Component {
             isJoined={this.state.isJoined}
             submitVoting={this.submitVoting}
             footMsg={this.state.footMsg}
-            itemNum={(this.state.valueDouble.length || this.state.valueSingleCheckedItem) || 0}
+            itemNum={(this.state.valueDouble.length || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}
           />
         </div>
       </Form>
