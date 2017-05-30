@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { Row, Col, Input, DatePicker, Radio, Form, Icon, Button, Card, InputNumber, message } from 'antd'
+import { Row, Col, Input, DatePicker, Radio, Form, Button, Card, InputNumber, message } from 'antd'
 import moment from 'moment'
 import './index.less'
 import API from '../../../../../../../api'
@@ -8,7 +8,6 @@ import * as Request from '../../../../../../../utils/request'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 
-let uuid = 0
 class Edit extends Component {
   state = {
     voteId: this.props.location.query.voteId,
@@ -110,7 +109,7 @@ class Edit extends Component {
             options.push(item)
           }
         })
-        const {title, max} = values
+        const {title} = values
         const body = {
           id: this.state.voteId,
           title: title,
@@ -119,24 +118,16 @@ class Edit extends Component {
           endTime: this.state.endTime,
           options: options,
         }
-        const token = window.localStorage.getItem('admin.token')
+        console.log(body)
         try {
           await Request.tpost(API.updateVote, body, {})
           await message.success('修改成功')
         } catch (e) {
-          message.error('修改失败')
+          console.log(e)
         }
       }
     })
   }
-
-  //类型选择
-  // onTypeChange = (e) => {
-  //   console.log('radio checked', e.target.value)
-  //   this.setState({
-  //     type: e.target.value,
-  //   })
-  // }
 
   render () {
     //日期选择
@@ -170,7 +161,6 @@ class Edit extends Component {
       },
     }
     const formItems = keys.map((k) => {
-      // console.log(k)
       return (
         <FormItem
           {...formItemLayoutWithOutLabel}
@@ -180,7 +170,6 @@ class Edit extends Component {
         >
           {getFieldDecorator(`names-${k.id}`, {
             validateTrigger: ['onChange', 'onBlur'],
-            // initialValue: (k.value !== 0) ? k.value : k.title,
             initialValue: k.title,
             rules: [{
               required: true,
@@ -190,11 +179,6 @@ class Edit extends Component {
           })(
             <Input placeholder="请输入选项" style={{width: '60%', marginRight: 8}} />
           )}
-          {/*<Icon*/}
-            {/*className="dynamic-delete-button"*/}
-            {/*type="minus-circle-o"*/}
-            {/*disabled={keys.length === 1}*/}
-          {/*/>*/}
         </FormItem>
       )
     })
@@ -226,7 +210,6 @@ class Edit extends Component {
                       disabledDate={this.disabledStartDate}
                       showTime
                       format="YYYY-MM-DD HH:mm:ss"
-                      // defaultValue={moment('2015-06', 'YYYY-MM')}
                       value={this.state.startValue}
                       placeholder="开始时间"
                       onChange={this.onStartChange}
@@ -243,8 +226,6 @@ class Edit extends Component {
                       disabledDate={this.disabledEndDate}
                       showTime
                       format="YYYY-MM-DD HH:mm:ss"
-                      // defaultValue={moment('2015-06', 'YYYY-MM')}
-                      // defaultValue={moment(this.state.endValue, 'YYYY-MM')}
                       value={this.state.endValue}
                       placeholder="结束时间"
                       onChange={this.onEndChange}
@@ -261,12 +242,8 @@ class Edit extends Component {
                     <FormItem>
                       {getFieldDecorator('typeOne', {
                         rules: [{required: true, message: '请选择投票类型'}],
-                        // initialValue: (this.state.type !== 3 || this.state.type !== 4) ? 5 : this.state.type
                       })(
-                        <RadioGroup
-                          // onChange={this.onTypeChange}
-                          // value={(this.state.type !== 3 || this.state.type !== 4) ? 5 : this.state.type}
-                        >
+                        <RadioGroup disabled>
                           <Radio value={1}>单选</Radio>
                           <Radio value={2}>多选</Radio>
                           <Radio value={5}>打分</Radio>
@@ -285,9 +262,8 @@ class Edit extends Component {
                       <FormItem>
                         {getFieldDecorator('max', {
                           rules: [{required: true, message: '请选择最多选择数'}],
-                          // initialValue: this.state.max
                         })(
-                          <InputNumber />
+                          <InputNumber disabled/>
                         )}
                       </FormItem>
                     </Col>
@@ -304,9 +280,7 @@ class Edit extends Component {
                         {getFieldDecorator('typeTwo', {
                           rules: [{required: true, message: '请选择分数上限'}],
                         })(
-                          <RadioGroup
-                            // onChange={this.onTypeChange}
-                          >
+                          <RadioGroup disabled>
                             <Radio value={3}>十分制</Radio>
                             <Radio value={4}>百分制</Radio>
                           </RadioGroup>

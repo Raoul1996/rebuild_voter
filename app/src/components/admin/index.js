@@ -14,8 +14,10 @@ export default class Index extends Component {
 
   isAdminLogin = () => {
     const token = window.localStorage.getItem('admin.token')
-    let path = window.sessionStorage.getItem('path')
-    Goto(path)
+    if(token){
+      let path = window.sessionStorage.getItem('path')
+      Goto(path)
+    }
     if (!token) {
       Goto('login')
     }

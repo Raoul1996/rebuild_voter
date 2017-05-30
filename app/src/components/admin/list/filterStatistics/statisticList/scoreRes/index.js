@@ -4,6 +4,7 @@ import { Col, Row, Button, Table, Card } from 'antd'
 import API from '../../../../../../api'
 import * as Request from '../../../../../../utils/request'
 import timeTransform from '../../../../../../utils/timeTransfrom'
+import getAdminToken from '../../../../../../utils/getTokenAdmin'
 import './index.less'
 
 let data = []
@@ -45,6 +46,23 @@ class ScoreRes extends Component {
       console.log(e)
     }
   }
+  onDownload = async() => {
+    fetch(API.download.replace(/:voteId/, this.props.location.query.voteid), {
+      method: 'GET',
+      headers: {
+        'Content-Type':'application/force-download',
+        'token': getAdminToken()
+      }
+    }).then(res => res.blob().then(blob => {
+      let a = document.createElement('a')
+      let url = window.URL.createObjectURL(blob)
+      let filename = this.props.location.query.voteid + this.state.title + '.xls'
+      a.download = filename
+      a.href = url
+      a.click()
+      window.URL.revokeObjectURL(url)
+    }))
+  }
 
   componentDidMount () {
     this.getRecord()
@@ -81,10 +99,10 @@ class ScoreRes extends Component {
           </Col>
           <Col span={22} offset={1}>
             {timeTransform(updateTime)}更新
-            <Button className="score-button">下载表格</Button>
+            <Button className="score-button" onClick={this.onDownload}>下载表格</Button>
           </Col>
           <Col span={22} offset={1} className="list-table">
-            <Table columns={columns} dataSource={this.state.data} scroll={{x: 1300}} pagination={false}/>
+            <Table columns={columns} dataSource={this.state.data} scroll={{x: 1000}} pagination={false}/>
           </Col>
           <Col span={24} offset={21}>
             <Link to="/admin/filter-statistics">

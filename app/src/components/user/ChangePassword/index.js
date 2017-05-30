@@ -9,31 +9,33 @@ import Logo from '../../../components/user/content/lineText/index'
 import * as Request from '../../../utils/request'
 const FormItem = Form.Item
 
-const ERR_OK = 0
-// the const for verify method
-const REGISTER = 1
 const PASSWD = 2
-const PERSONAL = 3
 
-class RegistrationForm extends React.Component {
+class PasswordForm extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       confirmDirty: false,
       autoCompleteResult: [],
     }
-    // this.userRegister = this.userRegister.bind(this)
+  }
+  componentDidMount () {
+    this.setValue()
   }
 
+  setValue () {
+    const form = this.props.form
+    const mobile = form.setFieldsValue({mobile: window.localStorage.getItem('mobile') || ''})
+  }
   async userCaptcha () {
     const form = this.props.form
     const mobile = form.getFieldValue('mobile')
     const body = {
       mobile: mobile,
-      type: REGISTER
+      type: PASSWD
     }
     try {
-      let data = await Request.post(API.verify, body)
+      let data = await Request.uput(API.verify, body)
       message.success(`your Captcha is ${data.code}`)
     } catch (e) {
       message.error(e)
@@ -53,11 +55,12 @@ class RegistrationForm extends React.Component {
           code: captcha
         }
         try {
-          let data = await Request.post(API.register, body)
-          message.success('register successful')
+          let data = await Request.put(API.password, {}, body)
+          message.success('修改密码成功')
+          // window.localStorage.clear()
           goto('users/login')
         } catch (e) {
-          message.error('register err')
+          message.error('修改密码失败')
         }
       }
     })
@@ -157,12 +160,12 @@ class RegistrationForm extends React.Component {
                   </Col>
                   <Col span={12}>
                     {/*我也不知道这里为啥需要写成箭头函数的形式，可能是promise的需要？*/}
-                    <Button size="large" onClick={() =>this.userCaptcha()}>获取验证码</Button>
+                    <Button size="large" onClick={() => this.userCaptcha()}>获取验证码</Button>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" size="large">Register</Button>
+                <Button type="primary" htmlType="submit" size="large">修改密码</Button>
               </FormItem>
             </Form>
           </Col>
@@ -173,5 +176,5 @@ class RegistrationForm extends React.Component {
   }
 }
 
-const UserRegister = Form.create()(RegistrationForm)
-export default UserRegister
+const UserPassword = Form.create()(PasswordForm)
+export default UserPassword

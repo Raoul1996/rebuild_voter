@@ -28,7 +28,7 @@ class Operation extends Component {
       async onOk () {
         try {
           await Request.Delete(API.delete.replace(/:voteId/, id), {})
-          await window.history.go(0)
+          // await window.history.go(0)
         } catch (e) {
           console.log(e)
         }

@@ -11,7 +11,6 @@ import API from '../../../api'
 import Regx from '../../../utils/regx'
 import goto from '../../../utils/goto'
 import eventProxy from '../../../utils/eventProxy'
-const ERR_OK = 0
 class NormalLoginForm extends Component {
   constructor (props) {
     super(props)
@@ -25,7 +24,7 @@ class NormalLoginForm extends Component {
     e.stopPropagation()
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        // this.userLogin(values.mobile, values.password)
+        // this.userLogin(values.mobile, values.ChangePassword)
         const {mobile, password} = values
         const body = {
           mobile: mobile,
@@ -39,7 +38,6 @@ class NormalLoginForm extends Component {
           window.localStorage.setItem('sex', data.user.sex)
           window.localStorage.setItem('is_login', 1)
           window.localStorage.setItem('is_vote', 0)
-          message.success('login successful')
           setTimeout(goto('users/list'), 1000)
         } catch (e) {
           message.error('login err')

@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { Row, Col, message, Alert } from 'antd'
 import { Link } from 'react-router'
-import API from '../../../api'
+import API from '../../../api/index'
 import getUserToken from '../../../utils/getTokenUser'
-
-import List from '../../../components/user/list/showList'
-import LineText from '../../../components/user/content/lineText'
-import MsgListComponent from '../../../components/user/content/msgList'
-import Logo from '../../../components/user/content/lineText/index'
+import List from './showList/index'
+import LineText from '../content/lineText/index'
+import MsgListComponent from '../content/msgList/index'
+import Logo from '../content/lineText/index'
 import './index.less'
 class Item extends Component {
   constructor (props) {
@@ -22,7 +21,7 @@ class Item extends Component {
     }
   }
 
-  getJoinedList = async () => {
+  getVoteList = async () => {
     if (this.state.page <= this.state.pages) {
       let params = {
         page: this.state.page,
@@ -45,24 +44,24 @@ class Item extends Component {
             this.setState({
               total: json.data.total,
               List: list,
-              page: json.data.pageNum+1,
+              page: json.data.pageNum + 1,
               pages: json.data.pages
             })
           }
         }
       )
-    } if(this.state.page>this.state.pages) {
+    }
+    if (this.state.page > this.state.pages) {
       message.warning('已加载完所有投票')
     }
-
   }
 
-  getFirstJoined = async () => {
+  getFirstList = async () => {
     let params = {
       page: 1,
       rows: 6
     }
-    fetch(API.haveVote.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
+    fetch(API.info.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -76,41 +75,41 @@ class Item extends Component {
             ...this.state.List,
             ...json.data.list
           ]
-          if(list.length === 0){
-            message.warning('你还没有参加过投票')
-          }
-
           this.setState({
             total: json.data.total,
             List: list,
             page: 2,
             pages: json.data.pages
           })
-
         }
       }
     )
   }
 
   componentDidMount () {
-    this.getFirstJoined()
+    this.getFirstList()
   }
 
   render () {
+    let is_login = window.localStorage.getItem('is_login') || '0'
     let mobile = window.localStorage.getItem('mobile')
     return (
       <div className="show-list-wrapper">
         <Col span={23} offset={1}>
           <Link to="/users/change">
-            <div className="msg-bar">
-              <MsgListComponent label="手机号" text={mobile} />
-            </div>
+            {
+              is_login === '1' &&
+              <div className="msg-bar">
+                <MsgListComponent label="手机号" text={mobile} />
+              </div>
+            }
           </Link>
           <Logo text="不洗碗工作室" />
           <div className="show-list">
             <Row>
               {
                 this.state.List.map((item) => {
+                  if (item.flag === 0 || item.flag === 1) {
                     return (
                       <List
                         key={item.id}
@@ -118,16 +117,36 @@ class Item extends Component {
                         list={item}
                       />
                     )
-                  })
-                }
+                  }
+                })
+              }
             </Row>
             <Row>
-              <div onClick={this.getJoinedList}>
+              <div onClick={this.getVoteList}>
                 <Col span={21} offset={1}>
                   <Alert message="点击加载更多" type="info" />
                 </Col>
               </div>
+
             </Row>
+            <LineText text="历史投票" />
+            <div className="history-wrapper">
+              <Row>
+                {
+                  this.state.List.map((item) => {
+                    if (item.flag === 2) {
+                      return (
+                        <List
+                          key={item.id}
+                          voteId={item.id}
+                          list={item}
+                        />
+                      )
+                    }
+                  })
+                }
+              </Row>
+            </div>
           </div>
         </Col>
       </div>

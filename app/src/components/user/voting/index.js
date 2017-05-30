@@ -29,7 +29,8 @@ class Voting extends Component {
     isJoined: '0',
     valueDouble: [],
     footMsg: '',
-    clickDisable: true
+    clickDisable: true,
+    max:0
   }
 
   onSingleChange = (e) => {
@@ -42,7 +43,7 @@ class Voting extends Component {
   }
 
   onDoubleChange = (checkedValues) => {
-    const footMsg = `您已选择: ${checkedValues.length}项`
+    const footMsg = `您已选择: ${checkedValues.length}项;最多选${this.state.max}项`
     this.setState({
       valueDouble: checkedValues,
       footMsg: footMsg
@@ -50,7 +51,7 @@ class Voting extends Component {
   }
 
   onScoreChange = () => {
-      const footMsg = `${this.props.type === 3? '十':'百'}分制打分；共${this.state.options.length}项需要打分`
+      const footMsg = `${this.state.type === 3? '十':'百'}分制打分；共${this.state.options.length}项需要打分`
       this.setState({
         footMsg: footMsg
       })
@@ -66,7 +67,8 @@ class Voting extends Component {
             options: json.options,
             startTime: getLocalTime(json.voteShow.startTime / 1000),
             endTime: getLocalTime(json.voteShow.endTime / 1000),
-            optionId: json.options[0].id
+            optionId: json.options[0].id,
+            max: json.voteShow.max
           })
           if (this.state.flag === 0) {
             this.setState({
@@ -130,9 +132,6 @@ class Voting extends Component {
         }
         try {
           await Request.tpostUser(API.submitVote.replace(/:voteId/, this.props.location.query.voteid), {records: records})
-            .then((json) => {
-              console.log(json)
-            })
           this.setState({
             isJoined: '1'
           })
@@ -248,7 +247,7 @@ class Voting extends Component {
             isJoined={this.state.isJoined}
             submitVoting={this.submitVoting}
             footMsg={this.state.footMsg}
-            itemNum={(this.state.valueDouble.length || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}
+            itemNum={(this.state.valueDouble.length <= this.state.max || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}
           />
         </div>
       </Form>

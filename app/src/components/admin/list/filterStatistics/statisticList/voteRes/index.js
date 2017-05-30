@@ -33,7 +33,6 @@ export default class VoteRes extends Component {
       return res.json()
     }).then((json) => {
       if (json.code === 0) {
-        message.success('获取详情成功')
         this.setState({
           options: json.data.options,
           title: json.data.vote.title
@@ -42,20 +41,22 @@ export default class VoteRes extends Component {
     })
   }
 
-  download = () => {
+  download = async() => {
     fetch(API.download.replace(/:voteId/, this.props.location.query.voteid), {
       method: 'GET',
       headers: {
-        token: getAdminToken()
+        'Content-Type':'application/force-download',
+        'token': getAdminToken()
       }
-    }).then((res) => {
-      return res.json()
-    }).then((json) => {
-      if (json.code === 0) {
-        message.success('下载成功')
-        window.location.href = 'http://192.168.1.219/' + json.data.path
-      }
-    })
+    }).then(res => res.blob().then(blob => {
+      let a = document.createElement('a')
+      let url = window.URL.createObjectURL(blob)
+      let filename = this.props.location.query.voteid + this.state.title + '.xls'
+      a.download = filename
+      a.href = url
+      a.click()
+      window.URL.revokeObjectURL(url)
+    }))
   }
 
   componentDidMount () {
@@ -88,7 +89,7 @@ export default class VoteRes extends Component {
             <Button className="vote-button" onClick={this.download}>下载表格</Button>
           </Col>
           <Col span={22} offset={1} className="list-table">
-            <Table columns={columns} dataSource={this.state.options} scroll={{x: 1300}} pagination={false}/>
+            <Table columns={columns} dataSource={this.state.options} scroll={{x: 1000}} pagination={false}/>
           </Col>
           <Col span={24} offset={21}>
             <Link to="/admin/filter-statistics">
