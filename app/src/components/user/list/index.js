@@ -127,7 +127,6 @@ class Item extends Component {
                   <Alert message="点击加载更多" type="info" />
                 </Col>
               </div>
-
             </Row>
             <LineText text="历史投票" />
             <div className="history-wrapper">

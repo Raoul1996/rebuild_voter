@@ -135,6 +135,7 @@ class Voting extends Component {
           this.setState({
             isJoined: '1'
           })
+          message.success('投票成功')
         } catch (e) {
           message.error(e)
         }

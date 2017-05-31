@@ -2,7 +2,7 @@
  * Created by Pororo on 17/5/14.
  */
 import React, { Component } from 'react'
-import { Col, Row, Button, Alert, message, Modal } from 'antd'
+import { Col, Row, Button, Alert, Modal } from 'antd'
 import Goto from '../../../../utils/goto'
 import './index.less'
 import Share from '../../share'

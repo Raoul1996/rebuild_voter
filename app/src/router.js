@@ -5,7 +5,7 @@ import AppComponent from './components/app'
 import UserPage from './components/user/index'
 import UserLogin from './components/user/login'
 import UserRegister from './components/user/register'
-import UserPassword from './pages/index/password'
+import UserPassword from './components/user/ChangePassword'
 import UserForget from './components/user/forgetPasssword'
 import UserList from './components/user/list/index'
 import UserChangeMsg from './components/user/changeMsg'
@@ -20,10 +20,10 @@ import VoteRes from './components/admin/list/filterStatistics/statisticList/vote
 import ScoreRes from './components/admin/list/filterStatistics/statisticList/scoreRes'
 import FilterList from './components/admin/list/filterList'
 import FilterStatistics from './components/admin/list/filterStatistics'
-import API from 'api'
-import * as Request from 'utils/request'
-import AdminLogout from 'utils/adminLoginout'
-import UserLogout from 'utils/userLogout'
+import API from './api'
+import * as Request from './utils/request'
+import AdminLogout from './utils/adminLoginout'
+import UserLogout from './utils/userLogout'
 const requireAdminLogin = async () => {
   console.log('安全')
   const data = await Request.tpost(API.findLike)

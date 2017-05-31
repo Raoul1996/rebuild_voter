@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { Card, Col, Row } from 'antd'
+import { Card, Col, Row, Tooltip } from 'antd'
 import './index.less'
 import restTime from '../../../../utils/restTime'
 import urlEncoder from '../../../../utils/urlEncoder'
@@ -8,13 +8,13 @@ import avatar from './avatar.png'
 // 投票的标题
 let title = '不洗碗工作室最美程序员选举选举'
 // 投票的人数
-function limitStringNum (title) {
-  if (title.length > 8) {
-    return `${title.substr(0, 6)}……`
-  } else {
-    return title
-  }
-}
+// function limitStringNum (title) {
+//   if (title.length > 10) {
+//     return `${title.substr(0, 8)}……`
+//   } else {
+//     return title
+//   }
+// }
 
 class ShowList extends Component {
   constructor (props) {
@@ -41,7 +41,7 @@ class ShowList extends Component {
               'flag': list.flag+1
             })}>
               <div className="item-title">
-                <h3>{limitStringNum(list.title)}</h3>
+                <h3>{list.title}</h3>
               </div>
               <div className="item-voter">
                 <img src={avatar} className="item-voter-icon" />
