@@ -34,11 +34,9 @@ module.exports = {
       },
       {
         test: /\.scss/,
-        loaders:  ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['style-loader', 'css-loader', 'sass-loader']
-        })
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       },
+
       {
         test: /\.less/,
         loaders: ExtractTextPlugin.extract({
@@ -47,7 +45,7 @@ module.exports = {
         })
       },
       {
-        test: /\.(png|jpg|gif|woff|woff2|svg)$/,
+        test: /\.(png|jpg|gif|woff|woff2|eot|ttf|svg)$/,
         loaders: [
           'url-loader?limit=10000&name=img/[hash:8].[name].[ext]',
         ],
@@ -56,6 +54,12 @@ module.exports = {
   },
   resolve: {
     extensions: [' ', '.js', '.jsx'],
+    alias: {
+      'api': path.join(__dirname, '/app/src/api'),
+      'components': path.join(__dirname, '/app/src/components'),
+      'images': path.join(__dirname, '/app/src/images'),
+      'utils': path.join(__dirname, '/app/src/utils')
+    }
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
