@@ -2,10 +2,12 @@
  * Created by Pororo on 17/5/14.
  */
 import React, { Component } from 'react'
-import { Col, Row, Button, Alert, Modal } from 'antd'
+import { Col, Row, Button, Alert, Modal, message } from 'antd'
 import Goto from '../../../../utils/goto'
 import './index.less'
 import Share from '../../share'
+import CopyToClipboard from 'react-copy-to-clipboard'
+
 class FooterButton extends Component {
   constructor (props) {
     super(props)
@@ -14,6 +16,7 @@ class FooterButton extends Component {
       visibleShare: false,
       visibleSubmit: false,
       modal2Visible: false,
+      url: window.location.href
     }
   }
 
@@ -65,11 +68,16 @@ class FooterButton extends Component {
                   onCancel={() => this.setModal2Visible(false)}
                   footer={null}
                 >
-                  <Share sites={['qzone', 'weibo', 'qq', 'wechat']}
-                         url={window.location.href}
-                         title="react-share-buttons"
-                         description="快来参加投票"
-                  />
+                  <p>快来分享给小伙伴们来参加投票呀</p>
+                  <p></p>
+                  <CopyToClipboard text={this.state.url} onCopy={async() => {
+                    await this.setState({copied: true})
+                    message.success(`您复制了投票链接${this.state.url}`)
+                  }
+                  }>
+                    <Button type='primary'>点击复制</Button>
+                  </CopyToClipboard>
+
                 </Modal>
               </Col>
             }
@@ -118,11 +126,15 @@ class FooterButton extends Component {
                       onCancel={() => this.setModal2Visible(false)}
                       footer={null}
                     >
-                      <Share sites={['qzone', 'weibo', 'qq', 'wechat']}
-                             url={window.location.href}
-                             title="react-share-buttons"
-                             description="快来参加投票"
-                      />
+                      <p>快来分享给小伙伴们来参加投票呀</p>
+                      <p></p>
+                      <CopyToClipboard text={this.state.url} onCopy={async() => {
+                        await this.setState({copied: true})
+                        message.success(`您复制了投票链接${this.state.url}`)
+                      }
+                      }>
+                        <Button type='primary'>点击复制</Button>
+                      </CopyToClipboard>
                     </Modal>
                   </Col>
                 </Row>
@@ -148,11 +160,15 @@ class FooterButton extends Component {
                       onOk={() => this.setModal2Visible(false)}
                       onCancel={() => this.setModal2Visible(false)}
                     >
-                      <Share sites={['qzone', 'weibo', 'qq', 'wechat']}
-                             url={window.location.href}
-                             title="react-share-buttons"
-                             description="快来参加投票"
-                      />
+                      <p>快来分享给小伙伴们来参加投票呀</p>
+                      <p/>
+                      <CopyToClipboard text={this.state.url} onCopy={async() => {
+                        await this.setState({copied: true})
+                        message.success(`您复制了投票链接${this.state.url}`)
+                      }
+                      }>
+                        <Button type='primary'>点击复制</Button>
+                      </CopyToClipboard>
                     </Modal>
                   </Col>
                 </Row>

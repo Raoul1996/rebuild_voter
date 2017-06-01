@@ -5,7 +5,7 @@ import AppComponent from './components/app'
 import UserPage from './components/user/index'
 import UserLogin from './components/user/login'
 import UserRegister from './components/user/register'
-import UserPassword from './components/user/ChangePassword'
+// import UserPassword from './components/user/forgetPasssword'
 import UserForget from './components/user/forgetPasssword'
 import UserList from './components/user/list/index'
 import UserChangeMsg from './components/user/changeMsg'
@@ -59,7 +59,7 @@ function RouterApp () {
         <Route path="users" components={UserPage}>
           <Route path="login" components={UserLogin} />
           <Route path="register" components={UserRegister} />
-          <Route path="password" components={UserPassword} onEnter={requireUserLogin} />
+          {/*<Route path="password" components={UserPassword} onEnter={requireUserLogin} />*/}
           <Route path="forget" components={UserForget} onEnter={requireUserLogin} />
           <Route path="vote" component={Vote} onEnter={buttonOnEnter} onLeave={buttonOnLeave}/>
           <Route path="list" component={UserList} />
