@@ -5,7 +5,6 @@ import './index.less'
 class Headers extends Component {
   goBack=()=>{
     window.history.go(-1)
-    window.localStorage.setItem('is_vote','0')
   }
   render () {
     return (

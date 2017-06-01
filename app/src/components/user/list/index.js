@@ -8,6 +8,7 @@ import LineText from '../content/lineText/index'
 import MsgListComponent from '../content/msgList/index'
 import Logo from '../content/lineText/index'
 import './index.less'
+
 class Item extends Component {
   constructor (props) {
     super(props)
@@ -17,7 +18,8 @@ class Item extends Component {
       page: 2,
       pages: 1,
       close: [],
-      unClose: []
+      unClose: [],
+      height:225
     }
   }
 
@@ -88,7 +90,25 @@ class Item extends Component {
 
   componentDidMount () {
     this.getFirstList()
+    window.addEventListener('scroll',
+      () => {
+        if (window.scrollY > this.state.height ) {
+          this.state.height=this.state.height + 356
+          this.getVoteList()
+        }
+      })
+
   }
+  componentWillUnmount (){
+    window.addEventListener('scroll',
+      () => {
+        if (window.scrollY > this.state.height ) {
+          this.state.height=this.state.height + 356
+          this.getVoteList()
+        }
+      })
+  }
+
 
   render () {
     let is_login = window.localStorage.getItem('is_login') || '0'
@@ -122,9 +142,9 @@ class Item extends Component {
               }
             </Row>
             <Row>
-              <div onClick={this.getVoteList}>
+              <div>
                 <Col span={21} offset={1}>
-                  <Alert message="点击加载更多" type="info" />
+                  <Alert message="下拉加载更多" type="info" />
                 </Col>
               </div>
             </Row>

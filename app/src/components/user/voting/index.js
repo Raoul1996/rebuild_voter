@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Tag, Col, Row, Radio, Checkbox, InputNumber, Form, message } from 'antd'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
-
 import FooterButton from './footerbutton'
 import * as Request from '../../../utils/request'
 import API from '../../../api'
@@ -24,13 +23,13 @@ class Voting extends Component {
     startTime: getLocalTime(2494583700),
     endTime: getLocalTime(2494583718),
     options: [],
+    records:[],
     score: [],
     isGoing: this.props.location.query.flag - 1,
     isJoined: '0',
     valueDouble: [],
     footMsg: '',
-    clickDisable: true,
-    max:0
+    clickDisable: true
   }
 
   onSingleChange = (e) => {
@@ -58,41 +57,84 @@ class Voting extends Component {
   }
 
   getVoting = async () => {
-    try {
-      await Request.get(API.voteInfo.replace(/voteid/, this.state.voteId), '', {})
-        .then((json) => {
-          this.setState({
-            title: json.voteShow.title,
-            type: json.voteShow.type,
-            options: json.options,
-            startTime: getLocalTime(json.voteShow.startTime / 1000),
-            endTime: getLocalTime(json.voteShow.endTime / 1000),
-            optionId: json.options[0].id,
-            max: json.voteShow.max
+    const token = window.localStorage.getItem('user.token')
+    if (token){
+      try {
+        await Request.tgetUser(API.voteInfo.replace(/voteid/, this.state.voteId), '', {})
+          .then((json) => {
+            this.setState({
+              options: json.options,
+              // max: json.voteShow.max,
+              records: json.records
+            })
+            if(this.state.records.length === 0){
+              if (this.state.flag === 0) {
+                this.setState({
+                  isGoing: '0'
+                })
+              }
+              if (this.state.flag === 1) {
+                this.setState({
+                  isGoing: '1',
+                  isJoined: '0'
+                })
+              }
+              if (this.state.flag === 2) {
+                this.setState({
+                  isGoing: '2',
+                  isJoined: '0'
+                })
+              }
+              if(this.state.type === 3||this.state.type === 4){
+                this.onScoreChange()
+              }
+            } else {
+              this.setState({
+                isGoing: '1',
+                isJoined: '1'
+              })
+            }
+
           })
-          if (this.state.flag === 0) {
+      } catch (e) {
+        console.log(e)
+      }
+    } else {
+      try {
+        await Request.get(API.voteInfo.replace(/voteid/, this.state.voteId), '', {})
+          .then((json) => {
             this.setState({
-              isGoing: '0'
+              title: json.voteShow.title,
+              type: json.voteShow.type,
+              options: json.options,
+              startTime: getLocalTime(json.voteShow.startTime / 1000),
+              endTime: getLocalTime(json.voteShow.endTime / 1000),
+              optionId: json.options[0].id
             })
-          }
-          if (this.state.flag === 1) {
-            this.setState({
-              isGoing: '1',
-              isJoined: '0'
-            })
-          }
-          if (this.state.flag === 2) {
-            this.setState({
-              isGoing: '2',
-              isJoined: '0'
-            })
-          }
-          if(this.state.type === 3||this.state.type === 4){
-            this.onScoreChange()
-          }
-        })
-    } catch (e) {
-      console.log(e)
+            if (this.state.flag === 0) {
+              this.setState({
+                isGoing: '0'
+              })
+            }
+            if (this.state.flag === 1) {
+              this.setState({
+                isGoing: '1',
+                isJoined: '0'
+              })
+            }
+            if (this.state.flag === 2) {
+              this.setState({
+                isGoing: '2',
+                isJoined: '0'
+              })
+            }
+            if(this.state.type === 3||this.state.type === 4){
+              this.onScoreChange()
+            }
+          })
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 
@@ -199,7 +241,7 @@ class Voting extends Component {
                     <FormItem>
                       { getFieldDecorator(`value-${index}`)(
                         <InputNumber
-                          min={0}
+                          min={1}
                           max={type === 3 ? 10 : 100}
                         />
                       )}

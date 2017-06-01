@@ -5,7 +5,7 @@ import AppComponent from './components/app'
 import UserPage from './components/user/index'
 import UserLogin from './components/user/login'
 import UserRegister from './components/user/register'
-// import UserPassword from './pages/index/password'
+import UserPassword from './components/user/ChangePassword'
 import UserForget from './components/user/forgetPasssword'
 import UserList from './components/user/list/index'
 import UserChangeMsg from './components/user/changeMsg'
@@ -38,6 +38,18 @@ const requireUserLogin = async () => {
     UserLogout()
   }
 }
+
+const buttonOnLeave = () => {
+  if(window.localStorage.getItem('is_login') === '1'){
+    window.localStorage.setItem('is_vote',0)
+  }
+}
+
+const buttonOnEnter = () => {
+  if(window.localStorage.getItem('is_login') === '1'){
+      window.localStorage.setItem('is_vote',1)
+    }
+}
 function RouterApp () {
   return (
     <Router history={hashHistory}>
@@ -49,7 +61,7 @@ function RouterApp () {
           <Route path="register" components={UserRegister} />
           <Route path="password" components={UserPassword} onEnter={requireUserLogin} />
           <Route path="forget" components={UserForget} onEnter={requireUserLogin} />
-          <Route path="vote" component={Vote} />
+          <Route path="vote" component={Vote} onEnter={buttonOnEnter} onLeave={buttonOnLeave}/>
           <Route path="list" component={UserList} />
           <Route path="joined" component={Joined} onEnter={requireUserLogin} />
           <Route path="change" components={UserChangeMsg} onEnter={requireUserLogin} />

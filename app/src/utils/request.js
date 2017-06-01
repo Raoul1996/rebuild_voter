@@ -77,6 +77,16 @@ export function tget (url, params, headers = {}) {
   return request(url, 'GET', headers)
 }
 
+export function tgetUser (url, params, headers = {}) {
+  if (params) {
+    url = parseParams(url, params)
+  }
+  headers = {
+    ...headers,
+    token: getUserToken()
+  }
+  return request(url, 'GET', headers)
+}
 /**
  * post 请求
  * @param url api url

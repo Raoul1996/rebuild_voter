@@ -1,33 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { Card, Col, Row, Tooltip } from 'antd'
+import { Card, Col, Row } from 'antd'
 import './index.less'
 import restTime from '../../../../utils/restTime'
 import urlEncoder from '../../../../utils/urlEncoder'
 import avatar from './avatar.png'
-// 投票的标题
-let title = '不洗碗工作室最美程序员选举选举'
-// 投票的人数
-// function limitStringNum (title) {
-//   if (title.length > 10) {
-//     return `${title.substr(0, 8)}……`
-//   } else {
-//     return title
-//   }
-// }
 
 class ShowList extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      loginStatus: 0
-    }
-  }
-
-  changeState = () => {
-    if(window.localStorage.getItem('is_login') === '1'){
-      window.localStorage.setItem('is_vote',1)
-    }
   }
 
   render () {
@@ -35,10 +16,10 @@ class ShowList extends Component {
     return (
       <Col span={10} offset={1}>
         <div className="list-item-wrapper">
-          <Card onClick={this.changeState}>
+          <Card>
             <Link className='link' to={urlEncoder('users/vote', {
               'voteid': this.props.voteId,
-              'flag': list.flag+1
+              'flag': list.flag + 1
             })}>
               <div className="item-title">
                 <h3>{list.title}</h3>
