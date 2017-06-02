@@ -19,7 +19,7 @@ class Joined extends Component {
       pages: 1,
       close: [],
       unClose: [],
-      height: 40
+      height: 20
     }
   }
 

@@ -32,7 +32,8 @@ class Voting extends Component {
     clickDisable: true,
     max: 0,
     isVoted: 0,
-    choose: []
+    choose: [],
+    singleValue: 0
   }
 
   onSingleChange = (e) => {
@@ -80,6 +81,16 @@ class Voting extends Component {
               optionId: json.options[0].id,
               isVoted: isVoted
             })
+            let choose = []
+            this.state.options.map((item)=>{
+              if(item.value > 0){
+              choose.push(item.id)
+              }
+            })
+            this.setState({
+              choose:choose,
+              singleValue:choose[0]
+            })
             if (this.state.isVoted === 0 && this.state.records.length === 0) {
               if (this.state.flag === 0) {
                 this.setState({
@@ -102,7 +113,6 @@ class Voting extends Component {
                 this.onScoreChange()
               }
             } else {
-              // TODO 参加过的投票选项显示
               if (this.state.flag === 1) {
                 this.setState({
                   isGoing: '1',
@@ -275,6 +285,47 @@ class Voting extends Component {
         </Row>
       )
     })
+    const formItemsVote = this.state.options.map((item, index) => {
+      return (
+        <Row style={MarginStyle} key={item.id}>
+          <Col>
+            <Row style={MarginStyle}>
+              <Col>
+                <h3>选项{index + 1}</h3>
+              </Col>
+              {
+                type === 1 && <Radio key={index} style={radioStyle} value={item.id} disabled>{item.title}</Radio>
+              }
+              {
+                type === 2 &&
+                <div>
+                  <Row>
+                    <Col span={8}><Checkbox key={index} value={item.id} disabled>{item.title}</Checkbox></Col>
+                  </Row>
+                </div>
+              }
+            </Row>
+          </Col>
+        </Row>
+      )
+    })
+    const formItemsScore = this.state.records.map((item, index) => {
+      return (
+        <Row key={index}>
+          <Col span={15} style={MarginStyle}>
+            <h4>{item.title}</h4>
+          </Col>
+          <Col span={4}>
+            <FormItem>
+              <InputNumber
+                defaultValue={item.value}
+                disabled
+              />
+            </FormItem>
+          </Col>
+        </Row>
+      )
+    })
     let is_login = window.localStorage.getItem('is_login') || '0'
     return (
       <Form>
@@ -302,10 +353,24 @@ class Voting extends Component {
             </Col>
           </Row>
           <div style={{marginLeft: '15vw', marginBottom: '100px'}}>
-            { type === 1 && <RadioGroup onChange={this.onSingleChange}>{formItems}</RadioGroup> }
-            { type === 2 && <Checkbox.Group defaultValue={this.state.choose}
-                                            onChange={this.onDoubleChange}>{formItems}</Checkbox.Group> }
-            { (type === 3 || type === 4) && formItems }
+            { type === 1 && <RadioGroup onChange={this.onSingleChange} value={this.state.singleValue}>
+              {
+                this.state.isVoted === 0 ? formItems : formItemsVote
+              }
+            </RadioGroup>
+            }
+            { type === 2 && <Checkbox.Group onChange={this.onDoubleChange} value={this.state.choose}>
+              {
+                this.state.isVoted === 0 ? formItems : formItemsVote
+              }
+            </Checkbox.Group>
+            }
+            { (type === 3 || type === 4) && <div>
+              {
+                this.state.isVoted === 0 ? formItems : formItemsScore
+              }
+            </div>
+            }
           </div>
           {
             is_login === '1' &&
