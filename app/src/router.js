@@ -5,7 +5,7 @@ import AppComponent from './components/app'
 import UserPage from './components/user/index'
 import UserLogin from './components/user/login'
 import UserRegister from './components/user/register'
-// import UserPassword from './components/user/forgetPasssword'
+import UserPassword from './components/user/forgetPasssword'
 import UserForget from './components/user/forgetPasssword'
 import UserList from './components/user/list/index'
 import UserChangeMsg from './components/user/changeMsg'
@@ -24,60 +24,65 @@ import API from './api'
 import * as Request from './utils/request'
 import AdminLogout from './utils/adminLoginout'
 import UserLogout from './utils/userLogout'
+
 const requireAdminLogin = async () => {
-  console.log('安全')
-  const data = await Request.tpost(API.findLike)
-  if (data.code === 20002 || data.code === 20001) {
-    AdminLogout()
+  if (window.localStorage.getItem('is_login') === '1') {
+    const data = await Request.tpost(API.findLike)
+    if (data.code === 20002 || data.code === 20001) {
+      AdminLogout()
+    }
   }
 }
+
 const requireUserLogin = async () => {
-  console.log('安全')
-  const data = await Request.verify(API.haveVote)
-  if (data.code === 20002 || data.code === 20001) {
-    UserLogout()
+  if (window.localStorage.getItem('is_login') === '1') {
+    const data = await Request.verify(API.haveVote)
+    if (data.code === 20002 || data.code === 20001) {
+      UserLogout()
+    }
   }
 }
 
 const buttonOnLeave = () => {
-  if(window.localStorage.getItem('is_login') === '1'){
-    window.localStorage.setItem('is_vote',0)
+  if (window.localStorage.getItem('is_login') === '1') {
+    window.localStorage.setItem('is_vote', 0)
   }
 }
 
 const buttonOnEnter = () => {
-  if(window.localStorage.getItem('is_login') === '1'){
-      window.localStorage.setItem('is_vote',1)
-    }
+  if (window.localStorage.getItem('is_login') === '1') {
+    window.localStorage.setItem('is_vote', 1)
+  }
 }
 function RouterApp () {
   return (
     <Router history={hashHistory}>
-      <Redirect from="/" to="/users/list" />
+      <Redirect from="/" to="users/list" />
       <Route path="/" component={AppComponent}>
-        <IndexRoute component={UserPage} />
-        <Route path="users" components={UserPage}>
-          <Route path="login" components={UserLogin} />
-          <Route path="register" components={UserRegister} />
-          {/*<Route path="password" components={UserPassword} onEnter={requireUserLogin} />*/}
-          <Route path="forget" components={UserForget} onEnter={requireUserLogin} />
-          <Route path="vote" component={Vote} onEnter={buttonOnEnter} onLeave={buttonOnLeave}/>
+        {/*<IndexRoute component={UserPage} />*/}
+        <Route path="users" component={UserPage}>
+          <IndexRoute component={UserList}/>
+          <Route path="login" component={UserLogin} />
+          <Route path="register" component={UserRegister} />
+          <Route path="password" component={UserPassword} onEnter={requireUserLogin} />
+          <Route path="forget" component={UserForget} onEnter={requireUserLogin} />
+          <Route path="vote" component={Vote} onEnter={buttonOnEnter} onLeave={buttonOnLeave} />
           <Route path="list" component={UserList} />
           <Route path="joined" component={Joined} onEnter={requireUserLogin} />
-          <Route path="change" components={UserChangeMsg} onEnter={requireUserLogin} />
-          <Route path="change-mobile" components={UserChangeMobile} onEnter={requireUserLogin} />
+          <Route path="change" component={UserChangeMsg} onEnter={requireUserLogin} />
+          <Route path="change-mobile" component={UserChangeMobile} onEnter={requireUserLogin} />
         </Route>
-        <Route path="admin" components={AdminPage}>
-          <Route path="filter-list" components={FilterList} onEnter={requireAdminLogin}/>
-          <Route path="filter-statistics" components={FilterStatistics} onEnter={requireAdminLogin}/>
+        <Route path="admin" component={AdminPage}>
+          <Route path="filter-list" component={FilterList} onEnter={requireAdminLogin} />
+          <Route path="filter-statistics" component={FilterStatistics} onEnter={requireAdminLogin} />
         </Route>
-        <Route path="login" components={AdminLogin} />
-        <Route path="register" components={UserRegister} />
-        <Route path="admin" components={AdminPage} />
-        <Route path="create" components={CreateActivity} onEnter={requireAdminLogin} />
-        <Route path="edit" components={EditActivity} onEnter={requireAdminLogin} />
-        <Route path="vote-res" components={VoteRes} onEnter={requireAdminLogin} />
-        <Route path="score-res" components={ScoreRes} onEnter={requireAdminLogin} />
+        <Route path="login" component={AdminLogin} />
+        <Route path="register" component={UserRegister} />
+        <Route path="admin" component={AdminPage} />
+        <Route path="create" component={CreateActivity} onEnter={requireAdminLogin} />
+        <Route path="edit" component={EditActivity} onEnter={requireAdminLogin} />
+        <Route path="vote-res" component={VoteRes} onEnter={requireAdminLogin} />
+        <Route path="score-res" component={ScoreRes} onEnter={requireAdminLogin} />
       </Route>
     </Router>
   )

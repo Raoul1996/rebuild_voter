@@ -70,7 +70,7 @@ class FooterButton extends Component {
                 >
                   <p>快来分享给小伙伴们来参加投票呀</p>
                   <p></p>
-                  <CopyToClipboard text={this.state.url} onCopy={async() => {
+                  <CopyToClipboard text={this.state.url} onCopy={async () => {
                     await this.setState({copied: true})
                     message.success(`您复制了投票链接${this.state.url}`)
                   }
@@ -128,7 +128,7 @@ class FooterButton extends Component {
                     >
                       <p>快来分享给小伙伴们来参加投票呀</p>
                       <p></p>
-                      <CopyToClipboard text={this.state.url} onCopy={async() => {
+                      <CopyToClipboard text={this.state.url} onCopy={async () => {
                         await this.setState({copied: true})
                         message.success(`您复制了投票链接${this.state.url}`)
                       }
@@ -161,8 +161,8 @@ class FooterButton extends Component {
                       onCancel={() => this.setModal2Visible(false)}
                     >
                       <p>快来分享给小伙伴们来参加投票呀</p>
-                      <p/>
-                      <CopyToClipboard text={this.state.url} onCopy={async() => {
+                      <p />
+                      <CopyToClipboard text={this.state.url} onCopy={async () => {
                         await this.setState({copied: true})
                         message.success(`您复制了投票链接${this.state.url}`)
                       }

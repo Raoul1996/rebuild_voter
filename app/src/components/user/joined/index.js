@@ -9,7 +9,7 @@ import LineText from '../content/lineText/index'
 import MsgListComponent from '../content/msgList/index'
 import Logo from '../content/lineText/index'
 import './index.less'
-class Item extends Component {
+class Joined extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -18,43 +18,47 @@ class Item extends Component {
       page: 2,
       pages: 1,
       close: [],
-      unClose: []
+      unClose: [],
+      height: 40
     }
   }
 
   getJoinedList = async () => {
-    if (this.state.page <= this.state.pages) {
-      let params = {
-        page: this.state.page,
-        rows: 6
-      }
-      fetch(API.info.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'token': getUserToken()
+    if (window.scrollY > this.state.height) {
+      this.state.height = this.state.height + 250
+      if (this.state.page <= this.state.pages) {
+        let params = {
+          page: this.state.page,
+          rows: 6
         }
-      }).then((res) => {
-        return res.json()
-      }).then((json) => {
-          if (json.code === 0) {
-            let list = [
-              ...this.state.List,
-              ...json.data.list
-            ]
-            this.setState({
-              total: json.data.total,
-              List: list,
-              page: json.data.pageNum+1,
-              pages: json.data.pages
-            })
+        fetch(API.info.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'token': getUserToken()
           }
-        }
-      )
-    } if(this.state.page>this.state.pages) {
-      message.warning('已加载完所有投票')
+        }).then((res) => {
+          return res.json()
+        }).then((json) => {
+            if (json.code === 0) {
+              let list = [
+                ...this.state.List,
+                ...json.data.list
+              ]
+              this.setState({
+                total: json.data.total,
+                List: list,
+                page: json.data.pageNum + 1,
+                pages: json.data.pages
+              })
+            }
+          }
+        )
+      }
+      if (this.state.page > this.state.pages) {
+        message.warning('已加载完所有投票')
+      }
     }
-
   }
 
   getFirstJoined = async () => {
@@ -76,7 +80,7 @@ class Item extends Component {
             ...this.state.List,
             ...json.data.list
           ]
-          if(list.length === 0){
+          if (list.length === 0) {
             message.warning('你还没有参加过投票')
           }
 
@@ -86,7 +90,6 @@ class Item extends Component {
             page: 2,
             pages: json.data.pages
           })
-
         }
       }
     )
@@ -94,6 +97,12 @@ class Item extends Component {
 
   componentDidMount () {
     this.getFirstJoined()
+    window.addEventListener('scroll', this.getJoinedList)
+
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('scroll', this.getJoinedList)
   }
 
   render () {
@@ -110,21 +119,21 @@ class Item extends Component {
           <div className="show-list">
             <Row>
               {
-                this.state.List.map((item) => {
-                    return (
-                      <List
-                        key={item.id}
-                        voteId={item.id}
-                        list={item}
-                      />
-                    )
-                  })
-                }
+                this.state.List.map((item, index) => {
+                  return (
+                    <List
+                      key={index}
+                      voteId={item.id}
+                      list={item}
+                    />
+                  )
+                })
+              }
             </Row>
-            <Row>
-              <div onClick={this.getJoinedList}>
+            <Row style={{marginBottom: '50px'}}>
+              <div>
                 <Col span={21} offset={1}>
-                  <Alert message="点击加载更多" type="info" />
+                  <Alert message="下滑加载更多" type="info" />
                 </Col>
               </div>
             </Row>
@@ -134,4 +143,4 @@ class Item extends Component {
     )
   }
 }
-export default Item
+export default Joined

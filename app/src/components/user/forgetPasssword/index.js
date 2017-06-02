@@ -62,18 +62,6 @@ class ForgetForm extends React.Component {
       }
     })
   }
-  handleConfirmBlur = (e) => {
-    const value = e.target.value
-    this.setState({confirmDirty: this.state.confirmDirty || !!value})
-  }
-  checkPassword = (rule, value, callback) => {
-    const form = this.props.form
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!')
-    } else {
-      callback()
-    }
-  }
 
   render () {
     const {getFieldDecorator} = this.props.form

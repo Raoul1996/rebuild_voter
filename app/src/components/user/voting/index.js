@@ -23,13 +23,16 @@ class Voting extends Component {
     startTime: getLocalTime(2494583700),
     endTime: getLocalTime(2494583718),
     options: [],
-    records:[],
+    records: [],
     score: [],
     isGoing: this.props.location.query.flag - 1,
     isJoined: '0',
     valueDouble: [],
     footMsg: '',
-    clickDisable: true
+    clickDisable: true,
+    max: 0,
+    isVoted: 0,
+    choose: []
   }
 
   onSingleChange = (e) => {
@@ -50,24 +53,34 @@ class Voting extends Component {
   }
 
   onScoreChange = () => {
-      const footMsg = `${this.state.type === 3? '十':'百'}分制打分；共${this.state.options.length}项需要打分`
-      this.setState({
-        footMsg: footMsg
-      })
+    const footMsg = `${this.state.type === 3 ? '十' : '百'}分制打分；共${this.state.options.length}项需要打分`
+    this.setState({
+      footMsg: footMsg
+    })
   }
 
   getVoting = async () => {
     const token = window.localStorage.getItem('user.token')
-    if (token){
+    if (token) {
       try {
         await Request.tgetUser(API.voteInfo.replace(/voteid/, this.state.voteId), '', {})
           .then((json) => {
+            let isVoted = 0
+            json.options.map(item => {
+              isVoted = item.value + isVoted
+            }) // 通过所有选项value相加来判断是否参与过投票
             this.setState({
               options: json.options,
-              // max: json.voteShow.max,
-              records: json.records
+              max: json.voteShow.max,
+              records: json.records || [],
+              title: json.voteShow.title,
+              type: json.voteShow.type,
+              startTime: getLocalTime(json.voteShow.startTime / 1000),
+              endTime: getLocalTime(json.voteShow.endTime / 1000),
+              optionId: json.options[0].id,
+              isVoted: isVoted
             })
-            if(this.state.records.length === 0){
+            if (this.state.isVoted === 0 && this.state.records.length === 0) {
               if (this.state.flag === 0) {
                 this.setState({
                   isGoing: '0'
@@ -85,16 +98,24 @@ class Voting extends Component {
                   isJoined: '0'
                 })
               }
-              if(this.state.type === 3||this.state.type === 4){
+              if (this.state.type === 3 || this.state.type === 4) {
                 this.onScoreChange()
               }
             } else {
-              this.setState({
-                isGoing: '1',
-                isJoined: '1'
-              })
+              // TODO 参加过的投票选项显示
+              if (this.state.flag === 1) {
+                this.setState({
+                  isGoing: '1',
+                  isJoined: '1'
+                })
+              }
+              if (this.state.flag === 2) {
+                this.setState({
+                  isGoing: '2',
+                  isJoined: '1'
+                })
+              }
             }
-
           })
       } catch (e) {
         console.log(e)
@@ -128,7 +149,7 @@ class Voting extends Component {
                 isJoined: '0'
               })
             }
-            if(this.state.type === 3||this.state.type === 4){
+            if (this.state.type === 3 || this.state.type === 4) {
               this.onScoreChange()
             }
           })
@@ -254,7 +275,7 @@ class Voting extends Component {
         </Row>
       )
     })
-
+    let is_login = window.localStorage.getItem('is_login') || '0'
     return (
       <Form>
         <div style={{marginTop: '80px'}}>
@@ -282,16 +303,20 @@ class Voting extends Component {
           </Row>
           <div style={{marginLeft: '15vw', marginBottom: '100px'}}>
             { type === 1 && <RadioGroup onChange={this.onSingleChange}>{formItems}</RadioGroup> }
-            { type === 2 && <Checkbox.Group onChange={this.onDoubleChange}>{formItems}</Checkbox.Group> }
+            { type === 2 && <Checkbox.Group defaultValue={this.state.choose}
+                                            onChange={this.onDoubleChange}>{formItems}</Checkbox.Group> }
             { (type === 3 || type === 4) && formItems }
           </div>
-          <FooterButton
-            isGoing={this.state.isGoing}
-            isJoined={this.state.isJoined}
-            submitVoting={this.submitVoting}
-            footMsg={this.state.footMsg}
-            itemNum={(this.state.valueDouble.length <= this.state.max || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}
-          />
+          {
+            is_login === '1' &&
+            <FooterButton
+              isGoing={this.state.isGoing}
+              isJoined={this.state.isJoined}
+              submitVoting={this.submitVoting}
+              footMsg={this.state.footMsg}
+              itemNum={(this.state.valueDouble.length <= this.state.max || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}
+            />
+          }
         </div>
       </Form>
     )

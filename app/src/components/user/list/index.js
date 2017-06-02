@@ -19,43 +19,47 @@ class Item extends Component {
       pages: 1,
       close: [],
       unClose: [],
-      height:225
+      height: 150
     }
   }
 
   getVoteList = async () => {
-    if (this.state.page <= this.state.pages) {
-      let params = {
-        page: this.state.page,
-        rows: 6
-      }
-      fetch(API.info.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'token': getUserToken()
+    if (window.scrollY > this.state.height) {
+      this.state.height = this.state.height + 250
+      if (this.state.page <= this.state.pages) {
+        let params = {
+          page: this.state.page,
+          rows: 6
         }
-      }).then((res) => {
-        return res.json()
-      }).then((json) => {
-          if (json.code === 0) {
-            let list = [
-              ...this.state.List,
-              ...json.data.list
-            ]
-            this.setState({
-              total: json.data.total,
-              List: list,
-              page: json.data.pageNum + 1,
-              pages: json.data.pages
-            })
+        fetch(API.info.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'token': getUserToken()
           }
-        }
-      )
+        }).then((res) => {
+          return res.json()
+        }).then((json) => {
+            if (json.code === 0) {
+              let list = [
+                ...this.state.List,
+                ...json.data.list
+              ]
+              this.setState({
+                total: json.data.total,
+                List: list,
+                page: json.data.pageNum + 1,
+                pages: json.data.pages
+              })
+            }
+          }
+        )
+      }
+      if (this.state.page > this.state.pages) {
+        message.warning('已加载完所有投票')
+      }
     }
-    if (this.state.page > this.state.pages) {
-      message.warning('已加载完所有投票')
-    }
+
   }
 
   getFirstList = async () => {
@@ -90,25 +94,13 @@ class Item extends Component {
 
   componentDidMount () {
     this.getFirstList()
-    window.addEventListener('scroll',
-      () => {
-        if (window.scrollY > this.state.height ) {
-          this.state.height=this.state.height + 356
-          this.getVoteList()
-        }
-      })
+    window.addEventListener('scroll', this.getVoteList)
 
   }
-  componentWillUnmount (){
-    window.addEventListener('scroll',
-      () => {
-        if (window.scrollY > this.state.height ) {
-          this.state.height=this.state.height + 356
-          this.getVoteList()
-        }
-      })
-  }
 
+  componentWillUnmount () {
+    window.removeEventListener('scroll', this.getVoteList)
+  }
 
   render () {
     let is_login = window.localStorage.getItem('is_login') || '0'
@@ -128,11 +120,11 @@ class Item extends Component {
           <div className="show-list">
             <Row>
               {
-                this.state.List.map((item) => {
+                this.state.List.map((item, index) => {
                   if (item.flag === 0 || item.flag === 1) {
                     return (
                       <List
-                        key={item.id}
+                        key={index}
                         voteId={item.id}
                         list={item}
                       />
@@ -144,7 +136,7 @@ class Item extends Component {
             <Row>
               <div>
                 <Col span={21} offset={1}>
-                  <Alert message="下拉加载更多" type="info" />
+                  <Alert message="下滑加载更多" type="info" />
                 </Col>
               </div>
             </Row>
