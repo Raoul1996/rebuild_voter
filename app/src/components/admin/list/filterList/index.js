@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, DatePicker, Input, Radio, Button, Card, Form, message } from 'antd'
+import { Row, Col, DatePicker, Input, Radio, Button, Card, Form, message, } from 'antd'
 import { Link } from 'react-router'
 import './index.less'
 import ActList from './activityList'
@@ -283,10 +283,12 @@ class FilterList extends Component {
               </Form>
             </Card>
           </Col>
-          <Col span={22} offset={1} style={ListStyle}>
-            <Link to="create">
-              <Button style={ButtonStyle}>+创建活动</Button>
-            </Link>
+          <Col span={4} offset={20} style={ListStyle}>
+              <div>
+                <Link to="create">
+                <Button type="primary">+创建投票</Button>
+                </Link>
+              </div>
           </Col>
           <Col span={22} offset={1} style={ListStyle}>
             <ActList total={this.state.total} list={this.state.list} pagination={pagination} />

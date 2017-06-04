@@ -185,8 +185,9 @@ class Create extends Component {
     })
     return (
       <div className="edit">
-        <Col offset={5} span={14}>
-          <Card className="card">
+        <Col offset={3} span={18}>
+        <Card className="card">
+        <Col>
             <Col span={20}>
               <Row style={{marginTop: '20px'}}>
                 <Col {...GlobalSpanOffset}>
@@ -314,7 +315,8 @@ class Create extends Component {
                 </Col>
               </Row>
             </Col>
-          </Card>
+        </Col>
+        </Card>
         </Col>
       </div>
     )

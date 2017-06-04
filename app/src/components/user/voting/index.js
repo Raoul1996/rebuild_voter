@@ -82,14 +82,14 @@ class Voting extends Component {
               isVoted: isVoted
             })
             let choose = []
-            this.state.options.map((item)=>{
-              if(item.value > 0){
-              choose.push(item.id)
+            this.state.options.map((item) => {
+              if (item.value > 0) {
+                choose.push(item.id)
               }
             })
             this.setState({
-              choose:choose,
-              singleValue:choose[0]
+              choose: choose,
+              singleValue: choose[0]
             })
             if (this.state.isVoted === 0 && this.state.records.length === 0) {
               if (this.state.flag === 0) {
@@ -237,7 +237,7 @@ class Voting extends Component {
       fontSize: '0.6rem'
     }
     const status = [
-      <Tag>未开始</Tag>,
+      <Tag color="#2db7f5">未开始</Tag>,
       <Tag color="#87d068">进行中</Tag>,
       <Tag color="#f50">已结束</Tag>,
     ]
@@ -353,17 +353,20 @@ class Voting extends Component {
             </Col>
           </Row>
           <div style={{marginLeft: '15vw', marginBottom: '100px'}}>
-            { type === 1 && <RadioGroup onChange={this.onSingleChange} value={this.state.singleValue}>
+            { type === 1 && <div>
               {
-                this.state.isVoted === 0 ? formItems : formItemsVote
+                this.state.isVoted === 0 ? <RadioGroup onChange={this.onSingleChange}>{formItems}</RadioGroup> :
+                  <RadioGroup onChange={this.onSingleChange} value={this.state.singleValue}>{formItemsVote}</RadioGroup>
               }
-            </RadioGroup>
+            </div>
             }
-            { type === 2 && <Checkbox.Group onChange={this.onDoubleChange} value={this.state.choose}>
+            { type === 2 && <div>
               {
-                this.state.isVoted === 0 ? formItems : formItemsVote
+                this.state.isVoted === 0 ? <Checkbox.Group onChange={this.onDoubleChange}>{formItems}</Checkbox.Group> :
+                  <Checkbox.Group value={this.state.choose}
+                                  onChange={this.onDoubleChange}>{formItemsVote}</Checkbox.Group>
               }
-            </Checkbox.Group>
+            </div>
             }
             { (type === 3 || type === 4) && <div>
               {

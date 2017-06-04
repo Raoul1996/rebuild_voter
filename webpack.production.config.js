@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin') //打包 css
 const autoprefixer = require('autoprefixer')               //自动处理浏览器前缀
 const HtmlWebpackPlugin = require('html-webpack-plugin')    //生成 html
 const CleanWebpackPlugin = require('clean-webpack-plugin')  //用于清除上次打包文件
+const Visualizer = require('webpack-visualizer-plugin')
 
 module.exports = {
   entry: {
@@ -105,6 +106,7 @@ module.exports = {
     new CleanWebpackPlugin(['dist/build'], {
       verbose: true,
       dry: false
-    })
+    }),
+    new Visualizer(),
   ]
 }

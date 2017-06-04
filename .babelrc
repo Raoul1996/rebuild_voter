@@ -5,18 +5,14 @@
     "react"
   ],
   "plugins": [
-    "transform-runtime",
-    "add-module-exports",
     "transform-decorators-legacy",
+    "add-module-exports",
+    "transform-runtime",
     [
       "import",
       {
         "libraryName": "antd",
         "style": true
-      },
-      {
-        "style": "css",
-        "libraryName": "antd-mobile"
       }
     ]
   ]

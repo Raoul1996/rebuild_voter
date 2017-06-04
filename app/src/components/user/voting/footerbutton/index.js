@@ -5,7 +5,6 @@ import React, { Component } from 'react'
 import { Col, Row, Button, Alert, Modal, message } from 'antd'
 import Goto from '../../../../utils/goto'
 import './index.less'
-import Share from '../../share'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
 class FooterButton extends Component {

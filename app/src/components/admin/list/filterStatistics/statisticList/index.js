@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table } from 'antd'
+import { Table,Tag } from 'antd'
 import { Link } from 'react-router'
 import urlEncoder from '../../../../../utils/urlEncoder'
 import timeTransform from '../../../../../utils/timeTransfrom'
@@ -38,9 +38,9 @@ class ActivityList extends Component {
         title: '活动状态',
         render: record => (
           <span>
-            {record.flag === 0 && '未开始'}
-            {record.flag === 1 && '已开始'}
-            {record.flag === 2 && '已结束'}
+            {record.flag === 0 && <Tag color="cyan">未开始</Tag>}
+            {record.flag === 1 && <Tag color="blue">进行中</Tag>}
+            {record.flag === 2 && <Tag color="orange">已结束</Tag>}
           </span>
         ),
         key: 'flag'
@@ -49,8 +49,8 @@ class ActivityList extends Component {
         title: '开启状态',
         render: record => (
           <span>
-            {record.visibility === 1 && '开启'}
-            {record.visibility === 0 && '关闭'}
+            {record.visibility === 1 && <Tag color="blue">开启</Tag>}
+            {record.visibility === 0 && <Tag color="orange">关闭</Tag>}
           </span>
         ),
         key: 'visibility'
