@@ -19,7 +19,7 @@ class ShowList extends Component {
           <Card>
             <Link className='link' to={urlEncoder('users/vote', {
               'voteid': this.props.voteId,
-              'flag': list.flag + 1
+              'flag': list.flag + ''
             })}>
               <div className="item-title">
                 <h3>{list.title}</h3>

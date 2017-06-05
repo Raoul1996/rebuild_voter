@@ -96,6 +96,7 @@ class Joined extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0,0)
     this.getFirstJoined()
     window.addEventListener('scroll', this.getJoinedList)
 

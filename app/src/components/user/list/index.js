@@ -93,6 +93,7 @@ class Item extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0,0)
     this.getFirstList()
     window.addEventListener('scroll', this.getVoteList)
 
@@ -120,7 +121,7 @@ class Item extends Component {
           <div className="show-list">
             <Row>
               {
-                this.state.List.map((item, index) => {
+                this.state.List.map((item,index) => {
                   if (item.flag === 0 || item.flag === 1) {
                     return (
                       <List
@@ -144,11 +145,11 @@ class Item extends Component {
             <div className="history-wrapper">
               <Row>
                 {
-                  this.state.List.map((item) => {
+                  this.state.List.map((item,index) => {
                     if (item.flag === 2) {
                       return (
                         <List
-                          key={item.id}
+                          key={index}
                           voteId={item.id}
                           list={item}
                         />

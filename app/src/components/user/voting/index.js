@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Tag, Col, Row, Radio, Checkbox, InputNumber, Form, message } from 'antd'
+import { Tag, Col, Row, Radio, Checkbox, InputNumber, Form, message, Icon } from 'antd'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 import FooterButton from './footerbutton'
@@ -13,7 +13,7 @@ function getLocalTime (nS) {
 class Voting extends Component {
   state = {
     voteId: this.props.location.query.voteid,
-    flag: this.props.location.query.flag - 1,
+    flag: this.props.location.query.flag,
     optionId: 1,
     title: '投票',
     valueSingle: 1,
@@ -25,7 +25,7 @@ class Voting extends Component {
     options: [],
     records: [],
     score: [],
-    isGoing: this.props.location.query.flag - 1,
+    isGoing: this.props.location.query.flag,
     isJoined: '0',
     valueDouble: [],
     footMsg: '',
@@ -232,6 +232,10 @@ class Voting extends Component {
       offset: 3,
       span: 18
     }
+    const TimeOffsetSpan = {
+      offset: 3,
+      span: 20
+    }
     const MarginStyle = {
       marginTop: '1rem',
       fontSize: '0.6rem'
@@ -248,25 +252,25 @@ class Voting extends Component {
           <Col>
             <Row style={MarginStyle}>
               <Col>
-                <h3>选项{index + 1}</h3>
+                <span style={{fontSize:'15px',color:'#666'}}><Icon type="star-o" />&nbsp;选项{index + 1}</span>
               </Col>
               {
                 type === 1 &&
                 <Col>
-                  <Radio style={radioStyle} value={item.id}>{item.title}</Radio>
+                  <Radio style={radioStyle} value={item.id}><span style={{fontSize:'15px'}}>{item.title}</span></Radio>
                 </Col>
               }
               {
                 type === 2 &&
                 <Col style={MarginStyle}>
-                  <Checkbox value={item.id}>{item.title}</Checkbox>
+                  <Checkbox value={item.id}><span style={{fontSize:'15px'}}>{item.title}</span></Checkbox>
                 </Col>
               }
               {
                 (type === 3 || type === 4) &&
                 <Row>
                   <Col span={15} style={MarginStyle}>
-                    <h4>{item.title}</h4>
+                    <span style={{fontSize:'15px'}}><Icon type="star-o" />{item.title}</span>
                   </Col>
                   <Col span={4}>
                     <FormItem>
@@ -291,16 +295,16 @@ class Voting extends Component {
           <Col>
             <Row style={MarginStyle}>
               <Col>
-                <h3>选项{index + 1}</h3>
+                <span style={{fontSize:'15px'}}><Icon type="star-o" />&nbsp;选项{index + 1}</span>
               </Col>
               {
-                type === 1 && <Radio key={index} style={radioStyle} value={item.id} disabled>{item.title}</Radio>
+                type === 1 && <Radio key={index} style={radioStyle} value={item.id} disabled><span style={{fontSize:'15px'}}>{item.title}</span></Radio>
               }
               {
                 type === 2 &&
                 <div>
                   <Row>
-                    <Col span={8}><Checkbox key={index} value={item.id} disabled>{item.title}</Checkbox></Col>
+                    <Col span={8}><Checkbox key={index} value={item.id} disabled><span style={{fontSize:'15px'}}>{item.title}</span></Checkbox></Col>
                   </Row>
                 </div>
               }
@@ -313,7 +317,7 @@ class Voting extends Component {
       return (
         <Row key={index}>
           <Col span={15} style={MarginStyle}>
-            <h4>{item.title}</h4>
+            <span>{item.title}</span>
           </Col>
           <Col span={4}>
             <FormItem>
@@ -332,7 +336,7 @@ class Voting extends Component {
         <div style={{marginTop: '80px'}}>
           <Row style={MarginStyle}>
             <Col {...GlobalOffsetSpan}>
-              <h2>{this.state.title}</h2>
+              <span style={{fontSize:'20px'}}><Icon type="tags" />&nbsp;{this.state.title}</span>
             </Col>
           </Row>
           <Row style={MarginStyle}>
@@ -344,12 +348,13 @@ class Voting extends Component {
           </Row>
           <Row style={MarginStyle}>
             <Col {...GlobalOffsetSpan}>
-              <h4>投票时间:</h4>
+              <span style={{fontSize:'15px'}}><Icon type="clock-circle" /> &nbsp;投票时间:</span>
             </Col>
           </Row>
           <Row style={MarginStyle}>
-            <Col {...GlobalOffsetSpan}>
-              <h4 style={{margin: 0}}>{this.state.startTime} &nbsp; 到 &nbsp; {this.state.endTime}</h4>
+            <Col {...TimeOffsetSpan}>
+              <span style={{margin: 0,fontSize:'15px'}}><Tag color="#f7c0c6">{this.state.startTime}</Tag>~&nbsp;
+                <Tag color="#f7c0c6">{this.state.endTime}</Tag></span>
             </Col>
           </Row>
           <div style={{marginLeft: '15vw', marginBottom: '100px'}}>
@@ -379,7 +384,7 @@ class Voting extends Component {
             is_login === '1' &&
             <FooterButton
               isGoing={this.state.isGoing}
-              isJoined={this.state.isJoined}
+              isJoined={this.state.isVoted}
               submitVoting={this.submitVoting}
               footMsg={this.state.footMsg}
               itemNum={(this.state.valueDouble.length <= this.state.max || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}

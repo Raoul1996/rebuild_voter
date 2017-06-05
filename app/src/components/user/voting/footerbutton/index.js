@@ -81,7 +81,7 @@ class FooterButton extends Component {
               </Col>
             }
             {
-              (isGoing === '1' && isJoined === '0') &&
+              (isGoing === '1' && isJoined === 0) &&
               <div>
                 <Row>
                   <Col span={24}>
@@ -140,7 +140,7 @@ class FooterButton extends Component {
               </div>
             }
             {
-              (isGoing === '1' && isJoined === '1') &&
+              (isGoing === '1' && isJoined !== 0) &&
               <div>
                 <Row>
                   <Col span={12}>

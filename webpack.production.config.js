@@ -99,7 +99,7 @@ module.exports = {
     new webpack.optimize.MinChunkSizePlugin({minChunkSize: 1000}),
     new HtmlWebpackPlugin({
       template: './dist/template.ejs',
-      title: 'React',
+      title: 'NEUQer Vote',
       favicon: './app/favicon.ico',
       chunks: ['bundle', 'vendors']
     }),
