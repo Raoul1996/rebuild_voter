@@ -66,7 +66,7 @@ class FilterList extends Component {
             pages: json.data.pages,
             filter: 1
           })
-          console.log(this.state.pages)
+          console.log(this.state.list)
         }
       })
     })

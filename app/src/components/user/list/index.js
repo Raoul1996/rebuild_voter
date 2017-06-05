@@ -19,7 +19,7 @@ class Item extends Component {
       pages: 1,
       close: [],
       unClose: [],
-      height: 50
+      height: 30
     }
   }
 

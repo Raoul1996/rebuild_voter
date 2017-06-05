@@ -11,7 +11,7 @@ const __APIADMIN__ = 'http://123.207.171.244:8080/voter/admin'
 const userApiMaker = (path) => {
   return `${__APIUSER__}/${path}`
 }
-const voteApiMaker = (path) => {
+const voteApiMaker = (path) => {{}
   return `${__APIVOTE__}/${path}`
 }
 const adminApiMaker = (path) => {

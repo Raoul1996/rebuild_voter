@@ -13,6 +13,7 @@ module.exports = {
     inline: true,
     noInfo: false,
     open: true,
+    host: "localhost",
     stats: {colors: true},
     overlay: {
       warnings: true,

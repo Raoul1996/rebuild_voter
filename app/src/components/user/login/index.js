@@ -30,7 +30,6 @@ class NormalLoginForm extends Component {
           mobile: mobile,
           password: password
         }
-
         try {
           let data = await Request.post(API.login, body)
           window.localStorage.setItem('user.token', data.token)
@@ -38,11 +37,11 @@ class NormalLoginForm extends Component {
           window.localStorage.setItem('sex', data.user.sex)
           window.localStorage.setItem('is_login', 1)
           window.localStorage.setItem('is_vote', 0)
-          setTimeout(goto('users/list'), 1000)
+          // setTimeout(goto('users/list'), 1000)
+          setTimeout(window.history.go(-1),1000)
         } catch (e) {
           message.error('login err')
         }
-
       }
     })
   }
