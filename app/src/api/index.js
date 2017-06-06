@@ -30,7 +30,7 @@ export default {
   changeSex: userApiMaker('changeSex'),
     // vote
   info: voteApiMaker('all?page=pnum&rows=rnum'),
-  haveVote: voteApiMaker('haveVoted'),
+  haveVote: voteApiMaker('haveVoted?page=pnum&rows=rnum'),
   voteInfo:voteApiMaker('info?voteId=voteid'),
   submitVote: voteApiMaker(':voteId/submit'),
 

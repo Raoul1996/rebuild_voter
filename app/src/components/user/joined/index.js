@@ -31,7 +31,7 @@ class Joined extends Component {
           page: this.state.page,
           rows: 6
         }
-        fetch(API.info.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
+        fetch(API.haveVote.replace(/pnum/, params.page).replace(/rnum/, params.rows), {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -98,6 +98,7 @@ class Joined extends Component {
   componentDidMount () {
     window.scrollTo(0,0)
     this.getFirstJoined()
+    console.log('mount scuessfully')
     window.addEventListener('scroll', this.getJoinedList)
 
   }

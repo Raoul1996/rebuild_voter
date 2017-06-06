@@ -71,7 +71,7 @@ class FooterButton extends Component {
                   <p></p>
                   <CopyToClipboard text={this.state.url} onCopy={async () => {
                     await this.setState({copied: true})
-                    message.success(`您复制了投票链接${this.state.url}`)
+                    message.success('您成功复制了投票链接')
                   }
                   }>
                     <Button type='primary'>点击复制</Button>
@@ -129,7 +129,7 @@ class FooterButton extends Component {
                       <p></p>
                       <CopyToClipboard text={this.state.url} onCopy={async () => {
                         await this.setState({copied: true})
-                        message.success(`您复制了投票链接${this.state.url}`)
+                        message.success('您成功复制了投票链接')
                       }
                       }>
                         <Button type='primary'>点击复制</Button>
@@ -163,7 +163,7 @@ class FooterButton extends Component {
                       <p />
                       <CopyToClipboard text={this.state.url} onCopy={async () => {
                         await this.setState({copied: true})
-                        message.success(`您复制了投票链接${this.state.url}`)
+                        message.success('您成功复制了投票链接')
                       }
                       }>
                         <Button type='primary'>点击复制</Button>
