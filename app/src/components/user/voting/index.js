@@ -270,7 +270,7 @@ class Voting extends Component {
                 (type === 3 || type === 4) &&
                 <Row>
                   <Col span={15} style={MarginStyle}>
-                    <span style={{fontSize:'15px'}}><Icon type="star-o" />{item.title}</span>
+                    <span style={{fontSize:'15px'}}>{item.title}</span>
                   </Col>
                   <Col span={4}>
                     <FormItem>

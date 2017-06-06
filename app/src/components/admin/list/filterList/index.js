@@ -189,7 +189,7 @@ class FilterList extends Component {
           <Col span={22} offset={1} style={MarginStyle}>
             <Card>
               <Form onSubmit={this.handleSearch}>
-                <Col span={22}>
+                <Col span={22} >
                   <div className='filter'>
                     <Row style={{marginTop: 20}}>
                       <Col span={20} offset={1}>
