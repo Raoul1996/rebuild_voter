@@ -71,7 +71,7 @@ function RouterApp () {
           <Route path="password" component={UserPassword} onEnter={requireUserLogin} />
           <Route path="forget" component={UserForget} onEnter={requireUserLogin} />
           <Route path="vote" component={Vote} onEnter={buttonOnEnter} onLeave={buttonOnLeave} />
-          <Route path="list" component={UserList} />
+          <Route path="list" component={UserList} onEnter={requireUserLogin}/>
           <Route path="joined" component={Joined} onEnter={requireUserLogin} />
           <Route path="change" component={UserChangeMsg} onEnter={requireUserLogin} />
           <Route path="change-mobile" component={UserChangeMobile} onEnter={requireUserLogin} />

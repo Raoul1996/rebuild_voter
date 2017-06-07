@@ -3,8 +3,10 @@
  */
 'use strict'
 import Goto from './goto'
+import {message} from 'antd'
 
 export default () => {
   window.localStorage.clear()
-  Goto('login')
+  message.warning('登录失效，请重新登录')
+  setTimeout(Goto('login'),5000)
 }

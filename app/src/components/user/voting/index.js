@@ -35,6 +35,13 @@ class Voting extends Component {
     singleValue: 0
   }
 
+  needLogin = (e) => {
+    e.preventDefault()
+    if(!window.localStorage.getItem('user.token')){
+      message.warning('请登录后再投票')
+    }
+  }
+
   onSingleChange = (e) => {
     const footMsg = `您已选择: 选项${e.target.value - this.state.optionId + 1}`
     this.setState({
@@ -335,7 +342,7 @@ class Voting extends Component {
     let is_login = window.localStorage.getItem('is_login') || '0'
     return (
       <Form>
-        <div style={{marginTop: '80px'}}>
+        <div style={{marginTop: '80px'}} onClick={this.needLogin}>
           <Row style={MarginStyle}>
             <Col {...GlobalOffsetSpan}>
               <span style={{fontSize:'20px'}}><Icon type="tags" />&nbsp;{this.state.title}</span>
