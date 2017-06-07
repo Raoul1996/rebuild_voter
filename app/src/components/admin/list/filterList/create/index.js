@@ -101,7 +101,7 @@ class Create extends Component {
         const body = {
           options: options,
           title: title,
-          startTime: Date.parse(this.state.startValue),
+          startTime: Date.parse(this.state.startValue) < Date.parse(new Date) ? Date.parse(new Date) + 1000 : Date.parse(this.state.startValue), // TODO: 创建时间延迟
           endTime: Date.parse(this.state.endValue),
           type: parseInt(this.state.type),
           max: parseInt(max)

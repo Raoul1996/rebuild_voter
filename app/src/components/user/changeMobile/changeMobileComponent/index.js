@@ -32,7 +32,7 @@ class change extends React.Component {
     }
     try {
       let data = await Request.post(API.verify, body)
-      message.success(`your Captcha is ${data.code}`)
+      message.success(`your Captcha is ${data.code}`) //TODO:短信验证接口对接并且添加倒计时 注册页面也添加
     } catch (e) {
       message.error(e)
     }

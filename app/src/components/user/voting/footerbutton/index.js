@@ -11,7 +11,7 @@ class FooterButton extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      is_vote: 0,
+      is_vote: '0',
       visibleShare: false,
       visibleSubmit: false,
       modal2Visible: false,
@@ -65,7 +65,6 @@ class FooterButton extends Component {
                   visible={this.state.modal2Visible}
                   onOk={() => this.setModal2Visible(false)}
                   onCancel={() => this.setModal2Visible(false)}
-                  footer={null}
                 >
                   <p>快来分享给小伙伴们来参加投票呀</p>
                   <p></p>
@@ -76,7 +75,6 @@ class FooterButton extends Component {
                   }>
                     <Button type='primary'>点击复制</Button>
                   </CopyToClipboard>
-
                 </Modal>
               </Col>
             }
