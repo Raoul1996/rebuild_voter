@@ -19,13 +19,14 @@ class Item extends Component {
       pages: 1,
       close: [],
       unClose: [],
-      height: 30
+      height: 20,
+      flag: 0
     }
   }
 
   getVoteList = async () => {
     if (window.scrollY > this.state.height) {
-      this.state.height = this.state.height + 250
+      this.state.height = this.state.height + 100
       if (this.state.page <= this.state.pages) {
         let params = {
           page: this.state.page,
@@ -55,11 +56,14 @@ class Item extends Component {
           }
         )
       }
-      if (this.state.page > this.state.pages) {
+      if ((this.state.page > this.state.pages) && this.state.flag === 0 ){
         message.warning('已加载完所有投票')
+        this.setState({
+          page: this.state.page + 1,
+          flag: 1
+        })
       }
     }
-
   }
 
   getFirstList = async () => {

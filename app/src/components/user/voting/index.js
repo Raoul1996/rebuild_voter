@@ -26,7 +26,6 @@ class Voting extends Component {
     records: [],
     score: [],
     isGoing: this.props.location.query.flag,
-    isJoined: '0',
     valueDouble: [],
     footMsg: '',
     clickDisable: true,
@@ -68,7 +67,7 @@ class Voting extends Component {
           .then((json) => {
             let isVoted = 0
             json.options.map(item => {
-              isVoted = item.value + isVoted
+              isVoted = item.value + isVoted // 通过相加和判断是否参加过
             }) // 通过所有选项value相加来判断是否参与过投票
             this.setState({
               options: json.options,
@@ -100,13 +99,13 @@ class Voting extends Component {
               if (this.state.flag === 1) {
                 this.setState({
                   isGoing: '1',
-                  isJoined: '0'
+                  isVoted: 0
                 })
               }
               if (this.state.flag === 2) {
                 this.setState({
                   isGoing: '2',
-                  isJoined: '0'
+                  isVoted: 0
                 })
               }
               if (this.state.type === 3 || this.state.type === 4) {
@@ -116,13 +115,13 @@ class Voting extends Component {
               if (this.state.flag === 1) {
                 this.setState({
                   isGoing: '1',
-                  isJoined: '1'
+                  isVoted: 1
                 })
               }
               if (this.state.flag === 2) {
                 this.setState({
                   isGoing: '2',
-                  isJoined: '1'
+                  isVoted: 1
                 })
               }
             }
@@ -150,13 +149,13 @@ class Voting extends Component {
             if (this.state.flag === 1) {
               this.setState({
                 isGoing: '1',
-                isJoined: '0'
+                isVoted: 0
               })
             }
             if (this.state.flag === 2) {
               this.setState({
                 isGoing: '2',
-                isJoined: '0'
+                isVoted: 0
               })
             }
             if (this.state.type === 3 || this.state.type === 4) {
@@ -206,7 +205,7 @@ class Voting extends Component {
         try {
           await Request.tpostUser(API.submitVote.replace(/:voteId/, this.props.location.query.voteid), {records: records})
           this.setState({
-            isJoined: '1'
+            isVoted: 1
           })
           message.success('投票成功')
         } catch (e) {
@@ -237,7 +236,7 @@ class Voting extends Component {
       span: 20
     }
     const MarginStyle = {
-      marginTop: '1rem',
+      marginTop: '25px',
       fontSize: '0.6rem'
     }
     const status = [
@@ -270,7 +269,7 @@ class Voting extends Component {
                 (type === 3 || type === 4) &&
                 <Row>
                   <Col span={15} style={MarginStyle}>
-                    <span style={{fontSize:'15px'}}><Icon type="star-o" />{item.title}</span>
+                    <span style={{fontSize:'15px'}}>{item.title}</span>
                   </Col>
                   <Col span={4}>
                     <FormItem>
@@ -315,7 +314,10 @@ class Voting extends Component {
     })
     const formItemsScore = this.state.records.map((item, index) => {
       return (
-        <Row key={index}>
+        <Row key={index} style={MarginStyle}>
+          <Col>
+            <span style={{fontSize:'15px'}}><Icon type="star-o" />&nbsp;选项{index + 1}</span>
+          </Col>
           <Col span={15} style={MarginStyle}>
             <span>{item.title}</span>
           </Col>

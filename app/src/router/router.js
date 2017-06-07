@@ -36,7 +36,11 @@ const requireAdminLogin = async () => {
 
 const requireUserLogin = async () => {
   if (window.localStorage.getItem('is_login') === '1') {
-    const data = await Request.verify(API.haveVote)
+    let params = {
+      page: 1,
+      rows: 6
+    }
+    const data = await Request.verify(API.haveVote.replace(/pnum/, params.page).replace(/rnum/, params.rows))
     if (data.code === 20002 || data.code === 20001) {
       UserLogout()
     }

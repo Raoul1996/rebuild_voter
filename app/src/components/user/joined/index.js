@@ -3,9 +3,7 @@ import { Row, Col, message, Alert } from 'antd'
 import { Link } from 'react-router'
 import API from '../../../api/index'
 import getUserToken from '../../../utils/getTokenUser'
-
 import List from '../list/showList/index'
-import LineText from '../content/lineText/index'
 import MsgListComponent from '../content/msgList/index'
 import Logo from '../content/lineText/index'
 import './index.less'
@@ -19,13 +17,14 @@ class Joined extends Component {
       pages: 1,
       close: [],
       unClose: [],
-      height: 20
+      height: 20,
+      flag: 0
     }
   }
 
-  getJoinedList = async () => {
+  getJoinedList = () => {
     if (window.scrollY > this.state.height) {
-      this.state.height = this.state.height + 250
+      this.state.height = this.state.height + 100
       if (this.state.page <= this.state.pages) {
         let params = {
           page: this.state.page,
@@ -55,8 +54,12 @@ class Joined extends Component {
           }
         )
       }
-      if (this.state.page > this.state.pages) {
+      if ((this.state.page > this.state.pages) && this.state.flag === 0 ) {
         message.warning('已加载完所有投票')
+        this.setState({
+          page: this.state.page + 1,
+          flag: 1
+        })
       }
     }
   }
@@ -83,7 +86,6 @@ class Joined extends Component {
           if (list.length === 0) {
             message.warning('你还没有参加过投票')
           }
-
           this.setState({
             total: json.data.total,
             List: list,
@@ -96,7 +98,7 @@ class Joined extends Component {
   }
 
   componentDidMount () {
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
     this.getFirstJoined()
     console.log('mount scuessfully')
     window.addEventListener('scroll', this.getJoinedList)

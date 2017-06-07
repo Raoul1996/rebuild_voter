@@ -16,7 +16,7 @@ class Operation extends Component {
   isStop = async () => {
     await Request.put(API.changeVisibility.replace(/:voteId/, this.props.voteId), {}, {})
     await console.log('成功！')
-    await window.history.go(0)
+    //await window.history.go(0) //TODO：删除整个页面刷新，消耗性能，解决办法本地制造假数据
   }
 
   isDelete = () => {
@@ -28,7 +28,7 @@ class Operation extends Component {
       async onOk () {
         try {
           await Request.Delete(API.delete.replace(/:voteId/, id), {})
-          // await window.history.go(0)
+          //await window.history.go(0) // TODO：删除整个页面刷新，消耗性能，解决办法本地制造假数据
         } catch (e) {
           console.log(e)
         }

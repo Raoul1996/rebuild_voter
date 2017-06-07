@@ -7,7 +7,6 @@ export default (timestamp) => {
     let d = Math.floor(t / 1000 / 60 / 60 / 24)
     let hour = Math.floor(t / 1000 / 60 / 60 % 24)
     let min = Math.floor(t / 1000 / 60 % 60)
-    let sec = Math.floor(t / 1000 % 60)
 
     if (hour < 10) {
       hour = '0' + hour
@@ -15,10 +14,7 @@ export default (timestamp) => {
     if (min < 10) {
       min = '0' + min
     }
-    if (sec < 10) {
-      sec = '0' + sec
-    }
-    let RestTime = d + '天' + hour + ':' + min + ':' + sec
+    let RestTime = d + '天' + hour + ':' + min
     return '剩余'+RestTime
   }
   else {

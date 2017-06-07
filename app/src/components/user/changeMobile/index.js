@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import {Row,Col} from 'antd'
 import './index.less'
 import ChangeMobileComponent from '../../../components/user/changeMobile/changeMobileComponent/index'
