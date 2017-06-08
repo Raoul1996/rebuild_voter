@@ -144,7 +144,7 @@ class RegistrationForm extends React.Component {
                 label="验证码"
               >
                 <Row gutter={8}>
-                  <Col span={12}>
+                  <Col span={17}>
                     {getFieldDecorator('captcha', {
                       rules: [{
                         required: true,
@@ -155,14 +155,14 @@ class RegistrationForm extends React.Component {
                       <Input size="large" />
                     )}
                   </Col>
-                  <Col span={12}>
+                  <Col span={6}>
                     {/*我也不知道这里为啥需要写成箭头函数的形式，可能是promise的需要？*/}
                     <Button size="large" onClick={() =>this.userCaptcha()}>获取验证码</Button>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" size="large">Register</Button>
+                <Button type="primary" htmlType="submit" size="large" className="register-button">Register</Button>
               </FormItem>
             </Form>
           </Col>
