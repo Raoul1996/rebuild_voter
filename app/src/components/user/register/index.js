@@ -67,7 +67,7 @@ class RegistrationForm extends Component {
         const body = {
           mobile: mobile,
           password: password,
-          code: parseInt(captcha)
+          code: captcha
         }
         try {
           await Request.post(API.register, body)

@@ -72,11 +72,11 @@ class ForgetForm extends Component {
           code: captcha
         }
         try {
-          await Request.uput(API.forget, body)
-          // message.success('修改信息成功')
-          // setTimeout(() => {
-          //   goto('users/login')
-          // }, 2000)
+          let data = await Request.uput(API.forget, body)
+          message.success('修改信息成功')
+          setTimeout(() => {
+            goto('users/login')
+          }, 2000)
         } catch (e) {
           message.error('修改信息失败')
         }
