@@ -18,7 +18,7 @@ class MsgList extends Component {
     super(props)
     this.state = {
       visible: false,
-      gender: 2,
+      gender: window.localStorage.getItem('gender') === 'male' ? 0 : 1,
       mobile: window.localStorage.getItem('mobile') || ''
     }
     this.changeSex = this.changeSex.bind(this)
@@ -26,7 +26,7 @@ class MsgList extends Component {
 
   changeSex (e) {
     this.setState({
-      gender:e.target.value
+      gender: e.target.value
     })
   }
 
@@ -36,15 +36,18 @@ class MsgList extends Component {
     })
   }
   handleOk = async () => {
-      const body = {
-        newSex: this.state.gender===1?'male':'female'
-      }
-      try {
-        await Request.uput(API.changeSex, body)
-        message.success('修改性别成功')
-      } catch (e) {
-        message.error('修改性别失败')
-      }
+    const body = {
+      newSex: this.state.gender === 0 ? 'male' : 'female'
+    }
+    try {
+      await Request.uput(API.changeSex, body)
+      this.setState({
+        gender: this.state.gender === 0 ? 0 : 1,
+      })
+      message.success('修改性别成功')
+    } catch (e) {
+      message.error('修改性别失败')
+    }
     setTimeout(() => {
       this.setState({
         visible: false,
@@ -77,8 +80,8 @@ class MsgList extends Component {
               {...formItemLayout}
             >
               <RadioGroup onChange={this.changeSex} value={this.state.gender}>
-                <Radio value={1}>男</Radio>
-                <Radio value={2}>女</Radio>
+                <Radio value={0}>男</Radio>
+                <Radio value={1}>女</Radio>
               </RadioGroup>
             </FormItem>
           </Form>
@@ -86,9 +89,13 @@ class MsgList extends Component {
         <Logo text="不洗碗工作室" />
         <MsgListItem label="手机号" text={this.state.mobile} />
         <div onClick={this.showModal}>
-          <MsgListItem label="性别" text={this.state.gender === 1? '男':'女'} />
+          <MsgListItem label="性别" text={this.state.gender === 0 ? '男' : '女'} />
         </div>
-        <Link to="/users/change-mobile" className="change-mobile">更改绑定手机</Link>
+        <div className="change-mobile">
+          <Link to="/users/change-mobile" className="change-mobile-item">更改绑定手机</Link>
+          <Link to="/users/change-password" className="change-mobile-item">修改密码</Link>
+        </div>
+
       </div>
     )
   }

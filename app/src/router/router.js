@@ -10,6 +10,7 @@ import UserForget from '../components/user/forgetPasssword/index'
 import UserList from '../components/user/list/index'
 import UserChangeMsg from '../components/user/changeMsg/index'
 import UserChangeMobile from '../components/user/changeMobile/index'
+import UserChangePassword from '../components/user/ChangePassword/index'
 import Joined from '../components/user/joined/index'
 import Vote from '../components/user/voting/index'
 import AdminPage from '../components/admin/index'
@@ -75,6 +76,7 @@ function RouterApp () {
           <Route path="joined" component={Joined} onEnter={requireUserLogin} />
           <Route path="change" component={UserChangeMsg} onEnter={requireUserLogin} />
           <Route path="change-mobile" component={UserChangeMobile} onEnter={requireUserLogin} />
+          <Route path="change-password" component={UserChangePassword} onEnter={requireUserLogin} />
         </Route>
         <Route path="admin" component={AdminPage}>
           <Route path="filter-list" component={FilterList} onEnter={requireAdminLogin} />

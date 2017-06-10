@@ -9,18 +9,18 @@ import Logo from '../../../components/user/content/lineText/index'
 import * as Request from '../../../utils/request'
 const FormItem = Form.Item
 
-const ERR_OK = 0
-// the const for verify method
-
 const FORGET = 3
 
-class ForgetForm extends React.Component {
+class ForgetForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
       confirmDirty: false,
       autoCompleteResult: [],
+      messageButton: '免费获取验证码',
+      buttonDisable: {}
     }
+    this.userCaptcha = this.userCaptcha.bind(this)
   }
 
   async userCaptcha () {
@@ -32,9 +32,31 @@ class ForgetForm extends React.Component {
     }
     try {
       let data = await Request.post(API.verify, body)
-      message.success(`your Captcha is ${data.code}`)
+      console.log(data.code)
+      if (data.code !== 0) {
+        message.success(`验证码发送成功`)
+        this.setTime(60)
+      }
     } catch (e) {
       message.error(e)
+    }
+  }
+
+  setTime = (countdown) => {
+    if (countdown === 0) {
+      this.setState({
+        messageButton: '免费获取验证码',
+        buttonDisable: {'disabled':false}
+      })
+      countdown = 60
+      return
+    } else {
+      this.setState({
+        messageButton: countdown + '秒重新发送',
+        buttonDisable: {'disabled':true}
+      })
+      countdown--
+      setTimeout(()=> {this.setTime(countdown) }, 1000)
     }
   }
 
@@ -43,7 +65,6 @@ class ForgetForm extends React.Component {
     e.stopPropagation()
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        // console.log(values)
         const {mobile, newPassword, captcha} = values
         const body = {
           mobile: mobile,
@@ -51,16 +72,20 @@ class ForgetForm extends React.Component {
           code: captcha
         }
         try {
-          let data = await Request.uput(API.forget, body)
-          message.success('修改信息成功')
-          setTimeout(() => {
-            goto('users/login')
-          }, 2000)
+          await Request.uput(API.forget, body)
+          // message.success('修改信息成功')
+          // setTimeout(() => {
+          //   goto('users/login')
+          // }, 2000)
         } catch (e) {
           message.error('修改信息失败')
         }
       }
     })
+  }
+
+  componentDidMount () {
+    window.scrollTo(0, 0)
   }
 
   render () {
@@ -132,7 +157,7 @@ class ForgetForm extends React.Component {
                 label="验证码"
               >
                 <Row gutter={8}>
-                  <Col span={12}>
+                  <Col span={14}>
                     {getFieldDecorator('captcha', {
                       rules: [{
                         required: true,
@@ -143,14 +168,14 @@ class ForgetForm extends React.Component {
                       <Input size="large" />
                     )}
                   </Col>
-                  <Col span={12}>
-                    {/*我也不知道这里为啥需要写成箭头函数的形式，可能是promise的需要？*/}
-                    <Button size="large" onClick={() => this.userCaptcha()}>获取验证码</Button>
+                  <Col span={4}>
+                    <Button size="large" {...this.state.buttonDisable}
+                            onClick={this.userCaptcha}>{this.state.messageButton}</Button>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="ghost" htmlType="submit" size="large">重置密码</Button>
+                <Button type="primary" htmlType="submit" size="large" className="forget-password">重置密码</Button>
               </FormItem>
             </Form>
           </Col>

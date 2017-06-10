@@ -74,6 +74,7 @@ class Create extends Component {
 
   add = () => {
     uuid++
+    console.log(uuid)
     const {form} = this.props
     // can use data-binding to get
     const keys = form.getFieldValue('keys')
@@ -127,6 +128,10 @@ class Create extends Component {
     })
   }
 
+  componentDidMount () {
+    uuid = 0
+  }
+
   render () {
     //日期选择
     const {startValue, endValue, endOpen} = this.state
@@ -156,15 +161,15 @@ class Create extends Component {
     }
     getFieldDecorator('keys', {initialValue: []})
     const keys = getFieldValue('keys')
-    const formItems = keys.map((k) => {
+    const formItems = keys.map((index) => {
       return (
         <FormItem
           {...formItemLayoutWithOutLabel}
-          label={`选项${k}`}
+          label={`选项${index}`}
           required={false}
-          key={k}
+          key={index}
         >
-          {getFieldDecorator(`names-${k}`, {
+          {getFieldDecorator(`names-${index}`, {
             validateTrigger: ['onChange', 'onBlur'],
             rules: [{
               required: true,
@@ -183,6 +188,7 @@ class Create extends Component {
         </FormItem>
       )
     })
+
     return (
       <div className="edit">
         <Col offset={3} span={18}>

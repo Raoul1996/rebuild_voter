@@ -8,9 +8,15 @@ import goto from '../../../../utils/goto'
 import Regx from '../../../../utils/regx'
 import eventProxy from '../../../../utils/eventProxy'
 class change extends React.Component {
-  state = {
-    confirmDirty: false,
-    autoCompleteResult: [],
+  constructor (props){
+    super(props)
+    this.state={
+      confirmDirty: false,
+      autoCompleteResult: [],
+      messageButton: '免费获取验证码',
+      buttonDisable: {}
+    }
+    this.userCaptcha = this.userCaptcha.bind(this)
   }
 
   componentDidMount () {
@@ -32,9 +38,30 @@ class change extends React.Component {
     }
     try {
       let data = await Request.post(API.verify, body)
-      message.success(`your Captcha is ${data.code}`) //TODO:短信验证接口对接并且添加倒计时 注册页面也添加
+      if(data.code !== 0){
+        message.success(`验证码发送成功`)
+        this.setTime(60)
+      }
     } catch (e) {
       message.error(e)
+    }
+  }
+
+  setTime = (countdown) => {
+    if (countdown === 0) {
+      this.setState({
+        messageButton: '免费获取验证码',
+        buttonDisable: {'disabled': false}
+      })
+      countdown = 60
+      return
+    } else {
+      this.setState({
+        messageButton: countdown + '秒重新发送',
+        buttonDisable: {'disabled': true}
+      })
+      countdown--
+      setTimeout(() => {this.setTime(countdown) }, 1000)
     }
   }
 
@@ -51,13 +78,13 @@ class change extends React.Component {
           code: captcha
         }
         try {
-          await Request.uput(API.changeMobile, body)
+          let data = await Request.uput(API.changeMobile, body)
+          console.log(data)
           message.success('修改手机号成功')
-          eventProxy.trigger('loginStatus', false)
           window.localStorage.clear()
-          setTimeout(() => {
-            goto('/users/login')
-          }, 2000)
+          // setTimeout(() => {
+          //   goto('/users/login')
+          // }, 2000)
         } catch (e) {
           message.error('信息手机号失败')
         }
@@ -98,7 +125,7 @@ class change extends React.Component {
           label="旧手机号码"
         >
           {getFieldDecorator('oldMobile', {
-            rules: [{required: true, message: 'Please input your mobile number!'}],
+            rules: [{required: true, message: '请输入旧手机号'}],
           })(
             <Input />
           )}
@@ -108,7 +135,7 @@ class change extends React.Component {
           label="新手机号码"
         >
           {getFieldDecorator('mobile', {
-            rules: [{required: true, message: 'Please input your mobile number!'}],
+            rules: [{required: true, message: '请输入新手机号'}],
           })(
             <Input />
           )}
@@ -134,20 +161,20 @@ class change extends React.Component {
           label="验证码"
         >
           <Row gutter={8}>
-            <Col span={12}>
+            <Col span={14}>
               {getFieldDecorator('captcha', {
-                rules: [{required: true, message: 'Please input the captcha you got!'}],
+                rules: [{required: true, message: '请输入您收到的验证码'}],
               })(
                 <Input size="large" />
               )}
             </Col>
-            <Col span={12}>
-              <Button size="large" onClick={() => this.userCaptcha()}>获取验证码</Button>
+            <Col span={4}>
+              <Button size="large" onClick={this.userCaptcha} {...this.state.buttonDisable}>{this.state.messageButton}</Button>
             </Col>
           </Row>
         </FormItem>
         <FormItem {...tailFormItemLayout} className="change-mobile-form-item">
-          <Button type="primary" htmlType="submit" size="large">确认修改</Button>
+          <Button type="primary" htmlType="submit" size="large" className="change-mobile-button">确认修改</Button>
         </FormItem>
       </Form>
     )

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
-import { Form, Input, Select, Row, Col, Button, message } from 'antd'
+import { Form, Input, Row, Col, Button, message } from 'antd'
 import './index.less'
 import API from '../../../api'
 import goto from '../../../utils/goto'
@@ -9,23 +8,21 @@ import Logo from '../../../components/user/content/lineText/index'
 import * as Request from '../../../utils/request'
 const FormItem = Form.Item
 
-const ERR_OK = 0
-// the const for verify method
 const REGISTER = 1
-const PASSWD = 2
-const PERSONAL = 3
 
-class RegistrationForm extends React.Component {
+class RegistrationForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
       confirmDirty: false,
       autoCompleteResult: [],
+      messageButton: '免费获取验证码',
+      buttonDisable: {}
     }
-    // this.userRegister = this.userRegister.bind(this)
+    this.userCaptchaRegister = this.userCaptchaRegister.bind(this)
   }
 
-  async userCaptcha () {
+  async userCaptchaRegister () {
     const form = this.props.form
     const mobile = form.getFieldValue('mobile')
     const body = {
@@ -34,9 +31,30 @@ class RegistrationForm extends React.Component {
     }
     try {
       let data = await Request.post(API.verify, body)
-      message.success(`your Captcha is ${data.code}`)
+      if (data.code !== 0) {
+        message.success(`验证码发送成功`)
+        this.setTime(60)
+      }
     } catch (e) {
       message.error(e)
+    }
+  }
+
+  setTime = (countdown) => {
+    if (countdown === 0) {
+      this.setState({
+        messageButton: '免费获取验证码',
+        buttonDisable: {'disabled': false}
+      })
+      countdown = 60
+      return
+    } else {
+      this.setState({
+        messageButton: countdown + '秒重新发送',
+        buttonDisable: {'disabled': true}
+      })
+      countdown--
+      setTimeout(() => {this.setTime(countdown) }, 1000)
     }
   }
 
@@ -45,15 +63,14 @@ class RegistrationForm extends React.Component {
     e.stopPropagation()
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        // console.log(values)
         const {mobile, password, captcha} = values
         const body = {
           mobile: mobile,
           password: password,
-          code: captcha
+          code: parseInt(captcha)
         }
         try {
-          let data = await Request.post(API.register, body)
+          await Request.post(API.register, body)
           message.success('register successful')
           goto('users/login')
         } catch (e) {
@@ -62,17 +79,9 @@ class RegistrationForm extends React.Component {
       }
     })
   }
-  handleConfirmBlur = (e) => {
-    const value = e.target.value
-    this.setState({confirmDirty: this.state.confirmDirty || !!value})
-  }
-  checkPassword = (rule, value, callback) => {
-    const form = this.props.form
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!')
-    } else {
-      callback()
-    }
+
+  componentDidMount () {
+    window.scrollTo(0, 0)
   }
 
   render () {
@@ -115,7 +124,6 @@ class RegistrationForm extends React.Component {
                     required: true,
                     message: '请输入手机号码',
                     type: 'string',
-                    // len: 11
                   }, {
                     pattern: Regx.mobile, message: '请输入正确的手机号码'
                   }],
@@ -144,7 +152,7 @@ class RegistrationForm extends React.Component {
                 label="验证码"
               >
                 <Row gutter={8}>
-                  <Col span={12}>
+                  <Col span={14}>
                     {getFieldDecorator('captcha', {
                       rules: [{
                         required: true,
@@ -155,14 +163,14 @@ class RegistrationForm extends React.Component {
                       <Input size="large" />
                     )}
                   </Col>
-                  <Col span={12}>
-                    {/*我也不知道这里为啥需要写成箭头函数的形式，可能是promise的需要？*/}
-                    <Button size="large" onClick={() =>this.userCaptcha()}>获取验证码</Button>
+                  <Col span={5}>
+                    <Button size="large"
+                            onClick={this.userCaptchaRegister}  {...this.state.buttonDisable}>{this.state.messageButton}</Button>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" size="large">Register</Button>
+                <Button type="primary" htmlType="submit" size="large" className="register-button">注册</Button>
               </FormItem>
             </Form>
           </Col>

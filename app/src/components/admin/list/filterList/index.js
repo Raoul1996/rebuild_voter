@@ -46,8 +46,6 @@ class FilterList extends Component {
         currentPage: 1
       })
       window.sessionStorage.setItem('activityFilter', JSON.stringify(body))
-      console.log(window.sessionStorage)
-
       fetch(API.findLike, {
         method: 'POST',
         headers: {
@@ -66,7 +64,6 @@ class FilterList extends Component {
             pages: json.data.pages,
             filter: 1
           })
-          console.log(this.state.list)
         }
       })
     })

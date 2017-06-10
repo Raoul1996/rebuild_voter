@@ -21,10 +21,8 @@ class NormalLoginForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    e.stopPropagation()
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        // this.userLogin(values.mobile, values.ChangePassword)
         const {mobile, password} = values
         const body = {
           mobile: mobile,
@@ -34,16 +32,19 @@ class NormalLoginForm extends Component {
           let data = await Request.post(API.login, body)
           window.localStorage.setItem('user.token', data.token)
           window.localStorage.setItem('mobile', data.user.mobile)
-          window.localStorage.setItem('sex', data.user.sex)
+          window.localStorage.setItem('gender', data.user.sex)
           window.localStorage.setItem('is_login', 1)
           window.localStorage.setItem('is_vote', 0)
-          // setTimeout(goto('users/list'), 1000)
-          setTimeout(window.history.go(-1),1000)
+          setTimeout(goto('users/list'), 1000)
         } catch (e) {
-          message.error('login err')
+          message.error(e)
         }
       }
     })
+  }
+
+  componentDidMount () {
+    window.scrollTo(0,0)
   }
 
   render () {
@@ -87,16 +88,16 @@ class NormalLoginForm extends Component {
                   valuePropName: 'checked',
                   initialValue: true,
                 })(
-                  <Checkbox>Remember me</Checkbox>
+                  <Checkbox>记住密码</Checkbox>
                 )}
-                <Link className="login-form-forgot" to="/users/forget">Forgot password</Link>
+                <Link className="login-form-forgot" to="/users/forget">忘记密码？</Link>
                 <Button type="primary" htmlType="submit" className="login-form-button">
-                  已有账号，立即登录
+                  登录
                 </Button>
                 {/*Or <a href="">register now!</a>*/}
                 <Link to="users/register" className="login-form-register">
                   <Button type="default" className="login-form-button">
-                    还没账号，立即注册
+                    还没账号?立即注册
                   </Button>
                 </Link>
               </FormItem>

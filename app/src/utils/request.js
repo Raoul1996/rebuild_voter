@@ -12,8 +12,7 @@ function filterStatus (json) {
   } else if (json.code === 20001 || json.code === 20002) {
     return json
   } else {
-    // console.log(json.code)
-    // throw new Error('ResponseUnexpected', codeHelper(json.code))
+    throw new Error('ResponseUnexpected', codeHelper(json.code))
   }
 }
 

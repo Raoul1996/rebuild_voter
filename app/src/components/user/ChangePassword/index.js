@@ -9,36 +9,53 @@ import Logo from '../../../components/user/content/lineText/index'
 import * as Request from '../../../utils/request'
 const FormItem = Form.Item
 
-const PASSWD = 2
+const FORGET = 3
 
-class PasswordForm extends React.Component {
+class ChangePasswordItem extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       confirmDirty: false,
       autoCompleteResult: [],
+      messageButton: '免费获取验证码',
+      buttonDisable: {}
     }
-  }
-  componentDidMount () {
-    this.setValue()
+    this.userCaptcha = this.userCaptcha.bind(this)
   }
 
-  setValue () {
-    const form = this.props.form
-    const mobile = form.setFieldsValue({mobile: window.localStorage.getItem('mobile') || ''})
-  }
   async userCaptcha () {
-    const form = this.props.form
-    const mobile = form.getFieldValue('mobile')
+    const mobile = window.localStorage.getItem('mobile')
     const body = {
       mobile: mobile,
-      type: PASSWD
+      type: FORGET
     }
     try {
-      let data = await Request.uput(API.verify, body)
-      message.success(`your Captcha is ${data.code}`)
+      let data = await Request.post(API.verify, body)
+      console.log(data.code)
+      if (data.code !== 0) {
+        message.success(`验证码发送成功`)
+        this.setTime(60)
+      }
     } catch (e) {
       message.error(e)
+    }
+  }
+
+  setTime = (countdown) => {
+    if (countdown === 0) {
+      this.setState({
+        messageButton: '免费获取验证码',
+        buttonDisable: {'disabled':false}
+      })
+      countdown = 60
+      return
+    } else {
+      this.setState({
+        messageButton: countdown + '秒重新发送',
+        buttonDisable: {'disabled':true}
+      })
+      countdown--
+      setTimeout(()=> {this.setTime(countdown) }, 1000)
     }
   }
 
@@ -47,35 +64,28 @@ class PasswordForm extends React.Component {
     e.stopPropagation()
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        // console.log(values)
-        const {mobile, password, captcha} = values
+        const {oldPassword, newPassword, captcha} = values
         const body = {
-          mobile: mobile,
-          password: password,
+          oldPassword: oldPassword,
+          newPassword: newPassword,
           code: captcha
         }
         try {
-          let data = await Request.put(API.password, {}, body)
-          message.success('修改密码成功')
-          // window.localStorage.clear()
-          goto('users/login')
+          let data = await Request.uput(API.forget, body)
+          console.log(data)
+          message.success('密码修改成功')
+          // setTimeout(() => {
+          //   goto('users/login')
+          // }, 2000)
         } catch (e) {
-          message.error('修改密码失败')
+          message.error('修改信息失败')
         }
       }
     })
   }
-  handleConfirmBlur = (e) => {
-    const value = e.target.value
-    this.setState({confirmDirty: this.state.confirmDirty || !!value})
-  }
-  checkPassword = (rule, value, callback) => {
-    const form = this.props.form
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!')
-    } else {
-      callback()
-    }
+
+  componentDidMount () {
+    window.scrollTo(0, 0)
   }
 
   render () {
@@ -104,34 +114,32 @@ class PasswordForm extends React.Component {
       },
     }
     return (
-      <div className="register-page-wrapper">
+      <div className="forget-page-wrapper">
         <Logo text="不洗碗工作室" />
-        <Row className="register">
+        <Row className="forget">
           <Col span={22} offset={1}>
             <Form onSubmit={this.handleSubmit}>
               <FormItem
                 {...formItemLayout}
-                label="手机号码"
+                label="旧密码"
               >
-                {getFieldDecorator('mobile', {
+                {getFieldDecorator('oldPassword', {
                   rules: [{
                     required: true,
-                    message: '请输入手机号码',
-                    type: 'string',
-                    // len: 11
+                    message: '请输入旧密码',
                   }, {
-                    pattern: Regx.mobile, message: '请输入正确的手机号码'
+                    pattern: Regx.password, message: '请输入6到20位字符'
                   }],
                 })(
-                  <Input type="text" placeholder="请输入11位手机号码" />
+                  <Input type="password" placeholder="请输入11位手机号码" />
                 )}
               </FormItem>
               <FormItem
                 {...formItemLayout}
-                label="密码"
+                label="新密码"
                 hasFeedback
               >
-                {getFieldDecorator('password', {
+                {getFieldDecorator('newPassword', {
                   rules: [{
                     required: true,
                     message: '请输入密码'
@@ -147,7 +155,7 @@ class PasswordForm extends React.Component {
                 label="验证码"
               >
                 <Row gutter={8}>
-                  <Col span={12}>
+                  <Col span={14}>
                     {getFieldDecorator('captcha', {
                       rules: [{
                         required: true,
@@ -158,23 +166,22 @@ class PasswordForm extends React.Component {
                       <Input size="large" />
                     )}
                   </Col>
-                  <Col span={12}>
-                    {/*我也不知道这里为啥需要写成箭头函数的形式，可能是promise的需要？*/}
-                    <Button size="large" onClick={() => this.userCaptcha()}>获取验证码</Button>
+                  <Col span={4}>
+                    <Button size="large" {...this.state.buttonDisable}
+                            onClick={this.userCaptcha}>{this.state.messageButton}</Button>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" size="large">修改密码</Button>
+                <Button type="primary" htmlType="submit" size="large" className="forget-password">重置密码</Button>
               </FormItem>
             </Form>
           </Col>
         </Row>
       </div>
-
     )
   }
 }
 
-const UserPassword = Form.create()(PasswordForm)
-export default UserPassword
+const ChangePassword = Form.create()(ChangePasswordItem)
+export default ChangePassword

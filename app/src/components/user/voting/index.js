@@ -76,6 +76,13 @@ class Voting extends Component {
             json.options.map(item => {
               isVoted = item.value + isVoted // 通过相加和判断是否参加过
             }) // 通过所有选项value相加来判断是否参与过投票
+
+            if( json.voteShow.type === 3 || json.voteShow.type === 4){
+              if( json.records.length === 0){
+                isVoted = 0
+              }
+            }
+
             this.setState({
               options: json.options,
               max: json.voteShow.max,
@@ -215,6 +222,7 @@ class Voting extends Component {
             isVoted: 1
           })
           message.success('投票成功')
+          window.history.go(0)
         } catch (e) {
           message.error(e)
         }
@@ -224,6 +232,7 @@ class Voting extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0,0)
     this.getVoting()
   }
 
@@ -362,11 +371,11 @@ class Voting extends Component {
           </Row>
           <Row style={MarginStyle}>
             <Col {...TimeOffsetSpan}>
-              <span style={{margin: 0,fontSize:'15px'}}><Tag color="#f7c0c6">{this.state.startTime}</Tag>~&nbsp;
+              <span style={{margin: 0}}><Tag color="#f7c0c6">{this.state.startTime}</Tag>
                 <Tag color="#f7c0c6">{this.state.endTime}</Tag></span>
             </Col>
           </Row>
-          <div style={{marginLeft: '15vw', marginBottom: '100px'}}>
+          <div style={{marginLeft: '15vw', marginBottom: '200px'}}>
             { type === 1 && <div>
               {
                 this.state.isVoted === 0 ? <RadioGroup onChange={this.onSingleChange}>{formItems}</RadioGroup> :
