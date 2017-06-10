@@ -42,26 +42,28 @@ class Voting extends Component {
     }
   }
 
-  onSingleChange = (e) => {
+  onSingleChange = async(e) => {
     const footMsg = `您已选择: 选项${e.target.value - this.state.optionId + 1}`
-    this.setState({
+    await this.setState({
       valueSingle: e.target.value,
       valueSingleCheckedItem: e.target.value - this.state.optionId + 1,
       footMsg: footMsg,
     })
+    console.log(this.state.valueSingle)
   }
 
-  onDoubleChange = (checkedValues) => {
+  onDoubleChange = async (checkedValues) => {
     const footMsg = `您已选择: ${checkedValues.length}项;最多选${this.state.max}项`
-    this.setState({
+    await this.setState({
       valueDouble: checkedValues,
       footMsg: footMsg
     })
+    console.log(this.state.valueDouble)
   }
 
-  onScoreChange = () => {
+  onScoreChange = async () => {
     const footMsg = `${this.state.type === 3 ? '十' : '百'}分制打分；共${this.state.options.length}项需要打分`
-    this.setState({
+    await this.setState({
       footMsg: footMsg
     })
   }
@@ -82,7 +84,6 @@ class Voting extends Component {
                 isVoted = 0
               }
             }
-
             this.setState({
               options: json.options,
               max: json.voteShow.max,

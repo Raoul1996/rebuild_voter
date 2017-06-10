@@ -14,11 +14,12 @@ class Joined extends Component {
       total: 1,
       List: [],
       page: 2,
-      pages: 1,
+      pages: 5,
       close: [],
       unClose: [],
       height: 20,
-      flag: 0
+      flag: 0,
+      isLastPage: false
     }
   }
 
@@ -48,7 +49,8 @@ class Joined extends Component {
                 total: json.data.total,
                 List: list,
                 page: json.data.pageNum + 1,
-                pages: json.data.pages
+                pages: json.data.pages,
+                isLastPage: json.data.isLastPage
               })
             }
           }
@@ -90,7 +92,8 @@ class Joined extends Component {
             total: json.data.total,
             List: list,
             page: 2,
-            pages: json.data.pages
+            pages: json.data.pages,
+            isLastPage: json.data.isLastPage
           })
         }
       }
@@ -111,6 +114,7 @@ class Joined extends Component {
 
   render () {
     let mobile = window.localStorage.getItem('mobile')
+    let messageLoading = this.state.isLastPage?'已加载完毕所有投票':'下拉加载更多'
     return (
       <div className="show-list-wrapper">
         <Col span={23} offset={1}>
@@ -137,7 +141,7 @@ class Joined extends Component {
             <Row style={{marginBottom: '50px'}}>
               <div>
                 <Col span={21} offset={1}>
-                  <Alert message="下滑加载更多" type="info" />
+                  <Alert message={messageLoading} type="info" />
                 </Col>
               </div>
             </Row>

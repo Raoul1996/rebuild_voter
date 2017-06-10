@@ -74,9 +74,9 @@ class ChangePasswordItem extends React.Component {
           let data = await Request.uput(API.forget, body)
           console.log(data)
           message.success('密码修改成功')
-          // setTimeout(() => {
-          //   goto('users/login')
-          // }, 2000)
+          setTimeout(() => {
+            goto('users/login')
+          }, 2000)
         } catch (e) {
           message.error('修改信息失败')
         }
