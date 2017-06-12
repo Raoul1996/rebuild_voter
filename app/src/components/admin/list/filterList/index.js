@@ -288,7 +288,7 @@ class FilterList extends Component {
               </div>
           </Col>
           <Col span={22} offset={1} style={ListStyle}>
-            <ActList total={this.state.total} list={this.state.list} pagination={pagination} />
+            <ActList total={this.state.total} list={this.state.list} pagination={pagination} getPage={this.getPage}/>
           </Col>
         </Row>
       </div>

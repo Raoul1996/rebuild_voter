@@ -100,7 +100,7 @@ class Item extends Component {
   }
 
   componentDidMount () {
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
     this.getFirstList()
     window.addEventListener('scroll', this.getVoteList)
 

@@ -16,11 +16,13 @@ class Operation extends Component {
   isStop = async () => {
     await Request.put(API.changeVisibility.replace(/:voteId/, this.props.voteId), {}, {})
     await console.log('成功！')
+    await this.props.getPage()
     //await window.history.go(0) //TODO：删除整个页面刷新，消耗性能，解决办法本地制造假数据
   }
 
   isDelete = () => {
     const id = this.props.voteId
+    const getPage = this.props.getPage
     Modal.confirm({
       title: '删除投票后，本投票活动及相关数据都会消失，是否确认删除？',
       okText: 'OK',
@@ -28,6 +30,7 @@ class Operation extends Component {
       async onOk () {
         try {
           await Request.Delete(API.delete.replace(/:voteId/, id), {})
+          await getPage()
           //await window.history.go(0) // TODO：删除整个页面刷新，消耗性能，解决办法本地制造假数据
         } catch (e) {
           console.log(e)

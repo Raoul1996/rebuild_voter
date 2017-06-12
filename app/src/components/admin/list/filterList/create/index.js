@@ -98,6 +98,8 @@ class Create extends Component {
             options.push(item)
           }
         })
+        console.log(new Date(Date.parse(new Date)))
+        console.log(new Date(Date.parse(new Date) + 1000))
         const {title, max} = values
         const body = {
           options: options,
@@ -183,7 +185,7 @@ class Create extends Component {
             className="dynamic-delete-button"
             type="minus-circle-o"
             disabled={keys.length === 1}
-            onClick={() => this.remove(k)}
+            onClick={() => this.remove(index)}
           />
         </FormItem>
       )
