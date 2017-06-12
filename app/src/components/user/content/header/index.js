@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Icon } from 'antd'
 import './index.less'
-
+import goto from  '../../../../utils/goto'
 class Headers extends Component {
   goBack=()=>{
-    window.history.go(-1)
+    window.history.go(-1) || goto('users/list')
   }
   render () {
     return (

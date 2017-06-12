@@ -406,7 +406,9 @@ class Voting extends Component {
               isJoined={this.state.isVoted}
               submitVoting={this.submitVoting}
               footMsg={this.state.footMsg}
-              itemNum={(this.state.valueDouble.length <= this.state.max || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}
+              itemNum={(((this.state.valueDouble.length <= this.state.max)&&this.state.valueDouble.length) || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}
+              // itemNum={|| (this.state.type === 3 || this.state.type === 4)}
+              // itemNum={((this.state.valueDouble.length <= this.state.max) && this.state.valueDouble.length || this.state.valueSingleCheckedItem) }
             />
           }
         </div>

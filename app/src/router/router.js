@@ -63,6 +63,7 @@ function RouterApp () {
   return (
     <Router history={hashHistory}>
       <Redirect from="/" to="users/list" />
+      <Redirect from="/admin" to="admin/filter-list" />
       <Route path="/" component={AppComponent}>
         {/*<IndexRoute component={UserPage} />*/}
         <Route path="users" component={UserPage}>
