@@ -37,19 +37,19 @@ class Voting extends Component {
 
   needLogin = (e) => {
     e.preventDefault()
-    if(!window.localStorage.getItem('user.token')){
+    if (!window.localStorage.getItem('user.token') && e.target.nodeName === 'INPUT') {
       message.warning('请登录后再投票')
     }
   }
 
-  onSingleChange = async(e) => {
+  onSingleChange = async (e) => {
     const footMsg = `您已选择: 选项${e.target.value - this.state.optionId + 1}`
     await this.setState({
       valueSingle: e.target.value,
       valueSingleCheckedItem: e.target.value - this.state.optionId + 1,
       footMsg: footMsg,
     })
-    console.log(this.state.valueSingle)
+    // console.log(this.state.valueSingle)
   }
 
   onDoubleChange = async (checkedValues) => {
@@ -58,7 +58,7 @@ class Voting extends Component {
       valueDouble: checkedValues,
       footMsg: footMsg
     })
-    console.log(this.state.valueDouble)
+    // console.log(this.state.valueDouble)
   }
 
   onScoreChange = async () => {
@@ -79,8 +79,8 @@ class Voting extends Component {
               isVoted = item.value + isVoted // 通过相加和判断是否参加过
             }) // 通过所有选项value相加来判断是否参与过投票
 
-            if( json.voteShow.type === 3 || json.voteShow.type === 4){
-              if( json.records.length === 0){
+            if (json.voteShow.type === 3 || json.voteShow.type === 4) {
+              if (json.records.length === 0) {
                 isVoted = 0
               }
             }
@@ -233,7 +233,7 @@ class Voting extends Component {
   }
 
   componentDidMount () {
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
     this.getVoting()
   }
 
@@ -268,25 +268,25 @@ class Voting extends Component {
           <Col>
             <Row style={MarginStyle}>
               <Col>
-                <span style={{fontSize:'15px',color:'#666'}}><Icon type="star-o" />&nbsp;选项{index + 1}</span>
+                <span style={{fontSize: '15px', color: '#666'}}><Icon type="star-o" />&nbsp;选项{index + 1}</span>
               </Col>
               {
                 type === 1 &&
                 <Col>
-                  <Radio style={radioStyle} value={item.id}><span style={{fontSize:'15px'}}>{item.title}</span></Radio>
+                  <Radio style={radioStyle} value={item.id}><span style={{fontSize: '15px'}}>{item.title}</span></Radio>
                 </Col>
               }
               {
                 type === 2 &&
                 <Col style={MarginStyle}>
-                  <Checkbox value={item.id}><span style={{fontSize:'15px'}}>{item.title}</span></Checkbox>
+                  <Checkbox value={item.id}><span style={{fontSize: '15px'}}>{item.title}</span></Checkbox>
                 </Col>
               }
               {
                 (type === 3 || type === 4) &&
                 <Row>
                   <Col span={15} style={MarginStyle}>
-                    <span style={{fontSize:'15px'}}>{item.title}</span>
+                    <span style={{fontSize: '15px'}}>{item.title}</span>
                   </Col>
                   <Col span={4}>
                     <FormItem>
@@ -311,16 +311,18 @@ class Voting extends Component {
           <Col>
             <Row style={MarginStyle}>
               <Col>
-                <span style={{fontSize:'15px'}}><Icon type="star-o" />&nbsp;选项{index + 1}</span>
+                <span style={{fontSize: '15px'}}><Icon type="star-o" />&nbsp;选项{index + 1}</span>
               </Col>
               {
-                type === 1 && <Radio key={index} style={radioStyle} value={item.id} disabled><span style={{fontSize:'15px'}}>{item.title}</span></Radio>
+                type === 1 && <Radio key={index} style={radioStyle} value={item.id} disabled><span
+                  style={{fontSize: '15px'}}>{item.title}</span></Radio>
               }
               {
                 type === 2 &&
                 <div>
                   <Row>
-                    <Col span={8}><Checkbox key={index} value={item.id} disabled><span style={{fontSize:'15px'}}>{item.title}</span></Checkbox></Col>
+                    <Col span={8}><Checkbox key={index} value={item.id} disabled><span
+                      style={{fontSize: '15px'}}>{item.title}</span></Checkbox></Col>
                   </Row>
                 </div>
               }
@@ -333,7 +335,7 @@ class Voting extends Component {
       return (
         <Row key={index} style={MarginStyle}>
           <Col>
-            <span style={{fontSize:'15px'}}><Icon type="star-o" />&nbsp;选项{index + 1}</span>
+            <span style={{fontSize: '15px'}}><Icon type="star-o" />&nbsp;选项{index + 1}</span>
           </Col>
           <Col span={15} style={MarginStyle}>
             <span>{item.title}</span>
@@ -352,10 +354,10 @@ class Voting extends Component {
     let is_login = window.localStorage.getItem('is_login') || '0'
     return (
       <Form>
-        <div style={{marginTop: '80px'}} onClick={this.needLogin}>
+        <div style={{marginTop: '80px'}} onChange={this.needLogin}>
           <Row style={MarginStyle}>
             <Col {...GlobalOffsetSpan}>
-              <span style={{fontSize:'20px'}}><Icon type="tags" />&nbsp;{this.state.title}</span>
+              <span style={{fontSize: '20px'}}><Icon type="tags" />&nbsp;{this.state.title}</span>
             </Col>
           </Row>
           <Row style={MarginStyle}>
@@ -367,7 +369,7 @@ class Voting extends Component {
           </Row>
           <Row style={MarginStyle}>
             <Col {...GlobalOffsetSpan}>
-              <span style={{fontSize:'15px'}}><Icon type="clock-circle" /> &nbsp;投票时间:</span>
+              <span style={{fontSize: '15px'}}><Icon type="clock-circle" /> &nbsp;投票时间:</span>
             </Col>
           </Row>
           <Row style={MarginStyle}>
@@ -406,7 +408,7 @@ class Voting extends Component {
               isJoined={this.state.isVoted}
               submitVoting={this.submitVoting}
               footMsg={this.state.footMsg}
-              itemNum={(((this.state.valueDouble.length <= this.state.max)&&this.state.valueDouble.length) || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}
+              itemNum={(((this.state.valueDouble.length <= this.state.max) && this.state.valueDouble.length) || this.state.valueSingleCheckedItem) || (this.state.type === 3 || this.state.type === 4)}
               // itemNum={|| (this.state.type === 3 || this.state.type === 4)}
               // itemNum={((this.state.valueDouble.length <= this.state.max) && this.state.valueDouble.length || this.state.valueSingleCheckedItem) }
             />
