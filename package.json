@@ -8,14 +8,14 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "antd": "^2.8.2",
+    "antd": "^2.10.2",
     "babel-runtime": "^6.11.6",
     "console-polyfill": "^0.2.2",
     "es6-promise": "^3.2.1",
     "normalize.css": "^5.0.0",
-    "react": "^15.3.2",
+    "react": "^15.5.4",
     "react-copy-to-clipboard": "^5.0.0",
-    "react-dom": "^15.3.2",
+    "react-dom": "^15.5.4",
     "react-router": "^2.4.0",
     "whatwg-fetch": "^1.0.0"
   },
