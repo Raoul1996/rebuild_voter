@@ -8,7 +8,7 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "antd": "^2.8.2",
+    "antd": "^4.0.0",
     "babel-runtime": "^6.11.6",
     "console-polyfill": "^0.2.2",
     "es6-promise": "^3.2.1",
